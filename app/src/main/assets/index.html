@@ -590,6 +590,34 @@ const ziyaratHTML=`
   یہ بنیادی آف لائن رہنمائی ہے اور انٹرنیٹ کے بغیر بھی App میں دستیاب رہے گی۔
 </div>
 `;
+  const transportHTML=`
+<div class="info">
+  <h2>🚕 ٹرانسپورٹ / رائیڈ</h2>
+  <p>اپنی منزل درج کریں اور آسانی سے راستہ یا رائیڈ تلاش کریں۔</p>
+</div>
+
+<div class="service-grid">
+
+  <div class="service">
+    <div class="icon">📍</div>
+    <h3>موجودہ مقام</h3>
+    <p>آپ کی موجودہ لوکیشن</p>
+  </div>
+
+  <div class="service">
+    <div class="icon">🎯</div>
+    <h3>منزل</h3>
+    <p>جہاں آپ جانا چاہتے ہیں</p>
+  </div>
+
+  <div class="service" onclick="openNearMe('transport')">
+    <div class="icon">🚕</div>
+    <h3>رائیڈ تلاش کریں</h3>
+    <p>قریب موجود ٹیکسی اور ٹرانسپورٹ تلاش کریں</p>
+  </div>
+
+</div>
+`;
   const nearMeHTML=`
 <div class="info">
   <h2>📍 میرے قریب</h2>
@@ -628,7 +656,7 @@ const ziyaratHTML=`
     <p>قریب کے ATM اور بینک</p>
   </div>
 
- <div class="service" onclick="openNearMe('transport')">
+ <div class="service" onclick="showPage('transport')">
     <div class="icon">🚕</div>
     <h3>ٹرانسپورٹ</h3>
     <p>ٹیکسی اور سفر کی سہولیات</p>
@@ -662,9 +690,10 @@ function showPage(key){
   else if(key==="profile"){title="میری پروفائل";html=profileHTML()}
   else if(key==="feedback"){title="فیڈ بیک";html=feedbackHTML()}
   else if(key==="ziyarat"){title="زیارات";html=ziyaratHTML}
-    else if(key==="offlineMap"){title="آف لائن نقشہ";html=offlineMapHTML}
-      else if(key==="nearMe"){title="میرے قریب";html=nearMeHTML}
-  else return;
+  else if(key==="transport"){title="ٹرانسپورٹ / رائیڈ";html=transportHTML}
+else if(key==="nearMe"){title="میرے قریب";html=nearMeHTML}
+else return;
+ 
 
   document.getElementById("home").style.display="none";
   document.getElementById("page").classList.add("active");
