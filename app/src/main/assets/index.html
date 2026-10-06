@@ -598,37 +598,37 @@ const ziyaratHTML=`
 
 <div class="service-grid">
 
-  <div class="service">
+  <div class="service" onclick="openNearMe('restaurants')">
     <div class="icon">🍽️</div>
     <h3>کھانا</h3>
     <p>قریب کے ریسٹورنٹس اور کھانے کی جگہیں</p>
   </div>
 
-  <div class="service">
+  <div class="service" onclick="openNearMe('pharmacy')">
     <div class="icon">💊</div>
     <h3>فارمیسی</h3>
     <p>قریب کی میڈیکل اور فارمیسی</p>
   </div>
 
-  <div class="service">
+  <div class="service" onclick="openNearMe('hospital')">
     <div class="icon">🏥</div>
     <h3>ہسپتال</h3>
     <p>قریب کے ہسپتال اور طبی سہولیات</p>
   </div>
 
-  <div class="service">
+  <div class="service" onclick="openNearMe('shopping')">
     <div class="icon">🛍️</div>
     <h3>خریداری</h3>
     <p>قریب کی مارکیٹس اور شاپنگ</p>
   </div>
 
-  <div class="service">
+  <div class="service" onclick="openNearMe('ATM')">
     <div class="icon">🏧</div>
     <h3>ATM / بینک</h3>
     <p>قریب کے ATM اور بینک</p>
   </div>
 
-  <div class="service">
+ <div class="service" onclick="openNearMe('transport')">
     <div class="icon">🚕</div>
     <h3>ٹرانسپورٹ</h3>
     <p>ٹیکسی اور سفر کی سہولیات</p>
@@ -636,6 +636,20 @@ const ziyaratHTML=`
 
 </div>
 `;
+  function openNearMe(type){
+  const queryMap={
+    restaurants:"restaurants near me",
+    pharmacy:"pharmacy near me",
+    hospital:"hospital near me",
+    shopping:"shopping near me",
+    ATM:"ATM near me",
+    transport:"taxi near me"
+  };
+
+  const query=queryMap[type]||type;
+  const url="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(query);
+  window.location.href=url;
+}
 function showPage(key){
   let title="",html="";
   if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
