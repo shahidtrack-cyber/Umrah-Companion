@@ -598,23 +598,23 @@ const ziyaratHTML=`
 
 <div class="service-grid">
 
-  <div class="service">
-    <div class="icon">📍</div>
-    <h3>موجودہ مقام</h3>
-    <p>آپ کی موجودہ لوکیشن</p>
-  </div>
+  <div class="service" onclick="getCurrentLocation()">
+  <div class="icon">📍</div>
+  <h3>موجودہ مقام</h3>
+  <p id="currentLocationText">اپنی موجودہ لوکیشن حاصل کریں</p>
+</div>
 
-  <div class="service">
-    <div class="icon">🎯</div>
-    <h3>منزل</h3>
-    <p>جہاں آپ جانا چاہتے ہیں</p>
-  </div>
+<div class="service" onclick="setDestination()">
+  <div class="icon">🎯</div>
+  <h3>منزل</h3>
+  <p id="destinationText">جہاں آپ جانا چاہتے ہیں</p>
+</div>
 
-  <div class="service" onclick="openNearMe('transport')">
-    <div class="icon">🚕</div>
-    <h3>رائیڈ تلاش کریں</h3>
-    <p>قریب موجود ٹیکسی اور ٹرانسپورٹ تلاش کریں</p>
-  </div>
+<div class="service" onclick="findRide()">
+  <div class="icon">🚕</div>
+  <h3>رائیڈ تلاش کریں</h3>
+  <p>موجودہ مقام سے منزل تک راستہ تلاش کریں</p>
+</div>
 
 </div>
 `;
@@ -678,6 +678,72 @@ const ziyaratHTML=`
   const url="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(query);
   window.location.href=url;
 }
+  let currentLat = null;
+let currentLng = null;
+let destination = "";
+
+function getCurrentLocation(){
+  if(!navigator.geolocation){
+    alert("آپ کے موبائل میں لوکیشن کی سہولت دستیاب نہیں ہے۔");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position){
+      currentLat = position.coords.latitude;
+      currentLng = position.coords.longitude;
+
+      const text = document.getElementById("currentLocationText");
+      if(text){
+        text.innerText = "موجودہ مقام حاصل ہوگیا ✓";
+      }
+
+      alert("آپ کا موجودہ مقام حاصل ہوگیا۔");
+    },
+    function(){
+      alert("لوکیشن حاصل نہیں ہوسکی۔ براہ کرم Location/GPS کی اجازت دیں۔");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000
+    }
+  );
+}
+
+function setDestination(){
+  const place = prompt("آپ کہاں جانا چاہتے ہیں؟ مثال: Masjid al-Haram");
+
+  if(place && place.trim() !== ""){
+    destination = place.trim();
+
+    const text = document.getElementById("destinationText");
+    if(text){
+      text.innerText = destination;
+    }
+  }
+}
+
+function findRide(){
+  if(!destination){
+    alert("پہلے اپنی منزل درج کریں۔");
+    return;
+  }
+
+  let url;
+
+  if(currentLat !== null && currentLng !== null){
+    url = "https://www.google.com/maps/dir/?api=1&origin="
+      + currentLat + "," + currentLng
+      + "&destination=" + encodeURIComponent(destination)
+      + "&travelmode=driving";
+  }else{
+    url = "https://www.google.com/maps/dir/?api=1&destination="
+      + encodeURIComponent(destination)
+      + "&travelmode=driving";
+  }
+
+  window.location.href = url;
+}
 function showPage(key){
   let title="",html="";
   if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
@@ -690,6 +756,7 @@ function showPage(key){
   else if(key==="profile"){title="میری پروفائل";html=profileHTML()}
   else if(key==="feedback"){title="فیڈ بیک";html=feedbackHTML()}
   else if(key==="ziyarat"){title="زیارات";html=ziyaratHTML}
+    else if(key==="offlineMap"){title="آف لائن نقشہ";html=offlineMapHTML}
   else if(key==="transport"){title="ٹرانسپورٹ / رائیڈ";html=transportHTML}
 else if(key==="nearMe"){title="میرے قریب";html=nearMeHTML}
 else return;
