@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Umrah Companion</title>
+
+  <style>
+    @font-face {
+      font-family: 'Jameel';
+      src: url('../../../Jameel Noori Nastaleeq Regular.ttf') format('truetype');
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7f5;
+      color: #173c32;
+      font-family: 'Jameel', serif;
+      direction: rtl;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0c5b47, #168066);
+      color: white;
+      padding: 28px 18px 35px;
+      text-align: center;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .kaaba {
+      font-size: 42px;
+      margin-bottom: 4px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 34px;
+      font-weight: normal;
+    }
+
+    .header p {
+      margin: 3px 0 0;
+      font-size: 19px;
+      opacity: 0.9;
+    }
+
+    .container {
+      padding: 16px;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    .summary {
+      background: white;
+      margin-top: -25px;
+      border-radius: 20px;
+      padding: 17px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.10);
+    }
+
+    .summary-title {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+    }
+
+    .summary-item {
+      background: #f2f8f5;
+      border-radius: 13px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .summary-item span {
+      display: block;
+      font-size: 16px;
+      color: #6b7e76;
+    }
+
+    .summary-item strong {
+      display: block;
+      font-size: 20px;
+      font-weight: normal;
+      color: #0c5b47;
+    }
+
+    .today {
+      margin-top: 15px;
+      background: #fff9e9;
+      border: 1px solid #ead9a4;
+      border-radius: 17px;
+      padding: 14px;
+    }
+
+    .today-title {
+      font-size: 22px;
+      color: #8a6815;
+    }
+
+    .today-text {
+      font-size: 17px;
+      color: #5d594c;
+    }
+
+    .section-title {
+      margin: 22px 3px 10px;
+      font-size: 25px;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 18px 10px;
+      min-height: 125px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+      border: 1px solid #edf1ee;
+    }
+
+    .card:active {
+      transform: scale(0.98);
+      background: #f2f8f5;
+    }
+
+    .icon {
+      font-family: Arial, sans-serif;
+      font-size: 31px;
+      margin-bottom: 5px;
+    }
+
+    .card-title {
+      font-size: 22px;
+      color: #174f40;
+    }
+
+    .card-sub {
+      font-size: 14px;
+      color: #7b8983;
+      line-height: 1.6;
+    }
+
+    .footer-space {
+      height: 85px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #e4e8e5;
+      display: flex;
+      justify-content: space-around;
+      padding: 7px 2px 8px;
+      box-shadow: 0 -3px 12px rgba(0,0,0,0.06);
+    }
+
+    .nav-item {
+      text-align: center;
+      font-size: 14px;
+      color: #66756f;
+      flex: 1;
+    }
+
+    .nav-icon {
+      font-family: Arial, sans-serif;
+      font-size: 21px;
+      display: block;
+    }
+
+    .active {
+      color: #0c6b54;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="kaaba">🕋</div>
+    <h1>عمرہ کمپینین</h1>
+    <p>آپ کے سفرِ عمرہ کا مکمل ساتھی</p>
+  </header>
+
+  <main class="container">
+
+    <section class="summary">
+      <div class="summary-title">میرا عمرہ</div>
+
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span>روانگی میں</span>
+          <strong>تاریخ درج کریں</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>کل بجٹ</span>
+          <strong>PKR 0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>اب تک خرچ</span>
+          <strong>PKR 0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>باقی رقم</span>
+          <strong>PKR 0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="today">
+      <div class="today-title">آج کا سفر</div>
+      <div class="today-text">
+        اپنا عمرہ پلان ترتیب دیں، تیاری مکمل کریں اور اپنے سفر کے تمام مراحل ایک جگہ محفوظ رکھیں۔
+      </div>
+    </section>
+
+    <div class="section-title">عمرہ خدمات</div>
+
+    <section class="menu">
+
+      <div class="card">
+        <div class="icon">🕋</div>
+        <div class="card-title">عمرہ گائیڈ</div>
+        <div class="card-sub">احرام سے عمرہ مکمل ہونے تک مرحلہ وار رہنمائی</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">🤲</div>
+        <div class="card-title">دعائیں</div>
+        <div class="card-sub">مستند دعائیں، عربی متن اور اردو ترجمہ</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">🔄</div>
+        <div class="card-title">طواف و سعی</div>
+        <div class="card-sub">سات چکروں اور سعی کا آسان کاؤنٹر</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">🧳</div>
+        <div class="card-title">میری تیاری</div>
+        <div class="card-sub">دستاویزات، سامان اور ضروری اشیاء کی چیک لسٹ</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">💼</div>
+        <div class="card-title">میرا پیکیج</div>
+        <div class="card-sub">ٹکٹ، ویزا، ہوٹل، ٹرانسپورٹ اور پیکیج کی تفصیل</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">💰</div>
+        <div class="card-title">اخراجات</div>
+        <div class="card-sub">بجٹ، روزانہ خرچ، سعودی ریال اور پاکستانی روپے</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">📍</div>
+        <div class="card-title">زیارات</div>
+        <div class="card-sub">مکہ مکرمہ اور مدینہ منورہ کے اہم مقامات</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">ℹ️</div>
+        <div class="card-title">سفر کی معلومات</div>
+        <div class="card-sub">فلائٹ، ہوٹل، ضروری نمبرز اور مفید معلومات</div>
+      </div>
+
+    </section>
+
+    <div class="footer-space"></div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active">
+      <span class="nav-icon">⌂</span>
+      ہوم
+    </div>
+
+    <div class="nav-item">
+      <span class="nav-icon">🕋</span>
+      میرا عمرہ
+    </div>
+
+    <div class="nav-item">
+      <span class="nav-icon">📖</span>
+      گائیڈ
+    </div>
+
+    <div class="nav-item">
+      <span class="nav-icon">💰</span>
+      اخراجات
+    </div>
+
+    <div class="nav-item">
+      <span class="nav-icon">⚙</span>
+      سیٹنگز
+    </div>
+  </nav>
+
+</body>
+</html>
