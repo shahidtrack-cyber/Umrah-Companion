@@ -234,6 +234,7 @@ h2{margin:0;font-size:23px}
     <div class="service" onclick="showPage('feedback')"><div class="icon">💬</div><h3>فیڈ بیک</h3><p>اپنی رائے دیں</p></div>
     <div class="service" onclick="showPage('ziyarat')"><div class="icon">📍</div><h3>زیارات</h3><p>اہم مقامات</p></div>
     <div class="service" onclick="showPage('offlineMap')"><div class="icon">🗺️</div><h3>آف لائن نقشہ</h3><p>مکہ اور مدینہ کے اہم مقامات</p></div>
+    <div class="service" onclick="showPage('nearMe')"><div class="icon">📍</div><h3>میرے قریب</h3><p>قریب کی ضروری جگہیں تلاش کریں</p></div>
   </div>
 </section>
 </div>
@@ -589,6 +590,52 @@ const ziyaratHTML=`
   یہ بنیادی آف لائن رہنمائی ہے اور انٹرنیٹ کے بغیر بھی App میں دستیاب رہے گی۔
 </div>
 `;
+  const nearMeHTML=`
+<div class="info">
+  <h2>📍 میرے قریب</h2>
+  <p>اپنے آس پاس ضروری جگہیں آسانی سے تلاش کریں۔</p>
+</div>
+
+<div class="service-grid">
+
+  <div class="service">
+    <div class="icon">🍽️</div>
+    <h3>کھانا</h3>
+    <p>قریب کے ریسٹورنٹس اور کھانے کی جگہیں</p>
+  </div>
+
+  <div class="service">
+    <div class="icon">💊</div>
+    <h3>فارمیسی</h3>
+    <p>قریب کی میڈیکل اور فارمیسی</p>
+  </div>
+
+  <div class="service">
+    <div class="icon">🏥</div>
+    <h3>ہسپتال</h3>
+    <p>قریب کے ہسپتال اور طبی سہولیات</p>
+  </div>
+
+  <div class="service">
+    <div class="icon">🛍️</div>
+    <h3>خریداری</h3>
+    <p>قریب کی مارکیٹس اور شاپنگ</p>
+  </div>
+
+  <div class="service">
+    <div class="icon">🏧</div>
+    <h3>ATM / بینک</h3>
+    <p>قریب کے ATM اور بینک</p>
+  </div>
+
+  <div class="service">
+    <div class="icon">🚕</div>
+    <h3>ٹرانسپورٹ</h3>
+    <p>ٹیکسی اور سفر کی سہولیات</p>
+  </div>
+
+</div>
+`;
 function showPage(key){
   let title="",html="";
   if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
@@ -602,6 +649,7 @@ function showPage(key){
   else if(key==="feedback"){title="فیڈ بیک";html=feedbackHTML()}
   else if(key==="ziyarat"){title="زیارات";html=ziyaratHTML}
     else if(key==="offlineMap"){title="آف لائن نقشہ";html=offlineMapHTML}
+      else if(key==="nearMe"){title="میرے قریب";html=nearMeHTML}
   else return;
 
   document.getElementById("home").style.display="none";
