@@ -151,7 +151,39 @@ h2{margin:0;font-size:23px}
 </head>
 
 <body>
+<div id="welcomeScreen" style="display:none; padding:25px 18px; min-height:100vh; background:#f5f7f6;">
+  <div class="info" style="margin-top:35px;">
+    <div style="text-align:center;font-size:50px;">🕋</div>
+    <h2 style="text-align:center;color:#0b6b53;">عمرہ کمپینین میں خوش آمدید</h2>
+    <p style="text-align:center;color:#6c7773;">اپنا سفر شروع کرنے کے لیے اپنی پروفائل بنائیں</p>
 
+    <div class="field">
+      <label>آپ کا نام</label>
+      <input id="welcomeName" placeholder="اپنا نام درج کریں">
+    </div>
+
+    <div class="field">
+      <label>ای میل</label>
+      <input id="welcomeEmail" type="email" placeholder="example@email.com">
+    </div>
+
+    <div class="field">
+      <label>آپ کس ملک سے ہیں؟</label>
+      <select id="welcomeCountry">
+        <option value="">ملک منتخب کریں</option>
+        <option value="Pakistan">Pakistan</option>
+        <option value="India">India</option>
+        <option value="Bangladesh">Bangladesh</option>
+        <option value="United Kingdom">United Kingdom</option>
+        <option value="United States">United States</option>
+        <option value="UAE">UAE</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <button class="main-btn" onclick="saveWelcomeProfile()">شروع کریں</button>
+  </div>
+</div>
 <div id="home" class="app">
 <header class="header">
   <div class="brand">
@@ -162,7 +194,7 @@ h2{margin:0;font-size:23px}
     </div>
   </div>
   <p class="header-message">آپ کے سفرِ عمرہ کا مکمل ساتھی</p>
-</header>
+<p id="welcomeUserName" style="margin:8px 0 0;font-size:18px;font-weight:bold;"></p></header>
 
 <section class="card trip-card">
   <div class="row">
@@ -243,8 +275,28 @@ function setTripDate(){
     updateHome();
   }
 }
+function saveWelcomeProfile(){
+  const name = document.getElementById("welcomeName").value.trim();
+  const email = document.getElementById("welcomeEmail").value.trim();
+  const country = document.getElementById("welcomeCountry").value;
 
-function updateHome(){
+  if(!name || !email || !country){
+    alert("براہِ کرم نام، ای میل اور ملک تینوں درج کریں");
+    return;
+  }
+
+  save("profile", {name:name, email:email, country:country});
+
+  document.getElementById("welcomeScreen").style.display = "none";
+  document.getElementById("home").style.display = "block";
+
+  updateHome();
+}
+function updateHome(){const profile = load("profile",{});
+const nameBox = document.getElementById("welcomeUserName");
+if(nameBox){
+  nameBox.innerText = profile.name ? "السلام علیکم، " + profile.name + " 👋" : "";
+}
   const d=load("tripDate","");
   document.getElementById("tripDateText").innerText=d?"روانگی: "+d:"روانگی کی تاریخ ابھی درج نہیں کی گئی";
 
@@ -481,7 +533,16 @@ function goHome(){
   window.scrollTo(0,0);
 }
 
-updateHome();
+const firstProfile = load("profile", {});
+
+if(firstProfile.name && firstProfile.email && firstProfile.country){
+  document.getElementById("welcomeScreen").style.display = "none";
+  document.getElementById("home").style.display = "block";
+  updateHome();
+}else{
+  document.getElementById("home").style.display = "none";
+  document.getElementById("welcomeScreen").style.display = "block";
+}
 </script>
 
 </body>
