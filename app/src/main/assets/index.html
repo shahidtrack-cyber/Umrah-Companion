@@ -233,6 +233,7 @@ h2{margin:0;font-size:23px}
     <div class="service" onclick="showPage('profile')"><div class="icon">👤</div><h3>میری پروفائل</h3><p>نام اور ای میل</p></div>
     <div class="service" onclick="showPage('feedback')"><div class="icon">💬</div><h3>فیڈ بیک</h3><p>اپنی رائے دیں</p></div>
     <div class="service" onclick="showPage('ziyarat')"><div class="icon">📍</div><h3>زیارات</h3><p>اہم مقامات</p></div>
+    <div class="service" onclick="showPage('offlineMap')"><div class="icon">🗺️</div><h3>آف لائن نقشہ</h3><p>مکہ اور مدینہ کے اہم مقامات</p></div>
   </div>
 </section>
 </div>
@@ -497,14 +498,97 @@ function feedbackHTML(){
 function saveFeedback(){
   save("feedback",document.getElementById("feedbackText").value);
   alert("فیڈ بیک محفوظ ہو گیا");
+  document.getElementById("feedbackText").value="";
 }
 
 const ziyaratHTML=`
-<div class="info"><h3>مکہ مکرمہ</h3><p>مکہ مکرمہ کے اہم مقامات کی معلومات یہاں شامل کی جائیں گی۔</p></div>
-<div class="info"><h3>مدینہ منورہ</h3><p>مدینہ منورہ کے اہم مقامات کی معلومات یہاں شامل کی جائیں گی۔</p></div>
-<div class="notice">زیارات کے دینی و تاریخی مواد کو مستند حوالوں کے ساتھ مزید مکمل کیا جائے گا۔</div>
-`;
+<div class="info">
+  <h2>🕋 مکہ مکرمہ کے اہم مقامات</h2>
+  <h3>مسجد الحرام اور خانہ کعبہ</h3>
+  <p>مسلمانوں کا قبلہ اور عمرہ کے بنیادی اعمال طواف اور سعی کا مرکزی مقام۔</p>
+</div>
 
+<div class="info">
+  <h3>⛰️ غارِ حرا — جبل النور</h3>
+  <p>یہ وہ مقام ہے جہاں نبی کریم ﷺ پر پہلی وحی نازل ہوئی۔</p>
+</div>
+
+<div class="info">
+  <h3>⛰️ غارِ ثور</h3>
+  <p>ہجرتِ مدینہ کے موقع پر نبی کریم ﷺ اور حضرت ابوبکر صدیقؓ نے یہاں قیام فرمایا۔</p>
+</div>
+
+<div class="info">
+  <h3>📍 منیٰ</h3>
+  <p>حج کے اہم مناسک سے وابستہ تاریخی اور مقدس مقام۔</p>
+</div>
+
+<div class="info">
+  <h3>📍 میدانِ عرفات</h3>
+  <p>حج کے رکنِ اعظم وقوفِ عرفہ کا مقام۔ یہاں جبلِ رحمت بھی واقع ہے۔</p>
+</div>
+
+<div class="info">
+  <h3>📍 مزدلفہ</h3>
+  <p>حجاج عرفات سے واپسی پر یہاں قیام کرتے ہیں۔</p>
+</div>
+
+<div class="info">
+  <h2>🕌 مدینہ منورہ کے اہم مقامات</h2>
+  <h3>مسجد نبوی ﷺ</h3>
+  <p>نبی کریم ﷺ کی مسجد اور مسلمانوں کے لیے انتہائی مقدس مقام۔</p>
+</div>
+
+<div class="info">
+  <h3>🕌 مسجد قباء</h3>
+  <p>اسلام کی پہلی مسجد کے طور پر مشہور تاریخی مسجد۔</p>
+</div>
+
+<div class="info">
+  <h3>🕌 مسجد قبلتین</h3>
+  <p>قبلہ کی تبدیلی کے تاریخی واقعے سے منسوب مسجد۔</p>
+</div>
+
+<div class="info">
+  <h3>⛰️ جبل اُحد</h3>
+  <p>غزوۂ اُحد کا تاریخی مقام۔ قریب ہی شہدائے اُحد کا علاقہ ہے۔</p>
+</div>
+
+<div class="notice">
+  نوٹ: یہ مقامات زیارت اور اسلامی تاریخ کو سمجھنے کے لیے ہیں۔ ان کی زیارت عمرہ کے ارکان یا لازمی اعمال میں شامل نہیں۔
+</div>
+`;
+  const offlineMapHTML=`
+<div class="info">
+  <h2>🗺️ مکہ مکرمہ — آف لائن نقشہ</h2>
+  <div style="text-align:center;font-size:22px;line-height:2;">
+    ⛰️ جبل النور / غارِ حرا<br>
+    ↓<br>
+    🕋 مسجد الحرام / خانہ کعبہ<br>
+    ↓<br>
+    ⛰️ غارِ ثور<br>
+    ↓<br>
+    📍 منیٰ → 📍 مزدلفہ → 📍 عرفات
+  </div>
+</div>
+
+<div class="info">
+  <h2>🗺️ مدینہ منورہ — آف لائن نقشہ</h2>
+  <div style="text-align:center;font-size:22px;line-height:2;">
+    ⛰️ جبل اُحد<br>
+    ↓<br>
+    🕌 مسجد نبوی ﷺ<br>
+    ↓<br>
+    🕌 مسجد قبلتین<br>
+    ↓<br>
+    🕌 مسجد قباء
+  </div>
+</div>
+
+<div class="notice">
+  یہ بنیادی آف لائن رہنمائی ہے اور انٹرنیٹ کے بغیر بھی App میں دستیاب رہے گی۔
+</div>
+`;
 function showPage(key){
   let title="",html="";
   if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
@@ -517,6 +601,7 @@ function showPage(key){
   else if(key==="profile"){title="میری پروفائل";html=profileHTML()}
   else if(key==="feedback"){title="فیڈ بیک";html=feedbackHTML()}
   else if(key==="ziyarat"){title="زیارات";html=ziyaratHTML}
+    else if(key==="offlineMap"){title="آف لائن نقشہ";html=offlineMapHTML}
   else return;
 
   document.getElementById("home").style.display="none";
