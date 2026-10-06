@@ -2,375 +2,150 @@
 <html lang="ur" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>Umrah Companion</title>
 
 <style>
-@font-face {
-  font-family: 'Jameel';
-  src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype');
+@font-face{
+  font-family:Jameel;
+  src:url('Jameel Noori Nastaleeq Regular.ttf') format('truetype');
 }
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --green:#0b6b53;--dark:#075541;--light:#eaf5f1;
+  --gold:#c79a42;--bg:#f5f7f6;--text:#17231f;
+  --muted:#6c7773;--white:#fff;--border:#e3ebe8;
 }
-
-:root {
-  --green: #0b6b53;
-  --dark-green: #075541;
-  --light-green: #eaf5f1;
-  --gold: #c79a42;
-  --bg: #f5f7f6;
-  --text: #17231f;
-  --muted: #6c7773;
-  --white: #ffffff;
-  --border: #e6ebe9;
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Jameel,serif;direction:rtl;padding-bottom:85px;
 }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Jameel', serif;
-  direction: rtl;
-  padding-bottom: 88px;
+button,input,textarea,select{font-family:Jameel,serif}
+.app{max-width:520px;margin:auto;min-height:100vh}
+.header{
+  background:linear-gradient(145deg,var(--dark),var(--green));
+  color:white;padding:24px 20px 42px;border-radius:0 0 30px 30px;
 }
-
-.app {
-  max-width: 520px;
-  margin: auto;
-  min-height: 100vh;
+.brand{display:flex;align-items:center;gap:11px}
+.logo{
+  width:52px;height:52px;border-radius:16px;background:#ffffff20;
+  display:flex;align-items:center;justify-content:center;font-size:29px
 }
+.brand h1{margin:0;font-size:29px}
+.brand small{font-family:Arial;font-size:11px;opacity:.8}
+.header-message{font-size:20px;margin:20px 0 0}
 
-/* HEADER */
-.header {
-  background: linear-gradient(145deg, var(--dark-green), var(--green));
-  color: white;
-  padding: 24px 20px 42px;
-  border-radius: 0 0 30px 30px;
+.card{
+  background:white;margin:15px 16px;border-radius:20px;padding:17px;
+  border:1px solid var(--border);box-shadow:0 4px 18px #00000008;
 }
-
-.top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.trip-card{margin-top:-22px;position:relative}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+h2{margin:0;font-size:23px}
+.muted{color:var(--muted)}
+.badge{
+  background:var(--light);color:var(--green);
+  padding:5px 10px;border-radius:20px
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
+.main-btn{
+  width:100%;border:0;background:var(--green);color:white;
+  border-radius:13px;padding:11px;margin-top:10px;font-size:18px;cursor:pointer
 }
-
-.logo {
-  width: 50px;
-  height: 50px;
-  background: rgba(255,255,255,.14);
-  border: 1px solid rgba(255,255,255,.22);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
+.outline-btn{
+  width:100%;border:1px solid #a8c9bd;background:#f8fbfa;
+  color:var(--green);border-radius:13px;padding:10px;
+  margin-top:10px;font-size:18px;cursor:pointer
 }
+.money-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.money-box{background:#f7f9f8;border-radius:14px;padding:10px 4px;text-align:center}
+.money-box span{display:block;color:var(--muted);font-size:14px}
+.money-box strong{font-family:Arial;font-size:15px;display:block;margin-top:5px}
 
-.brand h1 {
-  margin: 0;
-  font-size: 29px;
-  line-height: 1.3;
+.section{padding:0 16px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:15px 2px 10px}
+.service-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.service{
+  background:white;border:1px solid var(--border);border-radius:20px;
+  padding:15px 13px;min-height:120px;cursor:pointer
 }
-
-.brand small {
-  display: block;
-  opacity: .82;
-  font-family: Arial, sans-serif;
-  font-size: 11px;
-  direction: ltr;
+.service:active{transform:scale(.98)}
+.icon{
+  width:44px;height:44px;background:var(--light);border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:23px
 }
+.service h3{margin:6px 0 0;font-size:20px}
+.service p{margin:2px 0;color:var(--muted);font-size:14px}
 
-.header-message {
-  margin: 22px 0 0;
-  font-size: 20px;
-  line-height: 1.8;
-  opacity: .95;
+.page{display:none;max-width:520px;margin:auto;min-height:100vh;padding-bottom:85px}
+.page.active{display:block}
+.page-header{
+  background:var(--green);color:white;padding:18px 15px;
+  display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:5
 }
-
-/* TRIP CARD */
-.trip-card {
-  background: white;
-  margin: -22px 16px 15px;
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: 0 8px 28px rgba(15,65,50,.10);
-  position: relative;
+.back{
+  border:0;background:#ffffff22;color:white;width:42px;height:42px;
+  border-radius:12px;font-size:25px
 }
-
-.card-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+.page-header h2{font-size:24px}
+.page-content{padding:15px}
+.info{
+  background:white;border:1px solid var(--border);border-radius:18px;
+  padding:16px;margin-bottom:12px
 }
-
-.card-title h2 {
-  margin: 0;
-  font-size: 23px;
+.info h3{color:var(--green);font-size:21px;margin:0 0 7px}
+.info p{font-size:17px;line-height:2;margin:0;color:#45524e}
+.step{
+  background:white;border-right:4px solid var(--green);
+  border-radius:15px;padding:14px;margin-bottom:10px
 }
+.step h3{margin:0;color:var(--green);font-size:20px}
+.step p{margin:4px 0 0;line-height:1.9;font-size:17px}
 
-.badge {
-  background: var(--light-green);
-  color: var(--green);
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 15px;
+.field{margin-bottom:12px}
+.field label{display:block;margin-bottom:4px;font-size:17px}
+.field input,.field textarea,.field select{
+  width:100%;border:1px solid #d8e2de;background:white;
+  border-radius:12px;padding:11px;font-size:17px;outline:none
 }
+.field textarea{min-height:100px;resize:vertical}
 
-.trip-date {
-  color: var(--muted);
-  font-size: 18px;
+.counter{text-align:center}
+.counter-number{
+  font-family:Arial;font-size:55px;font-weight:bold;color:var(--green);
+  margin:15px 0
 }
+.counter-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
-.date-button {
-  width: 100%;
-  margin-top: 10px;
-  border: 1px dashed #a8c9bd;
-  background: #f7fbf9;
-  color: var(--green);
-  border-radius: 13px;
-  padding: 10px;
-  font-family: 'Jameel';
-  font-size: 18px;
-  cursor: pointer;
+.check-item{
+  display:flex;align-items:center;gap:10px;background:white;
+  border:1px solid var(--border);padding:12px;border-radius:13px;margin-bottom:8px
 }
+.check-item input{width:21px;height:21px}
 
-/* EXPENSE */
-.expense-card {
-  margin: 0 16px 18px;
-  background: white;
-  border-radius: 22px;
-  padding: 18px;
-  border: 1px solid var(--border);
+.expense-item{
+  background:#f8faf9;border-radius:12px;padding:10px;margin-top:8px;
+  display:flex;justify-content:space-between;gap:10px
 }
+.delete-btn{border:0;background:#ffeaea;color:#a32626;border-radius:9px;padding:5px 9px}
 
-.expense-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:520px;height:70px;background:#fff;
+  border-top:1px solid var(--border);display:grid;
+  grid-template-columns:repeat(4,1fr);z-index:20
 }
-
-.expense-head h2 {
-  margin: 0;
-  font-size: 22px;
+.nav{
+  border:0;background:white;color:#737f7b;font-size:14px;padding:6px 2px
 }
-
-.expense-link {
-  color: var(--green);
-  font-size: 16px;
-  cursor: pointer;
+.nav span{font-family:Arial;display:block;font-size:21px}
+.nav.active{color:var(--green)}
+.notice{
+  background:#fff8e9;border:1px solid #f0ddb3;border-radius:13px;
+  padding:11px;font-size:15px;margin-bottom:12px
 }
-
-.money-grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.money-box {
-  background: #f7f9f8;
-  border-radius: 14px;
-  padding: 11px 6px;
-  text-align: center;
-}
-
-.money-box span {
-  display: block;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.money-box strong {
-  font-family: Arial, sans-serif;
-  direction: ltr;
-  display: block;
-  font-size: 17px;
-  margin-top: 5px;
-}
-
-/* SERVICES */
-.section {
-  padding: 0 16px;
-}
-
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 7px 2px 12px;
-}
-
-.section-heading h2 {
-  margin: 0;
-  font-size: 24px;
-}
-
-.section-heading span {
-  color: var(--muted);
-  font-size: 15px;
-}
-
-.service-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.service {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 15px 13px;
-  min-height: 120px;
-  cursor: pointer;
-  box-shadow: 0 3px 12px rgba(0,0,0,.025);
-}
-
-.service:active {
-  transform: scale(.98);
-}
-
-.icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: var(--light-green);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 23px;
-  margin-bottom: 7px;
-}
-
-.service:nth-child(2n) .icon-box {
-  background: #fff6e6;
-}
-
-.service h3 {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.5;
-}
-
-.service p {
-  margin: 2px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* BOTTOM NAV */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 520px;
-  height: 72px;
-  background: rgba(255,255,255,.97);
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  z-index: 20;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.nav-item {
-  border: 0;
-  background: transparent;
-  color: #7b8581;
-  font-family: 'Jameel';
-  font-size: 14px;
-  padding: 7px 2px 3px;
-}
-
-.nav-item span {
-  display: block;
-  font-family: Arial, sans-serif;
-  font-size: 21px;
-  margin-bottom: 1px;
-}
-
-.nav-item.active {
-  color: var(--green);
-}
-
-/* SIMPLE INTERNAL SCREEN */
-.page {
-  display: none;
-  min-height: 100vh;
-  background: var(--bg);
-  padding-bottom: 90px;
-}
-
-.page.active {
-  display: block;
-}
-
-.page-header {
-  background: var(--green);
-  color: white;
-  padding: 20px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.back {
-  border: 0;
-  background: rgba(255,255,255,.15);
-  color: white;
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
-  font-size: 20px;
-}
-
-.page-header h2 {
-  margin: 0;
-  font-size: 25px;
-}
-
-.page-content {
-  padding: 18px 16px;
-}
-
-.info-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 17px;
-  margin-bottom: 12px;
-}
-
-.info-card h3 {
-  color: var(--green);
-  font-size: 21px;
-  margin: 0 0 5px;
-}
-
-.info-card p {
-  margin: 0;
-  color: #4d5955;
-  font-size: 17px;
-  line-height: 1.9;
-}
-
-@media (max-width: 360px) {
-  .brand h1 { font-size: 25px; }
-  .money-box strong { font-size: 14px; }
-  .service h3 { font-size: 18px; }
+.success{
+  display:none;background:#eaf7f1;color:#086347;border-radius:12px;
+  padding:10px;margin-top:10px;text-align:center
 }
 </style>
 </head>
@@ -378,249 +153,335 @@ body {
 <body>
 
 <div id="home" class="app">
-
-  <header class="header">
-    <div class="top-row">
-      <div class="brand">
-        <div class="logo">🕋</div>
-        <div>
-          <h1>عمرہ کمپینین</h1>
-          <small>UMRAH COMPANION</small>
-        </div>
-      </div>
-      <div style="font-size:23px;">⋮</div>
+<header class="header">
+  <div class="brand">
+    <div class="logo">🕋</div>
+    <div>
+      <h1>عمرہ کمپینین</h1>
+      <small>UMRAH COMPANION</small>
     </div>
+  </div>
+  <p class="header-message">آپ کے سفرِ عمرہ کا مکمل ساتھی</p>
+</header>
 
-    <p class="header-message">
-      آپ کے سفرِ عمرہ کا مکمل ساتھی
-    </p>
-  </header>
+<section class="card trip-card">
+  <div class="row">
+    <h2>میرا عمرہ</h2>
+    <span class="badge">سفر کی تیاری</span>
+  </div>
+  <div id="tripDateText" class="muted">روانگی کی تاریخ ابھی درج نہیں کی گئی</div>
+  <button class="outline-btn" onclick="setTripDate()">روانگی کی تاریخ درج کریں</button>
+</section>
 
-  <section class="trip-card">
-    <div class="card-title">
-      <h2>میرا عمرہ</h2>
-      <span class="badge">سفر کی تیاری</span>
-    </div>
+<section class="card">
+  <div class="row">
+    <h2>میرے اخراجات</h2>
+    <span style="color:var(--green)" onclick="showPage('expenses')">تفصیل دیکھیں</span>
+  </div>
+  <div class="money-grid">
+    <div class="money-box"><span>کل بجٹ</span><strong id="homeBudget">PKR 0</strong></div>
+    <div class="money-box"><span>خرچ</span><strong id="homeSpent">PKR 0</strong></div>
+    <div class="money-box"><span>باقی</span><strong id="homeRemaining">PKR 0</strong></div>
+  </div>
+</section>
 
-    <div class="trip-date" id="tripDateText">
-      روانگی کی تاریخ ابھی درج نہیں کی گئی
-    </div>
+<section class="section">
+  <div class="section-title">
+    <h2>عمرہ خدمات</h2><span class="muted">ضروری سہولیات</span>
+  </div>
 
-    <button class="date-button" onclick="setTripDate()">
-      روانگی کی تاریخ درج کریں
-    </button>
-  </section>
-
-  <section class="expense-card">
-    <div class="expense-head">
-      <h2>میرے اخراجات</h2>
-      <span class="expense-link" onclick="openPage('expenses')">تفصیل دیکھیں</span>
-    </div>
-
-    <div class="money-grid">
-      <div class="money-box">
-        <span>کل بجٹ</span>
-        <strong>PKR 0</strong>
-      </div>
-
-      <div class="money-box">
-        <span>خرچ</span>
-        <strong>PKR 0</strong>
-      </div>
-
-      <div class="money-box">
-        <span>باقی</span>
-        <strong>PKR 0</strong>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-heading">
-      <h2>عمرہ خدمات</h2>
-      <span>ضروری سہولیات</span>
-    </div>
-
-    <div class="service-grid">
-
-      <div class="service" onclick="openPage('guide')">
-        <div class="icon-box">🕋</div>
-        <h3>عمرہ گائیڈ</h3>
-        <p>احرام سے تکمیلِ عمرہ تک رہنمائی</p>
-      </div>
-
-      <div class="service" onclick="openPage('duas')">
-        <div class="icon-box">🤲</div>
-        <h3>دعائیں</h3>
-        <p>مستند دعائیں اور اردو ترجمہ</p>
-      </div>
-
-      <div class="service" onclick="openPage('tawaf')">
-        <div class="icon-box">↻</div>
-        <h3>طواف و سعی</h3>
-        <p>چکروں اور سعی کا آسان کاؤنٹر</p>
-      </div>
-
-      <div class="service" onclick="openPage('checklist')">
-        <div class="icon-box">✓</div>
-        <h3>میری تیاری</h3>
-        <p>دستاویزات اور سامان کی چیک لسٹ</p>
-      </div>
-
-      <div class="service" onclick="openPage('package')">
-        <div class="icon-box">🧳</div>
-        <h3>میرا پیکیج</h3>
-        <p>ٹکٹ، ویزا، ہوٹل اور پیکیج کی تفصیل</p>
-      </div>
-
-      <div class="service" onclick="openPage('expenses')">
-        <div class="icon-box">₨</div>
-        <h3>اخراجات</h3>
-        <p>ہر خرچ کا مکمل حساب محفوظ کریں</p>
-      </div>
-
-      <div class="service" onclick="openPage('ziyarat')">
-        <div class="icon-box">📍</div>
-        <h3>زیارات</h3>
-        <p>مکہ و مدینہ کے اہم مقامات</p>
-      </div>
-
-      <div class="service" onclick="openPage('map')">
-        <div class="icon-box">🗺</div>
-        <h3>آف لائن نقشہ</h3>
-        <p>نقشہ — دوسرے مرحلے میں</p>
-      </div>
-
-    </div>
-  </section>
+  <div class="service-grid">
+    <div class="service" onclick="showPage('guide')"><div class="icon">🕋</div><h3>عمرہ گائیڈ</h3><p>احرام سے تکمیلِ عمرہ تک</p></div>
+    <div class="service" onclick="showPage('duas')"><div class="icon">🤲</div><h3>دعائیں</h3><p>اہم مسنون دعائیں</p></div>
+    <div class="service" onclick="showPage('tawaf')"><div class="icon">↻</div><h3>طواف و سعی</h3><p>آسان کاؤنٹر</p></div>
+    <div class="service" onclick="showPage('checklist')"><div class="icon">✓</div><h3>میری تیاری</h3><p>ضروری سامان کی فہرست</p></div>
+    <div class="service" onclick="showPage('package')"><div class="icon">🧳</div><h3>میرا پیکیج</h3><p>ہوٹل، ٹکٹ اور ویزا</p></div>
+    <div class="service" onclick="showPage('expenses')"><div class="icon">₨</div><h3>اخراجات</h3><p>بجٹ اور خرچ محفوظ کریں</p></div>
+    <div class="service" onclick="showPage('trip')"><div class="icon">✈</div><h3>میرا سفر</h3><p>سفر کی تفصیلات</p></div>
+    <div class="service" onclick="showPage('profile')"><div class="icon">👤</div><h3>میری پروفائل</h3><p>نام اور ای میل</p></div>
+    <div class="service" onclick="showPage('feedback')"><div class="icon">💬</div><h3>فیڈ بیک</h3><p>اپنی رائے دیں</p></div>
+    <div class="service" onclick="showPage('ziyarat')"><div class="icon">📍</div><h3>زیارات</h3><p>اہم مقامات</p></div>
+  </div>
+</section>
 </div>
 
-
-<div id="detailPage" class="page">
+<div id="page" class="page">
   <div class="page-header">
     <button class="back" onclick="goHome()">‹</button>
     <h2 id="pageTitle">تفصیل</h2>
   </div>
-
-  <div class="page-content" id="pageContent"></div>
+  <div id="pageContent" class="page-content"></div>
 </div>
 
-
-<nav class="bottom-nav" id="bottomNav">
-
-  <button class="nav-item active" onclick="goHome()">
-    <span>⌂</span>
-    ہوم
-  </button>
-
-  <button class="nav-item" onclick="openPage('trip')">
-    <span>✈</span>
-    میرا سفر
-  </button>
-
-  <button class="nav-item" onclick="openPage('expenses')">
-    <span>₨</span>
-    اخراجات
-  </button>
-
-  <button class="nav-item" onclick="openPage('more')">
-    <span>☰</span>
-    مزید
-  </button>
-
+<nav class="bottom-nav">
+  <button class="nav active" onclick="goHome()"><span>⌂</span>ہوم</button>
+  <button class="nav" onclick="showPage('trip')"><span>✈</span>میرا سفر</button>
+  <button class="nav" onclick="showPage('expenses')"><span>₨</span>اخراجات</button>
+  <button class="nav" onclick="showPage('profile')"><span>☰</span>مزید</button>
 </nav>
 
-
 <script>
-function setTripDate() {
-  const date = prompt("روانگی کی تاریخ درج کریں (مثال: 20-12-2026)");
-  if (date && date.trim() !== "") {
-    localStorage.setItem("umrahTripDate", date.trim());
-    document.getElementById("tripDateText").innerText =
-      "روانگی: " + date.trim();
+function esc(v){
+  return String(v||"").replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function load(key,fallback){
+  try{
+    const x=localStorage.getItem(key);
+    return x===null?fallback:JSON.parse(x);
+  }catch(e){return fallback}
+}
+
+function setTripDate(){
+  const old=load("tripDate","");
+  const d=prompt("روانگی کی تاریخ درج کریں (مثال: 20-12-2026)",old);
+  if(d&&d.trim()){
+    save("tripDate",d.trim());
+    updateHome();
   }
 }
 
-const savedDate = localStorage.getItem("umrahTripDate");
-if (savedDate) {
-  document.getElementById("tripDateText").innerText =
-    "روانگی: " + savedDate;
+function updateHome(){
+  const d=load("tripDate","");
+  document.getElementById("tripDateText").innerText=d?"روانگی: "+d:"روانگی کی تاریخ ابھی درج نہیں کی گئی";
+
+  const budget=Number(load("budget",0))||0;
+  const expenses=load("expenses",[]);
+  const spent=expenses.reduce((s,x)=>s+(Number(x.amount)||0),0);
+
+  document.getElementById("homeBudget").innerText="PKR "+budget.toLocaleString();
+  document.getElementById("homeSpent").innerText="PKR "+spent.toLocaleString();
+  document.getElementById("homeRemaining").innerText="PKR "+(budget-spent).toLocaleString();
 }
 
-const pages = {
-  guide: {
-    title: "عمرہ گائیڈ",
-    text"🕋 عمرہ کا مکمل طریقہ<br><br><b>1۔ احرام کی تیاری</b><br>غسل کریں، صفائی کا اہتمام کریں اور احرام پہنیں۔ مرد دو سفید چادریں پہنیں جبکہ خواتین اپنا باپردہ لباس پہنیں۔<br><br><b>2۔ نیت اور تلبیہ</b><br>میقات پر یا اس سے پہلے عمرہ کی نیت کریں اور تلبیہ پڑھیں: لبیک اللہم لبیک، لبیک لا شریک لک لبیک، ان الحمد والنعمۃ لک والملک، لا شریک لک۔<br><br><b>3۔ مسجد الحرام میں داخلہ</b><br>مسجد الحرام میں ادب کے ساتھ داخل ہوں۔ خانہ کعبہ کو دیکھ کر اللہ تعالیٰ سے دعا کریں۔<br><br><b>4۔ طواف</b><br>حجرِ اسود کے سامنے سے طواف شروع کریں۔ خانہ کعبہ کے گرد سات چکر مکمل کریں۔ ہر چکر میں ذکر، دعا اور تلاوت کر سکتے ہیں۔<br><br><b>5۔ دو رکعت نماز</b><br>طواف مکمل ہونے کے بعد اگر ممکن ہو تو مقامِ ابراہیم کے پیچھے دو رکعت نماز ادا کریں، ورنہ مسجد الحرام میں کسی مناسب جگہ پڑھ لیں۔<br><br><b>6۔ زمزم</b><br>آبِ زمزم پئیں اور اللہ تعالیٰ سے خیر و برکت کی دعا کریں۔<br><br><b>7۔ سعی</b><br>صفا سے سعی شروع کریں اور مروہ تک جائیں۔ صفا سے مروہ ایک چکر اور مروہ سے صفا دوسرا چکر شمار ہوگا۔ ساتواں چکر مروہ پر مکمل ہوگا۔<br><br><b>8۔ حلق یا قصر</b><br>سعی مکمل ہونے کے بعد مرد سر منڈوائیں یا بال چھوٹے کروائیں۔ خواتین اپنے بالوں کے سروں سے تھوڑی مقدار کاٹیں۔<br><br><b>عمرہ مکمل</b><br>حلق یا قصر کے بعد عمرہ مکمل ہو جاتا ہے اور احرام کی پابندیاں ختم ہو جاتی ہیں۔",
+const guideHTML=`
+<div class="step"><h3>1۔ احرام کی تیاری</h3><p>غسل اور صفائی کا اہتمام کریں۔ مرد احرام کی دو چادریں پہنیں اور خواتین شرعی باپردہ لباس میں رہیں۔</p></div>
+<div class="step"><h3>2۔ نیت اور تلبیہ</h3><p>میقات پر یا اس سے پہلے احرام باندھ کر عمرہ کی نیت کریں اور تلبیہ پڑھیں: لبیک اللہم لبیک، لبیک لا شریک لک لبیک، ان الحمد والنعمۃ لک والملک، لا شریک لک۔</p></div>
+<div class="step"><h3>3۔ مسجد الحرام</h3><p>مسجد الحرام میں ادب اور خشوع کے ساتھ داخل ہوں اور اللہ تعالیٰ سے دعا کریں۔</p></div>
+<div class="step"><h3>4۔ طواف</h3><p>حجرِ اسود کی سمت سے طواف شروع کریں اور خانہ کعبہ کے گرد سات چکر مکمل کریں۔</p></div>
+<div class="step"><h3>5۔ نماز</h3><p>طواف کے بعد مناسب جگہ پر دو رکعت نماز ادا کریں۔ مقامِ ابراہیم کے پیچھے جگہ ملے تو وہاں، ورنہ مسجد الحرام میں دوسری مناسب جگہ پڑھ سکتے ہیں۔</p></div>
+<div class="step"><h3>6۔ زمزم</h3><p>آبِ زمزم پئیں اور اللہ تعالیٰ سے خیر و برکت کی دعا کریں۔</p></div>
+<div class="step"><h3>7۔ سعی</h3><p>صفا سے مروہ کی طرف سعی شروع کریں۔ صفا سے مروہ ایک چکر ہے اور ساتواں چکر مروہ پر مکمل ہوگا۔</p></div>
+<div class="step"><h3>8۔ حلق یا قصر</h3><p>سعی کے بعد مرد حلق یا قصر کریں۔ خواتین اپنے بالوں کے سروں سے تھوڑی مقدار کاٹیں۔ اس کے بعد عمرہ مکمل ہو جاتا ہے۔</p></div>
+`;
 
-  duas: {
-    title: "دعائیں",
-    text: "یہاں مستند مسنون دعائیں، عربی متن اور اردو ترجمہ شامل کیا جائے گا۔"
-  },
+const duasHTML=`
+<div class="notice">دعاؤں کے اس حصے کو مزید مستند حوالوں کے ساتھ مرحلہ وار بڑھایا جا سکتا ہے۔</div>
+<div class="info"><h3>تلبیہ</h3><p>لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ۔<br><br>ترجمہ: اے اللہ! میں حاضر ہوں، تیرا کوئی شریک نہیں، تمام تعریف، نعمت اور بادشاہی تیرے ہی لیے ہے۔</p></div>
+<div class="info"><h3>مسجد میں داخل ہونے کی دعا</h3><p>اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ<br><br>ترجمہ: اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے۔</p></div>
+<div class="info"><h3>ربنا آتنا</h3><p>رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ<br><br>ترجمہ: اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما، آخرت میں بھلائی عطا فرما اور ہمیں آگ کے عذاب سے بچا۔</p></div>
+`;
 
-  tawaf: {
-    title: "طواف و سعی",
-    text: "یہ حصہ طواف کے سات چکروں اور صفا و مروہ کی سعی کو آسانی سے شمار کرنے کے لیے تیار کیا جائے گا۔"
-  },
-
-  checklist: {
-    title: "میری تیاری",
-    text: "پاسپورٹ، ویزا، ٹکٹ، احرام، ادویات، ضروری سامان اور دیگر اشیاء کی ذاتی چیک لسٹ یہاں ہوگی۔"
-  },
-
-  package: {
-    title: "میرا پیکیج",
-    text: "یہاں عمرہ پیکیج کی کل قیمت، ویزا، ٹکٹ، مکہ و مدینہ کے ہوٹل، ٹرانسپورٹ، قیام اور شامل سہولیات محفوظ کی جائیں گی۔"
-  },
-
-  expenses: {
-    title: "اخراجات",
-    text: "یہاں آپ رقم، خرچ کی قسم، تاریخ اور مقام درج کر سکیں گے۔ کل بجٹ، خرچ شدہ رقم اور باقی رقم خود حساب ہوگی۔"
-  },
-
-  ziyarat: {
-    title: "زیارات",
-    text: "مکہ مکرمہ اور مدینہ منورہ کے زیارتی مقامات کی معلومات یہاں شامل کی جائیں گی۔ دینی معلومات مستند مصادر کی بنیاد پر شامل ہوں گی۔"
-  },
-
-  map: {
-    title: "آف لائن نقشہ",
-    text: "آف لائن نقشہ دوسرے مرحلے میں شامل کیا جائے گا تاکہ ضروری مقامات انٹرنیٹ کے بغیر بھی دیکھے جا سکیں۔"
-  },
-
-  trip: {
-    title: "میرا سفر",
-    text: "پرواز، ہوٹل، آمد و روانگی، اہم تاریخیں اور سفر کی مکمل منصوبہ بندی یہاں محفوظ ہوگی۔"
-  },
-
-  more: {
-    title: "مزید",
-    text: "یہاں سیٹنگز، اہم رابطے، زبان، معلومات اور مستقبل کی اضافی سہولیات شامل ہوں گی۔"
-  }
-};
-
-function openPage(key) {
-  const data = pages[key];
-  if (!data) return;
-
-  document.getElementById("home").style.display = "none";
-  document.getElementById("detailPage").classList.add("active");
-
-  document.getElementById("pageTitle").innerText = data.title;
-  document.getElementById("pageContent").innerHTML =
-    '<div class="info-card"><h3>' +
-    data.title +
-    '</h3><p>' +
-    data.text +
-    '</p></div>';
-
-  window.scrollTo(0, 0);
+function checklistHTML(){
+  const items=["پاسپورٹ","ویزا","ائیر ٹکٹ","ہوٹل بکنگ","احرام","ضروری ادویات","موبائل چارجر","پاور بینک","سعودی ریال","ضروری دستاویزات کی نقول"];
+  const checked=load("checklist",{});
+  return items.map((x,i)=>`
+    <label class="check-item">
+      <input type="checkbox" ${checked[i]?"checked":""} onchange="toggleCheck(${i},this.checked)">
+      <span>${x}</span>
+    </label>`).join("");
+}
+function toggleCheck(i,v){
+  const c=load("checklist",{});
+  c[i]=v;save("checklist",c);
 }
 
-function goHome() {
-  document.getElementById("detailPage").classList.remove("active");
-  document.getElementById("home").style.display = "block";
-  window.scrollTo(0, 0);
+function tawafHTML(){
+  const t=Number(load("tawafCount",0));
+  const s=Number(load("saiCount",0));
+  return `
+  <div class="info counter">
+    <h3>طواف کاؤنٹر</h3>
+    <div class="counter-number" id="tawafNum">${t}</div>
+    <p>7 چکر مکمل کرنے ہیں</p>
+    <div class="counter-buttons">
+      <button class="main-btn" onclick="changeCounter('tawaf',1)">+ ایک چکر</button>
+      <button class="outline-btn" onclick="resetCounter('tawaf')">دوبارہ شروع</button>
+    </div>
+  </div>
+  <div class="info counter">
+    <h3>سعی کاؤنٹر</h3>
+    <div class="counter-number" id="saiNum">${s}</div>
+    <p>7 چکر مکمل کرنے ہیں</p>
+    <div class="counter-buttons">
+      <button class="main-btn" onclick="changeCounter('sai',1)">+ ایک چکر</button>
+      <button class="outline-btn" onclick="resetCounter('sai')">دوبارہ شروع</button>
+    </div>
+  </div>`;
 }
+function changeCounter(type,n){
+  const key=type==="tawaf"?"tawafCount":"saiCount";
+  let v=Number(load(key,0));
+  if(v<7)v+=n;
+  save(key,v);
+  document.getElementById(type==="tawaf"?"tawafNum":"saiNum").innerText=v;
+}
+function resetCounter(type){
+  const key=type==="tawaf"?"tawafCount":"saiCount";
+  save(key,0);
+  document.getElementById(type==="tawaf"?"tawafNum":"saiNum").innerText=0;
+}
+
+function expensesHTML(){
+  const budget=load("budget",0);
+  const arr=load("expenses",[]);
+  const list=arr.map((x,i)=>`
+    <div class="expense-item">
+      <div><b>${esc(x.title)}</b><br><span class="muted">${esc(x.date)}</span></div>
+      <div>PKR ${Number(x.amount).toLocaleString()} <button class="delete-btn" onclick="deleteExpense(${i})">×</button></div>
+    </div>`).join("");
+
+  return `
+  <div class="info">
+    <h3>میرا بجٹ</h3>
+    <div class="field"><label>کل بجٹ (PKR)</label><input id="budgetInput" type="number" value="${esc(budget)}"></div>
+    <button class="main-btn" onclick="saveBudget()">بجٹ محفوظ کریں</button>
+  </div>
+  <div class="info">
+    <h3>نیا خرچ شامل کریں</h3>
+    <div class="field"><label>خرچ کی تفصیل</label><input id="expenseTitle" placeholder="مثلاً کھانا، ٹیکسی، خریداری"></div>
+    <div class="field"><label>رقم</label><input id="expenseAmount" type="number" placeholder="PKR"></div>
+    <div class="field"><label>تاریخ</label><input id="expenseDate" type="date"></div>
+    <button class="main-btn" onclick="addExpense()">خرچ شامل کریں</button>
+  </div>
+  <div class="info"><h3>خرچ کی فہرست</h3>${list||"<p>ابھی کوئی خرچ درج نہیں کیا گیا۔</p>"}</div>`;
+}
+function saveBudget(){
+  save("budget",Number(document.getElementById("budgetInput").value)||0);
+  updateHome();alert("بجٹ محفوظ ہو گیا");
+}
+function addExpense(){
+  const title=document.getElementById("expenseTitle").value.trim();
+  const amount=Number(document.getElementById("expenseAmount").value);
+  const date=document.getElementById("expenseDate").value;
+  if(!title||!amount){alert("خرچ کی تفصیل اور رقم درج کریں");return}
+  const arr=load("expenses",[]);
+  arr.push({title,amount,date});
+  save("expenses",arr);updateHome();showPage("expenses");
+}
+function deleteExpense(i){
+  const arr=load("expenses",[]);
+  arr.splice(i,1);save("expenses",arr);updateHome();showPage("expenses");
+}
+
+function packageHTML(){
+  const p=load("package",{});
+  return `
+  <div class="info">
+    <div class="field"><label>ٹریول ایجنسی / پیکیج</label><input id="pkgAgency" value="${esc(p.agency)}"></div>
+    <div class="field"><label>مکہ ہوٹل</label><input id="pkgMakkah" value="${esc(p.makkah)}"></div>
+    <div class="field"><label>مدینہ ہوٹل</label><input id="pkgMadinah" value="${esc(p.madinah)}"></div>
+    <div class="field"><label>ائیر لائن / فلائٹ</label><input id="pkgFlight" value="${esc(p.flight)}"></div>
+    <div class="field"><label>پیکیج قیمت</label><input id="pkgPrice" type="number" value="${esc(p.price)}"></div>
+    <button class="main-btn" onclick="savePackage()">محفوظ کریں</button>
+  </div>`;
+}
+function savePackage(){
+  save("package",{
+    agency:document.getElementById("pkgAgency").value,
+    makkah:document.getElementById("pkgMakkah").value,
+    madinah:document.getElementById("pkgMadinah").value,
+    flight:document.getElementById("pkgFlight").value,
+    price:document.getElementById("pkgPrice").value
+  });
+  alert("پیکیج کی تفصیل محفوظ ہو گئی");
+}
+
+function tripHTML(){
+  const t=load("trip",{});
+  return `
+  <div class="info">
+    <div class="field"><label>روانگی کی تاریخ</label><input id="tripDeparture" type="date" value="${esc(t.departure)}"></div>
+    <div class="field"><label>واپسی کی تاریخ</label><input id="tripReturn" type="date" value="${esc(t.returnDate)}"></div>
+    <div class="field"><label>فلائٹ نمبر</label><input id="tripFlight" value="${esc(t.flight)}"></div>
+    <div class="field"><label>روانگی کا شہر</label><input id="tripCity" value="${esc(t.city)}"></div>
+    <button class="main-btn" onclick="saveTrip()">سفر محفوظ کریں</button>
+  </div>`;
+}
+function saveTrip(){
+  const t={
+    departure:document.getElementById("tripDeparture").value,
+    returnDate:document.getElementById("tripReturn").value,
+    flight:document.getElementById("tripFlight").value,
+    city:document.getElementById("tripCity").value
+  };
+  save("trip",t);
+  if(t.departure)save("tripDate",t.departure);
+  updateHome();alert("سفر کی تفصیل محفوظ ہو گئی");
+}
+
+function profileHTML(){
+  const p=load("profile",{});
+  return `
+  <div class="info">
+    <h3>میری پروفائل</h3>
+    <div class="field"><label>نام</label><input id="profileName" value="${esc(p.name)}" placeholder="اپنا نام درج کریں"></div>
+    <div class="field"><label>ای میل</label><input id="profileEmail" type="email" value="${esc(p.email)}" placeholder="example@email.com"></div>
+    <button class="main-btn" onclick="saveProfile()">محفوظ کریں</button>
+    <div class="notice" style="margin-top:12px">فی الحال نام اور ای میل صرف آپ کے موبائل میں محفوظ ہوں گے۔ Online registration اگلے مرحلے میں شامل ہوگی۔</div>
+  </div>`;
+}
+function saveProfile(){
+  save("profile",{
+    name:document.getElementById("profileName").value.trim(),
+    email:document.getElementById("profileEmail").value.trim()
+  });
+  alert("پروفائل محفوظ ہو گئی");
+}
+
+function feedbackHTML(){
+  const old=load("feedback","");
+  return `
+  <div class="info">
+    <h3>آپ کی رائے ہمارے لیے اہم ہے</h3>
+    <div class="field"><label>فیڈ بیک</label><textarea id="feedbackText" placeholder="اپنی رائے یا تجویز لکھیں">${esc(old)}</textarea></div>
+    <button class="main-btn" onclick="saveFeedback()">فیڈ بیک محفوظ کریں</button>
+    <div class="notice" style="margin-top:12px">فی الحال Feedback موبائل میں محفوظ ہوگا۔ آپ تک براہِ راست پہنچانے کے لیے اگلے مرحلے میں online system جوڑا جائے گا۔</div>
+  </div>`;
+}
+function saveFeedback(){
+  save("feedback",document.getElementById("feedbackText").value);
+  alert("فیڈ بیک محفوظ ہو گیا");
+}
+
+const ziyaratHTML=`
+<div class="info"><h3>مکہ مکرمہ</h3><p>مکہ مکرمہ کے اہم مقامات کی معلومات یہاں شامل کی جائیں گی۔</p></div>
+<div class="info"><h3>مدینہ منورہ</h3><p>مدینہ منورہ کے اہم مقامات کی معلومات یہاں شامل کی جائیں گی۔</p></div>
+<div class="notice">زیارات کے دینی و تاریخی مواد کو مستند حوالوں کے ساتھ مزید مکمل کیا جائے گا۔</div>
+`;
+
+function showPage(key){
+  let title="",html="";
+  if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
+  else if(key==="duas"){title="دعائیں";html=duasHTML}
+  else if(key==="tawaf"){title="طواف و سعی";html=tawafHTML()}
+  else if(key==="checklist"){title="میری تیاری";html=checklistHTML()}
+  else if(key==="package"){title="میرا پیکیج";html=packageHTML()}
+  else if(key==="expenses"){title="اخراجات";html=expensesHTML()}
+  else if(key==="trip"){title="میرا سفر";html=tripHTML()}
+  else if(key==="profile"){title="میری پروفائل";html=profileHTML()}
+  else if(key==="feedback"){title="فیڈ بیک";html=feedbackHTML()}
+  else if(key==="ziyarat"){title="زیارات";html=ziyaratHTML}
+  else return;
+
+  document.getElementById("home").style.display="none";
+  document.getElementById("page").classList.add("active");
+  document.getElementById("pageTitle").innerText=title;
+  document.getElementById("pageContent").innerHTML=html;
+  window.scrollTo(0,0);
+}
+
+function goHome(){
+  document.getElementById("page").classList.remove("active");
+  document.getElementById("home").style.display="block";
+  updateHome();
+  window.scrollTo(0,0);
+}
+
+updateHome();
 </script>
 
 </body>
