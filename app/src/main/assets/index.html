@@ -236,6 +236,17 @@ h2{margin:0;font-size:23px}
     <div class="service" onclick="showPage('ziyarat')"><div class="icon">📍</div><h3>زیارات</h3><p>اہم مقامات</p></div>
     <div class="service" onclick="showPage('offlineMap')"><div class="icon">🗺️</div><h3>آف لائن نقشہ</h3><p>مکہ اور مدینہ کے اہم مقامات</p></div>
     <div class="service" onclick="showPage('nearMe')"><div class="icon">📍</div><h3>میرے قریب</h3><p>قریب کی ضروری جگہیں تلاش کریں</p></div>
+    <div class="service" onclick="showPage('foodGuide')"><div class="icon">🍽️</div><h3>فوڈ گائیڈ</h3><p>کھانا، ریسٹورنٹس اور قیمتیں</p></div>
+    <div class="service" onclick="showPage('shopping')"><div class="icon">🛍️</div><h3>اسمارٹ شاپنگ</h3><p>مارکیٹ اور قیمت نوٹ کریں</p></div>
+    <div class="service" onclick="showPage('experiences')"><div class="icon">⭐</div><h3>مسافر تجربات</h3><p>اپنا تجربہ اور ریٹنگ محفوظ کریں</p></div>
+    <div class="service" onclick="showPage('wallet')"><div class="icon">💰</div><h3>عمرہ والٹ</h3><p>ریال اور PKR کا حساب</p></div>
+    <div class="service" onclick="showPage('emergency')"><div class="icon">🚨</div><h3>ایمرجنسی</h3><p>فوری مدد اور ضروری مقامات</p></div>
+    <div class="service" onclick="showPage('myHotel')"><div class="icon">🏨</div><h3>میرا ہوٹل</h3><p>ہوٹل محفوظ کریں اور واپس جائیں</p></div>
+    <div class="service" onclick="showPage('reminders')"><div class="icon">⏰</div><h3>ریمائنڈرز</h3><p>اہم کام اور یاد دہانی</p></div>
+    <div class="service" onclick="showPage('cityMode')"><div class="icon">🕋</div><h3>مکہ / مدینہ موڈ</h3><p>شہر کے مطابق فوری سہولیات</p></div>
+    <div class="service" onclick="showPage('elderly')"><div class="icon">👴</div><h3>بزرگوں کا موڈ</h3><p>بڑا متن اور آسان بٹن</p></div>
+    <div class="service" onclick="showPage('family')"><div class="icon">👨‍👩‍👧</div><h3>فیملی لوکیشن</h3><p>رضامندی کے ساتھ لوکیشن شیئرنگ</p></div>
+    <div class="service" onclick="showPage('wishIKnew')"><div class="icon">💡</div><h3>کاش مجھے پہلے معلوم ہوتا</h3><p>اہم عملی سفری مشورے</p></div>
   </div>
 </section>
 </div>
@@ -643,10 +654,13 @@ function profileHTML(){
   </div>`;
 }
 function saveProfile(){
+  const oldProfile=load("profile",{});
   save("profile",{
     name:document.getElementById("profileName").value.trim(),
-    email:document.getElementById("profileEmail").value.trim()
+    email:document.getElementById("profileEmail").value.trim(),
+    country:oldProfile.country||""
   });
+  updateHome();
   alert("پروفائل محفوظ ہو گئی");
 }
 
@@ -1015,6 +1029,258 @@ function findRide(){
 
   window.location.href = url;
 }
+
+function foodGuideHTML(){
+  const profile=load("profile",{});
+  const country=profile.country||"آپ کا ملک";
+  const reports=load("foodReports",[]);
+  const list=reports.slice().reverse().map(x=>`
+    <div class="expense-item">
+      <div><b>${esc(x.place)}</b><br><span class="muted">${esc(x.item)} • ${esc(x.city)} • ${esc(x.date)}</span></div>
+      <div>${Number(x.price||0).toLocaleString()} SAR</div>
+    </div>`).join("");
+  return `
+  <div class="info">
+    <h3>🍽️ فوڈ گائیڈ</h3>
+    <p>${esc(country)} سے آنے والے مسافروں کے لیے کھانے کی تلاش، قیمت نوٹ کرنے اور اپنے تجربات محفوظ کرنے کی جگہ۔</p>
+    <button class="main-btn" onclick="openNearMe('restaurants')">📍 میرے قریب ریسٹورنٹس</button>
+    <button class="outline-btn" onclick="openFoodSearch('Pakistani food')">پاکستانی کھانا تلاش کریں</button>
+    <button class="outline-btn" onclick="openFoodSearch('Indian food')">انڈین کھانا تلاش کریں</button>
+    <button class="outline-btn" onclick="openFoodSearch('Arabic food')">عربی کھانا تلاش کریں</button>
+  </div>
+  <div class="info">
+    <h3>💵 کھانے کی قیمت رپورٹ کریں</h3>
+    <div class="field"><label>شہر</label><select id="foodCity"><option>Makkah</option><option>Madinah</option></select></div>
+    <div class="field"><label>ریسٹورنٹ</label><input id="foodPlace" placeholder="ریسٹورنٹ کا نام"></div>
+    <div class="field"><label>کھانا</label><input id="foodItem" placeholder="مثلاً بریانی"></div>
+    <div class="field"><label>قیمت (SAR)</label><input id="foodPrice" type="number"></div>
+    <button class="main-btn" onclick="saveFoodReport()">قیمت محفوظ کریں</button>
+  </div>
+  <div class="info"><h3>میری محفوظ قیمتیں</h3>${list||"<p>ابھی کوئی قیمت محفوظ نہیں۔</p>"}</div>`;
+}
+function openFoodSearch(food){
+  window.location.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(food+" near me");
+}
+function saveFoodReport(){
+  const place=document.getElementById("foodPlace").value.trim();
+  const item=document.getElementById("foodItem").value.trim();
+  const price=Number(document.getElementById("foodPrice").value);
+  if(!place||!item||!price){alert("ریسٹورنٹ، کھانا اور قیمت درج کریں۔");return}
+  const arr=load("foodReports",[]);
+  arr.push({city:document.getElementById("foodCity").value,place,item,price,date:new Date().toLocaleDateString()});
+  save("foodReports",arr);showPage("foodGuide");
+}
+
+function shoppingHTML(){
+  const arr=load("shoppingReports",[]);
+  const list=arr.slice().reverse().map(x=>`
+    <div class="expense-item">
+      <div><b>${esc(x.item)}</b><br><span class="muted">${esc(x.shop)} • ${esc(x.city)}</span></div>
+      <div>${Number(x.price||0).toLocaleString()} SAR</div>
+    </div>`).join("");
+  return `
+  <div class="info">
+    <h3>🛍️ اسمارٹ شاپنگ</h3>
+    <p>عبایا، کھجور، عطر، تحائف اور دوسری چیزوں کی دکانیں تلاش کریں اور دیکھی گئی قیمت محفوظ کریں۔</p>
+    <button class="main-btn" onclick="openNearMe('shopping')">📍 قریب کی مارکیٹ</button>
+  </div>
+  <div class="info">
+    <div class="field"><label>شہر</label><select id="shopCity"><option>Makkah</option><option>Madinah</option></select></div>
+    <div class="field"><label>چیز</label><input id="shopItem" placeholder="مثلاً عطر"></div>
+    <div class="field"><label>دکان / مارکیٹ</label><input id="shopName"></div>
+    <div class="field"><label>قیمت (SAR)</label><input id="shopPrice" type="number"></div>
+    <button class="main-btn" onclick="saveShoppingReport()">قیمت محفوظ کریں</button>
+  </div>
+  <div class="info"><h3>محفوظ قیمتیں</h3>${list||"<p>ابھی کوئی قیمت محفوظ نہیں۔</p>"}</div>`;
+}
+function saveShoppingReport(){
+  const item=document.getElementById("shopItem").value.trim();
+  const shop=document.getElementById("shopName").value.trim();
+  const price=Number(document.getElementById("shopPrice").value);
+  if(!item||!shop||!price){alert("چیز، دکان اور قیمت درج کریں۔");return}
+  const arr=load("shoppingReports",[]);
+  arr.push({city:document.getElementById("shopCity").value,item,shop,price,date:new Date().toLocaleDateString()});
+  save("shoppingReports",arr);showPage("shopping");
+}
+
+function experiencesHTML(){
+  const arr=load("travelerExperiences",[]);
+  const list=arr.slice().reverse().map(x=>`
+    <div class="info"><h3>${"⭐".repeat(Number(x.rating)||1)} ${esc(x.place)}</h3>
+    <p>${esc(x.comment)}<br><span class="muted">${esc(x.type)} • ${esc(x.date)}</span></p></div>`).join("");
+  return `
+  <div class="info">
+    <h3>⭐ مسافر تجربات</h3>
+    <div class="field"><label>جگہ کی قسم</label><select id="expType"><option>Hotel</option><option>Restaurant</option><option>Shop</option><option>Transport</option><option>Ziyarat</option></select></div>
+    <div class="field"><label>نام</label><input id="expPlace"></div>
+    <div class="field"><label>ریٹنگ</label><select id="expRating"><option value="5">5 ⭐</option><option value="4">4 ⭐</option><option value="3">3 ⭐</option><option value="2">2 ⭐</option><option value="1">1 ⭐</option></select></div>
+    <div class="field"><label>آپ کا تجربہ / مشورہ</label><textarea id="expComment"></textarea></div>
+    <button class="main-btn" onclick="saveExperience()">تجربہ محفوظ کریں</button>
+    <div class="notice" style="margin-top:12px">فی الحال تجربات اسی موبائل میں محفوظ ہوں گے۔ دوسرے مسافروں کے ساتھ live sharing کے لیے بعد میں online database جوڑا جائے گا۔</div>
+  </div>${list}`;
+}
+function saveExperience(){
+  const place=document.getElementById("expPlace").value.trim();
+  const comment=document.getElementById("expComment").value.trim();
+  if(!place||!comment){alert("نام اور تجربہ درج کریں۔");return}
+  const arr=load("travelerExperiences",[]);
+  arr.push({type:document.getElementById("expType").value,place,rating:document.getElementById("expRating").value,comment,date:new Date().toLocaleDateString()});
+  save("travelerExperiences",arr);showPage("experiences");
+}
+
+function walletHTML(){
+  const rate=Number(load("sarPkrRate",0))||0;
+  const sar=Number(load("walletSar",0))||0;
+  return `
+  <div class="info">
+    <h3>💰 عمرہ والٹ</h3>
+    <div class="field"><label>میرے پاس سعودی ریال (SAR)</label><input id="walletSar" type="number" value="${esc(sar)}"></div>
+    <div class="field"><label>1 SAR = کتنے PKR؟</label><input id="walletRate" type="number" step="0.01" value="${esc(rate)}"></div>
+    <button class="main-btn" onclick="saveWallet()">محفوظ / حساب کریں</button>
+    <div class="notice" style="margin-top:12px">${rate?("تقریباً PKR "+(sar*rate).toLocaleString()):"اپنا موجودہ exchange rate درج کریں۔"}</div>
+    <button class="outline-btn" onclick="openExchangeRate()">🌐 آج کا SAR/PKR rate تلاش کریں</button>
+  </div>`;
+}
+function saveWallet(){
+  save("walletSar",Number(document.getElementById("walletSar").value)||0);
+  save("sarPkrRate",Number(document.getElementById("walletRate").value)||0);
+  showPage("wallet");
+}
+function openExchangeRate(){window.location.href="https://www.google.com/search?q="+encodeURIComponent("1 SAR to PKR");}
+
+function emergencyHTML(){
+  return `
+  <div class="notice">فوری خطرے کی صورت میں مقامی emergency services سے رابطہ کریں۔ نمبر استعمال کرنے سے پہلے موجودہ سرکاری معلومات سے تصدیق کریں۔</div>
+  <div class="info">
+    <h3>🚨 فوری مدد</h3>
+    <button class="main-btn" onclick="openNearMe('hospital')">🏥 قریب ترین ہسپتال</button>
+    <button class="outline-btn" onclick="openEmergencySearch('police station near me')">👮 قریب ترین پولیس اسٹیشن</button>
+    <button class="outline-btn" onclick="openEmergencySearch('Saudi Red Crescent near me')">🚑 قریب ترین طبی امداد</button>
+    <button class="outline-btn" onclick="getCurrentLocation()">📍 میری موجودہ لوکیشن حاصل کریں</button>
+  </div>`;
+}
+function openEmergencySearch(q){window.location.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);}
+
+function myHotelHTML(){
+  const h=load("myHotel",{});
+  return `
+  <div class="info">
+    <h3>🏨 میرا ہوٹل</h3>
+    <div class="field"><label>شہر</label><select id="hotelCity"><option ${h.city==="Makkah"?"selected":""}>Makkah</option><option ${h.city==="Madinah"?"selected":""}>Madinah</option></select></div>
+    <div class="field"><label>ہوٹل کا نام</label><input id="hotelName" value="${esc(h.name)}"></div>
+    <div class="field"><label>Room / Floor (اختیاری)</label><input id="hotelRoom" value="${esc(h.room)}"></div>
+    <button class="main-btn" onclick="saveMyHotel()">ہوٹل محفوظ کریں</button>
+    <button class="outline-btn" onclick="returnToHotel()">🗺️ مجھے میرے ہوٹل واپس لے جائیں</button>
+  </div>`;
+}
+function saveMyHotel(){
+  const name=document.getElementById("hotelName").value.trim();
+  if(!name){alert("ہوٹل کا نام درج کریں۔");return}
+  save("myHotel",{city:document.getElementById("hotelCity").value,name,room:document.getElementById("hotelRoom").value.trim()});
+  alert("ہوٹل محفوظ ہو گیا");
+}
+function returnToHotel(){
+  const h=load("myHotel",{});
+  if(!h.name){alert("پہلے اپنا ہوٹل محفوظ کریں۔");return}
+  window.location.href="https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(h.name+", "+h.city+", Saudi Arabia")+"&travelmode=walking";
+}
+
+function remindersHTML(){
+  const arr=load("reminders",[]);
+  const list=arr.map((x,i)=>`
+    <div class="expense-item"><div><b>${esc(x.title)}</b><br><span class="muted">${esc(x.when)}</span></div>
+    <button class="delete-btn" onclick="deleteReminder(${i})">×</button></div>`).join("");
+  return `
+  <div class="info">
+    <h3>⏰ ریمائنڈرز</h3>
+    <div class="field"><label>یاد دہانی</label><input id="reminderTitle" placeholder="مثلاً پاسپورٹ ساتھ رکھنا"></div>
+    <div class="field"><label>تاریخ / وقت</label><input id="reminderWhen" type="datetime-local"></div>
+    <button class="main-btn" onclick="saveReminder()">محفوظ کریں</button>
+    <div class="notice" style="margin-top:12px">فی الحال reminder App میں محفوظ ہوگا؛ background notification بعد میں native Android notification کے ساتھ جوڑی جائے گی۔</div>
+  </div>
+  <div class="info"><h3>میری یاد دہانیاں</h3>${list||"<p>ابھی کوئی reminder نہیں۔</p>"}</div>`;
+}
+function saveReminder(){
+  const title=document.getElementById("reminderTitle").value.trim();
+  if(!title){alert("یاد دہانی لکھیں۔");return}
+  const arr=load("reminders",[]);arr.push({title,when:document.getElementById("reminderWhen").value});
+  save("reminders",arr);showPage("reminders");
+}
+function deleteReminder(i){const arr=load("reminders",[]);arr.splice(i,1);save("reminders",arr);showPage("reminders");}
+
+function cityModeHTML(){
+  const mode=load("cityMode","Makkah");
+  return `
+  <div class="info">
+    <h3>🕋 مکہ / مدینہ موڈ</h3>
+    <div class="field"><label>موجودہ شہر</label><select id="cityModeSelect"><option ${mode==="Makkah"?"selected":""}>Makkah</option><option ${mode==="Madinah"?"selected":""}>Madinah</option></select></div>
+    <button class="main-btn" onclick="saveCityMode()">موڈ محفوظ کریں</button>
+    <button class="outline-btn" onclick="openCityEssentials('mosque')">🕌 اہم مسجد</button>
+    <button class="outline-btn" onclick="openCityEssentials('food')">🍽️ قریب کھانا</button>
+    <button class="outline-btn" onclick="openCityEssentials('pharmacy')">💊 قریب فارمیسی</button>
+  </div>`;
+}
+function saveCityMode(){save("cityMode",document.getElementById("cityModeSelect").value);alert("شہر کا موڈ محفوظ ہو گیا");}
+function openCityEssentials(type){
+  const city=document.getElementById("cityModeSelect")?document.getElementById("cityModeSelect").value:load("cityMode","Makkah");
+  let q=type==="mosque"?(city==="Makkah"?"Masjid al-Haram":"Al Masjid an Nabawi"):(type+" near me");
+  window.location.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+}
+
+function elderlyHTML(){
+  const enabled=load("elderlyMode",false);
+  return `
+  <div class="info">
+    <h3>👴 بزرگوں کا آسان موڈ</h3>
+    <p>متن اور buttons بڑے کرکے App کو زیادہ آسان بنائیں۔</p>
+    <button class="main-btn" onclick="toggleElderlyMode()">${enabled?"عام سائز پر واپس جائیں":"بزرگوں کا موڈ آن کریں"}</button>
+  </div>`;
+}
+function applyElderlyMode(){
+  const on=load("elderlyMode",false);
+  document.body.style.fontSize=on?"21px":"";
+  document.documentElement.style.setProperty("--elderly-scale",on?"1.12":"1");
+  document.querySelectorAll("button,input,textarea,select").forEach(el=>{el.style.fontSize=on?"21px":"";});
+}
+function toggleElderlyMode(){save("elderlyMode",!load("elderlyMode",false));applyElderlyMode();showPage("elderly");}
+
+function familyHTML(){
+  return `
+  <div class="info">
+    <h3>👨‍👩‍👧 فیملی لوکیشن</h3>
+    <p>اپنی موجودہ جگہ صرف اپنی مرضی اور رضامندی سے family member کے ساتھ share کریں۔</p>
+    <button class="main-btn" onclick="shareMyLocation()">📍 میری لوکیشن شیئر کریں</button>
+    <div class="notice" style="margin-top:12px">Live continuous family tracking کے لیے بعد میں secure online account/backend درکار ہوگا۔ موجودہ feature صرف آپ کے منتخب share app کے ذریعے ایک location link بھیجتا ہے۔</div>
+  </div>`;
+}
+function shareMyLocation(){
+  if(!navigator.geolocation){alert("لوکیشن دستیاب نہیں۔");return}
+  navigator.geolocation.getCurrentPosition(async function(p){
+    const url="https://www.google.com/maps?q="+p.coords.latitude+","+p.coords.longitude;
+    const msg="میری موجودہ لوکیشن: "+url;
+    if(navigator.share){try{await navigator.share({title:"Umrah Companion Location",text:msg,url:url});return}catch(e){}}
+    window.location.href="https://wa.me/?text="+encodeURIComponent(msg);
+  },function(){alert("Location/GPS کی اجازت دیں۔")},{enableHighAccuracy:true,timeout:10000});
+}
+
+function wishIKnewHTML(){
+  const tips=load("wishTips",[]);
+  const list=tips.slice().reverse().map(x=>`<div class="step"><h3>💡 سفری مشورہ</h3><p>${esc(x)}</p></div>`).join("");
+  return `
+  <div class="info">
+    <h3>💡 کاش مجھے پہلے معلوم ہوتا</h3>
+    <p>وہ عملی بات لکھیں جو آپ سمجھتے ہیں اگلے عمرہ مسافر کے کام آئے گی۔</p>
+    <div class="field"><textarea id="wishTip" placeholder="اپنا مشورہ لکھیں"></textarea></div>
+    <button class="main-btn" onclick="saveWishTip()">مشورہ محفوظ کریں</button>
+    <div class="notice" style="margin-top:12px">فی الحال tips اسی موبائل میں محفوظ ہوں گی۔ Community sharing بعد میں online system سے ہوگی۔</div>
+  </div>${list}`;
+}
+function saveWishTip(){
+  const tip=document.getElementById("wishTip").value.trim();
+  if(!tip){alert("مشورہ لکھیں۔");return}
+  const arr=load("wishTips",[]);arr.push(tip);save("wishTips",arr);showPage("wishIKnew");
+}
+
 function showPage(key){
   let title="",html="";
   if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
@@ -1030,6 +1296,17 @@ function showPage(key){
     else if(key==="offlineMap"){title="آف لائن نقشہ";html=offlineMapHTML}
   else if(key==="transport"){title="ٹرانسپورٹ / رائیڈ";html=transportHTML}
 else if(key==="nearMe"){title="میرے قریب";html=nearMeHTML}
+else if(key==="foodGuide"){title="فوڈ گائیڈ";html=foodGuideHTML()}
+else if(key==="shopping"){title="اسمارٹ شاپنگ";html=shoppingHTML()}
+else if(key==="experiences"){title="مسافر تجربات";html=experiencesHTML()}
+else if(key==="wallet"){title="عمرہ والٹ";html=walletHTML()}
+else if(key==="emergency"){title="ایمرجنسی";html=emergencyHTML()}
+else if(key==="myHotel"){title="میرا ہوٹل";html=myHotelHTML()}
+else if(key==="reminders"){title="ریمائنڈرز";html=remindersHTML()}
+else if(key==="cityMode"){title="مکہ / مدینہ موڈ";html=cityModeHTML()}
+else if(key==="elderly"){title="بزرگوں کا موڈ";html=elderlyHTML()}
+else if(key==="family"){title="فیملی لوکیشن";html=familyHTML()}
+else if(key==="wishIKnew"){title="کاش مجھے پہلے معلوم ہوتا";html=wishIKnewHTML()}
 else return;
  
 
@@ -1051,6 +1328,8 @@ function goHome(){
   updateHome();
   window.scrollTo(0,0);
 }
+
+applyElderlyMode();
 
 const firstProfile = load("profile", {});
 
