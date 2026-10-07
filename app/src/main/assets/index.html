@@ -228,7 +228,7 @@ h2{margin:0;font-size:23px}
     <div class="service" onclick="showPage('duas')"><div class="icon">🤲</div><h3>دعائیں</h3><p>اہم مسنون دعائیں</p></div>
     <div class="service" onclick="showPage('tawaf')"><div class="icon">↻</div><h3>طواف و سعی</h3><p>آسان کاؤنٹر</p></div>
     <div class="service" onclick="showPage('checklist')"><div class="icon">✓</div><h3>میری تیاری</h3><p>ضروری سامان کی فہرست</p></div>
-    <div class="service" onclick="showPage('package')"><div class="icon">🧳</div><h3>میرا پیکیج</h3><p>ہوٹل، ٹکٹ اور ویزا</p></div>
+    <div class="service" onclick="showPage('package')"><div class="icon">🧳</div><h3>میرا پیکیج</h3><p>ہوٹل فاصلہ، ایجنسی، ٹکٹ اور ویزا</p></div>
     <div class="service" onclick="showPage('expenses')"><div class="icon">₨</div><h3>اخراجات</h3><p>بجٹ اور خرچ محفوظ کریں</p></div>
     <div class="service" onclick="showPage('trip')"><div class="icon">✈</div><h3>میرا سفر</h3><p>سفر کی تفصیلات</p></div>
     <div class="service" onclick="showPage('profile')"><div class="icon">👤</div><h3>میری پروفائل</h3><p>نام اور ای میل</p></div>
@@ -426,23 +426,186 @@ function packageHTML(){
   const p=load("package",{});
   return `
   <div class="info">
-    <div class="field"><label>ٹریول ایجنسی / پیکیج</label><input id="pkgAgency" value="${esc(p.agency)}"></div>
-    <div class="field"><label>مکہ ہوٹل</label><input id="pkgMakkah" value="${esc(p.makkah)}"></div>
-    <div class="field"><label>مدینہ ہوٹل</label><input id="pkgMadinah" value="${esc(p.madinah)}"></div>
-    <div class="field"><label>ائیر لائن / فلائٹ</label><input id="pkgFlight" value="${esc(p.flight)}"></div>
-    <div class="field"><label>پیکیج قیمت</label><input id="pkgPrice" type="number" value="${esc(p.price)}"></div>
+    <h3>🧳 میرے عمرہ پیکیج کی تفصیلات</h3>
+
+    <div class="field">
+      <label>ٹریول ایجنسی / پیکیج</label>
+      <input id="pkgAgency" value="${esc(p.agency)}" placeholder="مثلاً ABC Travel & Tours">
+    </div>
+
+    <button class="outline-btn" onclick="openAgencyReviews()">
+      ⭐ انٹرنیٹ پر ایجنسی کی Rating / Reviews دیکھیں
+    </button>
+
+    <div class="notice" style="margin-top:10px">
+      ایجنسی کی آن لائن Rating اور Reviews اگر دستیاب ہوں تو Google Maps/Search میں کھل جائیں گے۔
+    </div>
+
+    <div class="field" style="margin-top:15px">
+      <label>🕋 مکہ ہوٹل</label>
+      <input id="pkgMakkah" value="${esc(p.makkah)}" placeholder="مکہ ہوٹل کا مکمل نام">
+    </div>
+
+    <button class="outline-btn" onclick="checkHotelDistance('makkah')">
+      📍 مسجد الحرام سے فاصلہ معلوم کریں
+    </button>
+    <div id="makkahDistance" class="notice" style="display:none;margin-top:10px"></div>
+
+    <div class="field" style="margin-top:15px">
+      <label>🕌 مدینہ ہوٹل</label>
+      <input id="pkgMadinah" value="${esc(p.madinah)}" placeholder="مدینہ ہوٹل کا مکمل نام">
+    </div>
+
+    <button class="outline-btn" onclick="checkHotelDistance('madinah')">
+      📍 مسجد نبوی ﷺ سے فاصلہ معلوم کریں
+    </button>
+    <div id="madinahDistance" class="notice" style="display:none;margin-top:10px"></div>
+
+    <div class="field" style="margin-top:15px">
+      <label>ائیر لائن / فلائٹ</label>
+      <input id="pkgFlight" value="${esc(p.flight)}">
+    </div>
+
+    <div class="field">
+      <label>پیکیج قیمت</label>
+      <input id="pkgPrice" type="number" value="${esc(p.price)}">
+    </div>
+
     <button class="main-btn" onclick="savePackage()">محفوظ کریں</button>
   </div>`;
 }
+
 function savePackage(){
   save("package",{
-    agency:document.getElementById("pkgAgency").value,
-    makkah:document.getElementById("pkgMakkah").value,
-    madinah:document.getElementById("pkgMadinah").value,
-    flight:document.getElementById("pkgFlight").value,
+    agency:document.getElementById("pkgAgency").value.trim(),
+    makkah:document.getElementById("pkgMakkah").value.trim(),
+    madinah:document.getElementById("pkgMadinah").value.trim(),
+    flight:document.getElementById("pkgFlight").value.trim(),
     price:document.getElementById("pkgPrice").value
   });
   alert("پیکیج کی تفصیل محفوظ ہو گئی");
+}
+
+function openAgencyReviews(){
+  const agency=document.getElementById("pkgAgency").value.trim();
+  if(!agency){
+    alert("پہلے ٹریول ایجنسی کا نام درج کریں۔");
+    return;
+  }
+
+  const url="https://www.google.com/maps/search/?api=1&query="
+    +encodeURIComponent(agency+" travel agency reviews");
+  window.location.href=url;
+}
+
+function degreesToRadians(degrees){
+  return degrees*Math.PI/180;
+}
+
+function distanceKm(lat1,lng1,lat2,lng2){
+  const earthRadius=6371;
+  const dLat=degreesToRadians(lat2-lat1);
+  const dLng=degreesToRadians(lng2-lng1);
+
+  const a=
+    Math.sin(dLat/2)*Math.sin(dLat/2)+
+    Math.cos(degreesToRadians(lat1))*
+    Math.cos(degreesToRadians(lat2))*
+    Math.sin(dLng/2)*Math.sin(dLng/2);
+
+  const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  return earthRadius*c;
+}
+
+async function checkHotelDistance(city){
+  const isMakkah=city==="makkah";
+  const input=document.getElementById(isMakkah?"pkgMakkah":"pkgMadinah");
+  const resultBox=document.getElementById(isMakkah?"makkahDistance":"madinahDistance");
+  const hotel=input.value.trim();
+
+  if(!hotel){
+    alert(isMakkah?"پہلے مکہ ہوٹل کا نام درج کریں۔":"پہلے مدینہ ہوٹل کا نام درج کریں۔");
+    return;
+  }
+
+  resultBox.style.display="block";
+  resultBox.innerText="🔎 ہوٹل تلاش کیا جا رہا ہے...";
+
+  const cityName=isMakkah?"Makkah Saudi Arabia":"Madinah Saudi Arabia";
+  const query=hotel+", "+cityName;
+
+  try{
+    const response=await fetch(
+      "https://nominatim.openstreetmap.org/search?format=json&limit=1&q="
+      +encodeURIComponent(query),
+      {headers:{"Accept":"application/json"}}
+    );
+
+    if(!response.ok){
+      throw new Error("Search failed");
+    }
+
+    const data=await response.json();
+
+    if(!data.length){
+      resultBox.innerHTML="ہوٹل نہیں ملا۔ نام زیادہ مکمل لکھ کر دوبارہ کوشش کریں۔";
+      return;
+    }
+
+    const hotelLat=Number(data[0].lat);
+    const hotelLng=Number(data[0].lon);
+
+    const target=isMakkah
+      ? {lat:21.4225,lng:39.8262,name:"مسجد الحرام"}
+      : {lat:24.4672,lng:39.6111,name:"مسجد نبوی ﷺ"};
+
+    const km=distanceKm(hotelLat,hotelLng,target.lat,target.lng);
+    const meters=Math.round(km*1000);
+
+    let distanceText;
+    if(meters<1000){
+      distanceText=meters.toLocaleString()+" میٹر";
+    }else{
+      distanceText=km.toFixed(2)+" کلومیٹر";
+    }
+
+    resultBox.innerHTML=
+      "📍 <b>"+esc(hotel)+"</b><br>"+
+      target.name+" سے تقریباً <b>"+distanceText+"</b> دور ہے۔<br>"+
+      "<span class='muted'>یہ نقشے کے coordinates کے مطابق سیدھا فاصلہ ہے؛ پیدل یا سڑک کا راستہ مختلف ہو سکتا ہے۔</span>"+
+      "<button class='outline-btn' onclick=\"openHotelRoute('"+city+"')\">🗺️ Google Maps میں راستہ دیکھیں</button>";
+
+    window[isMakkah?"makkahHotelCoords":"madinahHotelCoords"]={
+      lat:hotelLat,
+      lng:hotelLng
+    };
+
+  }catch(e){
+    resultBox.innerHTML=
+      "انٹرنیٹ سے ہوٹل کا فاصلہ حاصل نہیں ہو سکا۔ دوبارہ کوشش کریں یا Google Maps میں ہوٹل چیک کریں۔";
+  }
+}
+
+let makkahHotelCoords=null;
+let madinahHotelCoords=null;
+
+function openHotelRoute(city){
+  const isMakkah=city==="makkah";
+  const coords=isMakkah?makkahHotelCoords:madinahHotelCoords;
+  const input=document.getElementById(isMakkah?"pkgMakkah":"pkgMadinah");
+  const target=isMakkah?"Masjid al-Haram":"Al Masjid an Nabawi";
+
+  let origin=input.value.trim();
+  if(coords){
+    origin=coords.lat+","+coords.lng;
+  }
+
+  const url="https://www.google.com/maps/dir/?api=1&origin="
+    +encodeURIComponent(origin)
+    +"&destination="+encodeURIComponent(target)
+    +"&travelmode=walking";
+
+  window.location.href=url;
 }
 
 function tripHTML(){
