@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>Umrah Companion</title>
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 @font-face{
   font-family:Jameel;
@@ -590,32 +591,55 @@ const ziyaratHTML=`
   یہ بنیادی آف لائن رہنمائی ہے اور انٹرنیٹ کے بغیر بھی App میں دستیاب رہے گی۔
 </div>
 `;
-  const transportHTML=`
+ const transportHTML=`
 <div class="info">
   <h2>🚕 ٹرانسپورٹ / رائیڈ</h2>
-  <p>اپنی منزل درج کریں اور آسانی سے راستہ یا رائیڈ تلاش کریں۔</p>
+  <p>اپنی موجودہ جگہ سے منزل منتخب کریں اور راستہ دیکھیں۔</p>
 </div>
 
-<div class="service-grid">
+<div class="info" style="padding:0;overflow:hidden;">
 
-  <div class="service" onclick="getCurrentLocation()">
-  <div class="icon">📍</div>
-  <h3>موجودہ مقام</h3>
-  <p id="currentLocationText">اپنی موجودہ لوکیشن حاصل کریں</p>
+<div id="transportMap" style="
+  width:100%;
+  height:300px;
+  background:#eaf5f1;">
 </div>
 
-<div class="service" onclick="setDestination()">
-  <div class="icon">🎯</div>
-  <h3>منزل</h3>
-  <p id="destinationText">جہاں آپ جانا چاہتے ہیں</p>
+<div id="mapStatus" style="
+  padding:10px 15px;
+  text-align:center;
+  color:#6c7773;
+  background:#f8fbfa;">
+  📍 موجودہ مقام حاصل کرکے سفر شروع کریں
 </div>
 
-<div class="service" onclick="findRide()">
-  <div class="icon">🚕</div>
-  <h3>رائیڈ تلاش کریں</h3>
-  <p>موجودہ مقام سے منزل تک راستہ تلاش کریں</p>
-</div>
+  <div style="padding:16px;">
 
+    <div class="field">
+      <label>📍 کہاں سے؟</label>
+      <button class="outline-btn"
+              onclick="getCurrentLocation()"
+              style="margin-top:0;">
+        <span id="currentLocationText">میری موجودہ لوکیشن</span>
+      </button>
+    </div>
+
+    <div style="text-align:center;font-size:25px;color:#0b6b53;">↓</div>
+
+    <div class="field">
+      <label>🎯 کہاں جانا ہے؟</label>
+      <input
+        id="destinationInput"
+        type="text"
+        placeholder="مثلاً Masjid al-Haram"
+        oninput="setDestinationFromInput()">
+    </div>
+
+    <button class="main-btn" onclick="findRide()">
+      🗺️ راستہ دکھائیں
+    </button>
+
+  </div>
 </div>
 `;
   const nearMeHTML=`
@@ -678,6 +702,60 @@ const ziyaratHTML=`
   const url="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(query);
   window.location.href=url;
 }
+  let transportMap = null;
+let currentLocationMarker = null;
+let destinationMarker = null;
+
+function initTransportMap(){
+  const mapBox = document.getElementById("transportMap");
+
+  if(!mapBox || typeof L === "undefined"){
+    return;
+  }
+
+  if(transportMap){
+    transportMap.remove();
+    transportMap = null;
+  }
+
+  transportMap = L.map("transportMap").setView([21.4225, 39.8262], 13);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "© OpenStreetMap"
+  }).addTo(transportMap);
+  transportMap.on("click", function(e){
+
+  const destinationLat = e.latlng.lat;
+  const destinationLng = e.latlng.lng;
+
+  destination = destinationLat + "," + destinationLng;
+
+  if(destinationMarker){
+    transportMap.removeLayer(destinationMarker);
+  }
+
+  destinationMarker = L.circleMarker(
+    [destinationLat, destinationLng],
+    {
+      radius:10,
+      color:"#c79a42",
+      fillColor:"#c79a42",
+      fillOpacity:1
+    }
+  ).addTo(transportMap);
+
+  const input = document.getElementById("destinationInput");
+  if(input){
+    input.value = "نقشے پر منتخب مقام";
+  }
+
+  const status = document.getElementById("mapStatus");
+  if(status){
+    status.innerText = "🎯 منزل منتخب ہوگئی";
+  }
+});
+}
   let currentLat = null;
 let currentLng = null;
 let destination = "";
@@ -697,8 +775,27 @@ function getCurrentLocation(){
       if(text){
         text.innerText = "موجودہ مقام حاصل ہوگیا ✓";
       }
+if(transportMap){
+  transportMap.setView([currentLat, currentLng], 16);
 
-      alert("آپ کا موجودہ مقام حاصل ہوگیا۔");
+  if(currentLocationMarker){
+    transportMap.removeLayer(currentLocationMarker);
+  }
+
+  currentLocationMarker = L.circleMarker(
+    [currentLat, currentLng],
+    {
+      radius:10,
+      color:"#075541",
+      fillColor:"#0b6b53",
+      fillOpacity:1
+    }
+  ).addTo(transportMap);
+}
+    const status = document.getElementById("mapStatus");
+if(status){
+  status.innerText = "📍 موجودہ مقام حاصل ہوگیا — اب اپنی منزل درج کریں";
+}
     },
     function(){
       alert("لوکیشن حاصل نہیں ہوسکی۔ براہ کرم Location/GPS کی اجازت دیں۔");
@@ -709,7 +806,18 @@ function getCurrentLocation(){
     }
   );
 }
+function setDestinationFromInput(){
+  const input = document.getElementById("destinationInput");
 
+  if(input){
+    destination = input.value.trim();
+
+    const status = document.getElementById("mapStatus");
+    if(status && destination){
+      status.innerText = "منزل: " + destination;
+    }
+  }
+}
 function setDestination(){
   const place = prompt("آپ کہاں جانا چاہتے ہیں؟ مثال: Masjid al-Haram");
 
@@ -766,6 +874,11 @@ else return;
   document.getElementById("page").classList.add("active");
   document.getElementById("pageTitle").innerText=title;
   document.getElementById("pageContent").innerHTML=html;
+  if(key === "transport"){
+  setTimeout(function(){
+    initTransportMap();
+  }, 200);
+}
   window.scrollTo(0,0);
 }
 
