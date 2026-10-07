@@ -11,6 +11,16 @@
   font-family:Jameel;
   src:url('Jameel Noori Nastaleeq Regular.ttf') format('truetype');
 }
+@font-face{
+  font-family:MuhammadiQuran;
+  src:url('MUHAMMADI QURANIC FONT.ttf') format('truetype');
+}
+.arabic-text{
+  font-family:MuhammadiQuran,serif;
+  direction:rtl;
+  font-size:24px;
+  line-height:2.1;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --green:#0b6b53;--dark:#075541;--light:#eaf5f1;
@@ -169,6 +179,11 @@ h2{margin:0;font-size:23px}
     </div>
 
     <div class="field">
+      <label>رابطہ نمبر</label>
+      <input id="welcomeContact" type="tel" placeholder="مثلاً +92 300 1234567">
+    </div>
+
+    <div class="field">
       <label>آپ کس ملک سے ہیں؟</label>
       <select id="welcomeCountry">
         <option value="">ملک منتخب کریں</option>
@@ -182,7 +197,20 @@ h2{margin:0;font-size:23px}
       </select>
     </div>
 
-    <button class="main-btn" onclick="saveWelcomeProfile()">شروع کریں</button>
+    <button class="main-btn" onclick="saveWelcomeProfile()">Next</button>
+  </div>
+</div>
+<div id="setupTravelScreen" style="display:none;padding:25px 18px;min-height:100vh;background:#f5f7f6;">
+  <div class="info" style="margin-top:20px;">
+    <div style="text-align:center;font-size:48px;">✈️</div>
+    <h2 style="text-align:center;color:#0b6b53;">میرا سفر</h2>
+    <p style="text-align:center;color:#6c7773;">سفر کی تفصیل ابھی درج کریں یا بعد میں مکمل کریں۔</p>
+    <div class="field"><label>روانگی کی تاریخ</label><input id="setupDeparture" type="date"></div>
+    <div class="field"><label>واپسی کی تاریخ</label><input id="setupReturn" type="date"></div>
+    <div class="field"><label>فلائٹ نمبر</label><input id="setupFlight"></div>
+    <div class="field"><label>روانگی کا شہر</label><input id="setupCity"></div>
+    <button class="main-btn" onclick="saveSetupTravel()">محفوظ کریں اور آگے جائیں</button>
+    <button class="outline-btn" onclick="skipSetupTravel()">ابھی Skip کریں — بعد میں مکمل کروں گا</button>
   </div>
 </div>
 <div id="home" class="app">
@@ -244,7 +272,7 @@ h2{margin:0;font-size:23px}
     <div class="service" onclick="showPage('myHotel')"><div class="icon">🏨</div><h3>میرا ہوٹل</h3><p>ہوٹل محفوظ کریں اور واپس جائیں</p></div>
     <div class="service" onclick="showPage('reminders')"><div class="icon">⏰</div><h3>ریمائنڈرز</h3><p>اہم کام اور یاد دہانی</p></div>
     <div class="service" onclick="showPage('cityMode')"><div class="icon">🕋</div><h3>مکہ / مدینہ موڈ</h3><p>شہر کے مطابق فوری سہولیات</p></div>
-    <div class="service" onclick="showPage('elderly')"><div class="icon">👴</div><h3>بزرگوں کا موڈ</h3><p>بڑا متن اور آسان بٹن</p></div>
+<h3>بزرگوں کا موڈ</h3><p>بڑا متن اور آسان بٹن</p></div>
     <div class="service" onclick="showPage('family')"><div class="icon">👨‍👩‍👧</div><h3>فیملی لوکیشن</h3><p>رضامندی کے ساتھ لوکیشن شیئرنگ</p></div>
     <div class="service" onclick="showPage('wishIKnew')"><div class="icon">💡</div><h3>کاش مجھے پہلے معلوم ہوتا</h3><p>اہم عملی سفری مشورے</p></div>
   </div>
@@ -290,20 +318,36 @@ function setTripDate(){
   }
 }
 function saveWelcomeProfile(){
-  const name = document.getElementById("welcomeName").value.trim();
-  const email = document.getElementById("welcomeEmail").value.trim();
-  const country = document.getElementById("welcomeCountry").value;
-
-  if(!name || !email || !country){
-    alert("براہِ کرم نام، ای میل اور ملک تینوں درج کریں");
+  const name=document.getElementById("welcomeName").value.trim();
+  const email=document.getElementById("welcomeEmail").value.trim();
+  const contact=document.getElementById("welcomeContact").value.trim();
+  const country=document.getElementById("welcomeCountry").value;
+  if(!name||!email||!contact||!country){
+    alert("براہِ کرم نام، ای میل، رابطہ نمبر اور ملک درج کریں");
     return;
   }
-
-  save("profile", {name:name, email:email, country:country});
-
-  document.getElementById("welcomeScreen").style.display = "none";
-  document.getElementById("home").style.display = "block";
-
+  save("profile",{name,email,contact,country});
+  document.getElementById("welcomeScreen").style.display="none";
+  document.getElementById("setupTravelScreen").style.display="block";
+}
+function saveSetupTravel(){
+  const t={
+    departure:document.getElementById("setupDeparture").value,
+    returnDate:document.getElementById("setupReturn").value,
+    flight:document.getElementById("setupFlight").value.trim(),
+    city:document.getElementById("setupCity").value.trim()
+  };
+  save("trip",t);
+  if(t.departure)save("tripDate",t.departure);
+  save("setupComplete",true);
+  document.getElementById("setupTravelScreen").style.display="none";
+  document.getElementById("home").style.display="block";
+  updateHome();
+}
+function skipSetupTravel(){
+  save("setupComplete",true);
+  document.getElementById("setupTravelScreen").style.display="none";
+  document.getElementById("home").style.display="block";
   updateHome();
 }
 function updateHome(){const profile = load("profile",{});
@@ -336,9 +380,9 @@ const guideHTML=`
 
 const duasHTML=`
 <div class="notice">دعاؤں کے اس حصے کو مزید مستند حوالوں کے ساتھ مرحلہ وار بڑھایا جا سکتا ہے۔</div>
-<div class="info"><h3>تلبیہ</h3><p>لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ۔<br><br>ترجمہ: اے اللہ! میں حاضر ہوں، تیرا کوئی شریک نہیں، تمام تعریف، نعمت اور بادشاہی تیرے ہی لیے ہے۔</p></div>
-<div class="info"><h3>مسجد میں داخل ہونے کی دعا</h3><p>اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ<br><br>ترجمہ: اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے۔</p></div>
-<div class="info"><h3>ربنا آتنا</h3><p>رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ<br><br>ترجمہ: اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما، آخرت میں بھلائی عطا فرما اور ہمیں آگ کے عذاب سے بچا۔</p></div>
+<div class="info"><h3>تلبیہ</h3><p><span class="arabic-text">لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ۔</span><br><br>ترجمہ: اے اللہ! میں حاضر ہوں، تیرا کوئی شریک نہیں، تمام تعریف، نعمت اور بادشاہی تیرے ہی لیے ہے۔</p></div>
+<div class="info"><h3>مسجد میں داخل ہونے کی دعا</h3><p><span class="arabic-text">اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ</span><br><br>ترجمہ: اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے۔</p></div>
+<div class="info"><h3>ربنا آتنا</h3><p><span class="arabic-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</span><br><br>ترجمہ: اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما، آخرت میں بھلائی عطا فرما اور ہمیں آگ کے عذاب سے بچا۔</p></div>
 `;
 
 function checklistHTML(){
@@ -533,68 +577,42 @@ async function checkHotelDistance(city){
   const input=document.getElementById(isMakkah?"pkgMakkah":"pkgMadinah");
   const resultBox=document.getElementById(isMakkah?"makkahDistance":"madinahDistance");
   const hotel=input.value.trim();
-
-  if(!hotel){
-    alert(isMakkah?"پہلے مکہ ہوٹل کا نام درج کریں۔":"پہلے مدینہ ہوٹل کا نام درج کریں۔");
-    return;
-  }
-
+  if(!hotel){alert(isMakkah?"پہلے مکہ ہوٹل کا نام درج کریں۔":"پہلے مدینہ ہوٹل کا نام درج کریں۔");return;}
   resultBox.style.display="block";
   resultBox.innerText="🔎 ہوٹل تلاش کیا جا رہا ہے...";
-
-  const cityName=isMakkah?"Makkah Saudi Arabia":"Madinah Saudi Arabia";
-  const query=hotel+", "+cityName;
-
+  const names=isMakkah?["Makkah","Mecca"]:["Madinah","Medina"];
+  const queries=[hotel+", "+names[0]+", Saudi Arabia",hotel+" hotel, "+names[0]+", Saudi Arabia",hotel+", "+names[1]+", Saudi Arabia"];
   try{
-    const response=await fetch(
-      "https://nominatim.openstreetmap.org/search?format=json&limit=1&q="
-      +encodeURIComponent(query),
-      {headers:{"Accept":"application/json"}}
-    );
-
-    if(!response.ok){
-      throw new Error("Search failed");
+    let data=[];
+    for(const q of queries){
+      const response=await fetch("https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q="+encodeURIComponent(q),{headers:{"Accept":"application/json"}});
+      if(response.ok){data=await response.json();if(data.length)break;}
     }
-
-    const data=await response.json();
-
     if(!data.length){
-      resultBox.innerHTML="ہوٹل نہیں ملا۔ نام زیادہ مکمل لکھ کر دوبارہ کوشش کریں۔";
+      resultBox.innerHTML="اس نام سے ہوٹل OpenStreetMap میں نہیں ملا۔ اس کا مطلب یہ نہیں کہ ہوٹل موجود نہیں ہے۔"+
+      "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں ہوٹل تلاش کریں</button>";
       return;
     }
-
-    const hotelLat=Number(data[0].lat);
-    const hotelLng=Number(data[0].lon);
-
-    const target=isMakkah
-      ? {lat:21.4225,lng:39.8262,name:"مسجد الحرام"}
-      : {lat:24.4672,lng:39.6111,name:"مسجد نبوی ﷺ"};
-
+    const target=isMakkah?{lat:21.4225,lng:39.8262,name:"مسجد الحرام"}:{lat:24.4672,lng:39.6111,name:"مسجد نبوی ﷺ"};
+    data.sort((a,b)=>distanceKm(Number(a.lat),Number(a.lon),target.lat,target.lng)-distanceKm(Number(b.lat),Number(b.lon),target.lat,target.lng));
+    const hotelLat=Number(data[0].lat),hotelLng=Number(data[0].lon);
     const km=distanceKm(hotelLat,hotelLng,target.lat,target.lng);
     const meters=Math.round(km*1000);
-
-    let distanceText;
-    if(meters<1000){
-      distanceText=meters.toLocaleString()+" میٹر";
-    }else{
-      distanceText=km.toFixed(2)+" کلومیٹر";
-    }
-
-    resultBox.innerHTML=
-      "📍 <b>"+esc(hotel)+"</b><br>"+
-      target.name+" سے تقریباً <b>"+distanceText+"</b> دور ہے۔<br>"+
-      "<span class='muted'>یہ نقشے کے coordinates کے مطابق سیدھا فاصلہ ہے؛ پیدل یا سڑک کا راستہ مختلف ہو سکتا ہے۔</span>"+
-      "<button class='outline-btn' onclick=\"openHotelRoute('"+city+"')\">🗺️ Google Maps میں راستہ دیکھیں</button>";
-
-    window[isMakkah?"makkahHotelCoords":"madinahHotelCoords"]={
-      lat:hotelLat,
-      lng:hotelLng
-    };
-
+    const distanceText=meters<1000?meters.toLocaleString()+" میٹر":km.toFixed(2)+" کلومیٹر";
+    window[isMakkah?"makkahHotelCoords":"madinahHotelCoords"]={lat:hotelLat,lng:hotelLng};
+    resultBox.innerHTML="📍 <b>"+esc(hotel)+"</b><br>"+target.name+" سے سیدھا فاصلہ تقریباً <b>"+distanceText+"</b> ہے۔"+
+    "<br><span class='muted'>اصل walking/road distance مختلف ہو سکتا ہے۔</span>"+
+    "<button class='outline-btn' onclick=\"openHotelRoute('"+city+"')\">🚶 Google Maps میں walking route</button>";
   }catch(e){
-    resultBox.innerHTML=
-      "انٹرنیٹ سے ہوٹل کا فاصلہ حاصل نہیں ہو سکا۔ دوبارہ کوشش کریں یا Google Maps میں ہوٹل چیک کریں۔";
+    resultBox.innerHTML="ہوٹل سرچ سروس سے رابطہ نہیں ہو سکا۔"+
+    "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں تلاش کریں</button>";
   }
+}
+function openHotelSearch(city){
+  const isMakkah=city==="makkah";
+  const input=document.getElementById(isMakkah?"pkgMakkah":"pkgMadinah");
+  const cityName=isMakkah?"Makkah Saudi Arabia":"Madinah Saudi Arabia";
+  window.location.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(input.value.trim()+", "+cityName);
 }
 
 let makkahHotelCoords=null;
@@ -649,16 +667,18 @@ function profileHTML(){
     <h3>میری پروفائل</h3>
     <div class="field"><label>نام</label><input id="profileName" value="${esc(p.name)}" placeholder="اپنا نام درج کریں"></div>
     <div class="field"><label>ای میل</label><input id="profileEmail" type="email" value="${esc(p.email)}" placeholder="example@email.com"></div>
+    <div class="field"><label>رابطہ نمبر</label><input id="profileContact" type="tel" value="${esc(p.contact)}"></div>
+    <div class="field"><label>ملک</label><input id="profileCountry" value="${esc(p.country)}"></div>
     <button class="main-btn" onclick="saveProfile()">محفوظ کریں</button>
     <div class="notice" style="margin-top:12px">فی الحال نام اور ای میل صرف آپ کے موبائل میں محفوظ ہوں گے۔ Online registration اگلے مرحلے میں شامل ہوگی۔</div>
   </div>`;
 }
 function saveProfile(){
-  const oldProfile=load("profile",{});
   save("profile",{
     name:document.getElementById("profileName").value.trim(),
     email:document.getElementById("profileEmail").value.trim(),
-    country:oldProfile.country||""
+    contact:document.getElementById("profileContact").value.trim(),
+    country:document.getElementById("profileCountry").value.trim()
   });
   updateHome();
   alert("پروفائل محفوظ ہو گئی");
@@ -738,35 +758,17 @@ const ziyaratHTML=`
 </div>
 `;
   const offlineMapHTML=`
-<div class="info">
-  <h2>🗺️ مکہ مکرمہ — آف لائن نقشہ</h2>
-  <div style="text-align:center;font-size:22px;line-height:2;">
-    ⛰️ جبل النور / غارِ حرا<br>
-    ↓<br>
-    🕋 مسجد الحرام / خانہ کعبہ<br>
-    ↓<br>
-    ⛰️ غارِ ثور<br>
-    ↓<br>
-    📍 منیٰ → 📍 مزدلفہ → 📍 عرفات
-  </div>
-</div>
-
-<div class="info">
-  <h2>🗺️ مدینہ منورہ — آف لائن نقشہ</h2>
-  <div style="text-align:center;font-size:22px;line-height:2;">
-    ⛰️ جبل اُحد<br>
-    ↓<br>
-    🕌 مسجد نبوی ﷺ<br>
-    ↓<br>
-    🕌 مسجد قبلتین<br>
-    ↓<br>
-    🕌 مسجد قباء
-  </div>
-</div>
-
-<div class="notice">
-  یہ بنیادی آف لائن رہنمائی ہے اور انٹرنیٹ کے بغیر بھی App میں دستیاب رہے گی۔
-</div>
+<div class="notice">یہ انٹرنیٹ کے بغیر بنیادی سمت نما رہنمائی ہے؛ GPS/live road map نہیں۔</div>
+<div class="info"><h2>🕋 مکہ مکرمہ</h2>
+<div class="step"><h3>🕋 مسجد الحرام</h3><p>مرکزی مقام — طواف، زمزم اور صفا مروہ۔</p></div>
+<div class="step"><h3>⛰️ جبل النور / غارِ حرا</h3><p>مسجد الحرام کے شمال مشرقی علاقے کی سمت۔</p></div>
+<div class="step"><h3>⛰️ غارِ ثور</h3><p>مسجد الحرام کے جنوب کی سمت۔</p></div>
+<div class="step"><h3>📍 منیٰ → مزدلفہ → عرفات</h3><p>مکہ کے مشرقی/جنوب مشرقی جانب حج کے اہم مقامات۔</p></div></div>
+<div class="info"><h2>🕌 مدینہ منورہ</h2>
+<div class="step"><h3>🕌 مسجد نبوی ﷺ</h3><p>مدینہ کا مرکزی reference point۔</p></div>
+<div class="step"><h3>⛰️ جبل اُحد</h3><p>مسجد نبوی ﷺ کے شمال کی سمت۔</p></div>
+<div class="step"><h3>🕌 مسجد قباء</h3><p>مسجد نبوی ﷺ کے جنوب کی سمت۔</p></div>
+<div class="step"><h3>🕌 مسجد قبلتین</h3><p>مسجد نبوی ﷺ کے شمال مغربی علاقے کی سمت۔</p></div></div>
 `;
  const transportHTML=`
 <div class="info">
@@ -1227,23 +1229,6 @@ function openCityEssentials(type){
   window.location.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
 }
 
-function elderlyHTML(){
-  const enabled=load("elderlyMode",false);
-  return `
-  <div class="info">
-    <h3>👴 بزرگوں کا آسان موڈ</h3>
-    <p>متن اور buttons بڑے کرکے App کو زیادہ آسان بنائیں۔</p>
-    <button class="main-btn" onclick="toggleElderlyMode()">${enabled?"عام سائز پر واپس جائیں":"بزرگوں کا موڈ آن کریں"}</button>
-  </div>`;
-}
-function applyElderlyMode(){
-  const on=load("elderlyMode",false);
-  document.body.style.fontSize=on?"21px":"";
-  document.documentElement.style.setProperty("--elderly-scale",on?"1.12":"1");
-  document.querySelectorAll("button,input,textarea,select").forEach(el=>{el.style.fontSize=on?"21px":"";});
-}
-function toggleElderlyMode(){save("elderlyMode",!load("elderlyMode",false));applyElderlyMode();showPage("elderly");}
-
 function familyHTML(){
   return `
   <div class="info">
@@ -1281,7 +1266,10 @@ function saveWishTip(){
   const arr=load("wishTips",[]);arr.push(tip);save("wishTips",arr);showPage("wishIKnew");
 }
 
+let homeScrollPosition=0;
+
 function showPage(key){
+  if(document.getElementById("home").style.display!=="none") homeScrollPosition=window.scrollY||0;
   let title="",html="";
   if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
   else if(key==="duas"){title="دعائیں";html=duasHTML}
@@ -1304,7 +1292,6 @@ else if(key==="emergency"){title="ایمرجنسی";html=emergencyHTML()}
 else if(key==="myHotel"){title="میرا ہوٹل";html=myHotelHTML()}
 else if(key==="reminders"){title="ریمائنڈرز";html=remindersHTML()}
 else if(key==="cityMode"){title="مکہ / مدینہ موڈ";html=cityModeHTML()}
-else if(key==="elderly"){title="بزرگوں کا موڈ";html=elderlyHTML()}
 else if(key==="family"){title="فیملی لوکیشن";html=familyHTML()}
 else if(key==="wishIKnew"){title="کاش مجھے پہلے معلوم ہوتا";html=wishIKnewHTML()}
 else return;
@@ -1326,22 +1313,27 @@ function goHome(){
   document.getElementById("page").classList.remove("active");
   document.getElementById("home").style.display="block";
   updateHome();
-  window.scrollTo(0,0);
+  setTimeout(function(){window.scrollTo(0,homeScrollPosition);},0);
 }
 
-applyElderlyMode();
-
-const firstProfile = load("profile", {});
-
-if(firstProfile.name && firstProfile.email && firstProfile.country){
-  document.getElementById("welcomeScreen").style.display = "none";
-  document.getElementById("home").style.display = "block";
+const firstProfile=load("profile",{});
+const setupComplete=load("setupComplete",false);
+if(firstProfile.name&&firstProfile.email&&firstProfile.contact&&firstProfile.country&&setupComplete){
+  document.getElementById("welcomeScreen").style.display="none";
+  document.getElementById("setupTravelScreen").style.display="none";
+  document.getElementById("home").style.display="block";
   updateHome();
+}else if(firstProfile.name&&firstProfile.email&&firstProfile.contact&&firstProfile.country){
+  document.getElementById("welcomeScreen").style.display="none";
+  document.getElementById("home").style.display="none";
+  document.getElementById("setupTravelScreen").style.display="block";
 }else{
-  document.getElementById("home").style.display = "none";
-  document.getElementById("welcomeScreen").style.display = "block";
+  document.getElementById("home").style.display="none";
+  document.getElementById("setupTravelScreen").style.display="none";
+  document.getElementById("welcomeScreen").style.display="block";
 }
 </script>
 
 </body>
 </html>
+
