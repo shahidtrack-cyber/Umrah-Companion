@@ -262,7 +262,7 @@ h2{margin:0;font-size:23px}
     <div class="service" onclick="showPage('profile')"><div class="icon">👤</div><h3>میری پروفائل</h3><p>نام اور ای میل</p></div>
     <div class="service" onclick="showPage('feedback')"><div class="icon">💬</div><h3>فیڈ بیک</h3><p>اپنی رائے دیں</p></div>
     <div class="service" onclick="showPage('ziyarat')"><div class="icon">📍</div><h3>زیارات</h3><p>اہم مقامات</p></div>
-    <div class="service" onclick="showPage('offlineMap')"><div class="icon">🗺️</div><h3>آف لائن نقشہ</h3><p>مکہ اور مدینہ کے اہم مقامات</p></div>
+    <div class="service" onclick="showPage('offlineMap')"><div class="icon">🧭</div><h3>آف لائن گائیڈ</h3><p>انٹرنیٹ کے بغیر بنیادی سمتیں</p></div>
     <div class="service" onclick="showPage('nearMe')"><div class="icon">📍</div><h3>میرے قریب</h3><p>قریب کی ضروری جگہیں تلاش کریں</p></div>
     <div class="service" onclick="showPage('foodGuide')"><div class="icon">🍽️</div><h3>فوڈ گائیڈ</h3><p>کھانا، ریسٹورنٹس اور قیمتیں</p></div>
     <div class="service" onclick="showPage('shopping')"><div class="icon">🛍️</div><h3>اسمارٹ شاپنگ</h3><p>مارکیٹ اور قیمت نوٹ کریں</p></div>
@@ -588,8 +588,11 @@ async function checkHotelDistance(city){
       if(response.ok){data=await response.json();if(data.length)break;}
     }
     if(!data.length){
-      resultBox.innerHTML="اس نام سے ہوٹل OpenStreetMap میں نہیں ملا۔ اس کا مطلب یہ نہیں کہ ہوٹل موجود نہیں ہے۔"+
-      "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں ہوٹل تلاش کریں</button>";
+      resultBox.innerHTML="اس نام سے ہوٹل خودکار سرچ میں نہیں ملا۔"+
+      "<br><span class='muted'>Google Maps میں نام دیکھ سکتے ہیں، یا نیچے نقشے پر ہوٹل کی جگہ منتخب کرکے فاصلہ فوراً معلوم کریں۔</span>"+
+      "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں ہوٹل دیکھیں</button>"+
+      "<button class='main-btn' onclick=\"showHotelPicker('"+city+"')\">📌 نقشے پر ہوٹل منتخب کریں</button>"+
+      "<div id='"+city+"HotelPicker' style='height:280px;margin-top:12px;border-radius:14px;overflow:hidden;display:none'></div>";
       return;
     }
     const target=isMakkah?{lat:21.4225,lng:39.8262,name:"مسجد الحرام"}:{lat:24.4672,lng:39.6111,name:"مسجد نبوی ﷺ"};
@@ -607,6 +610,39 @@ async function checkHotelDistance(city){
     "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں تلاش کریں</button>";
   }
 }
+
+let hotelPickerMap=null;
+function showHotelPicker(city){
+  const box=document.getElementById(city+"HotelPicker");
+  if(!box||typeof L==="undefined"){alert("نقشہ لوڈ نہیں ہو سکا۔ انٹرنیٹ چیک کریں۔");return;}
+  box.style.display="block";
+  if(hotelPickerMap){hotelPickerMap.remove();hotelPickerMap=null;}
+  const isMakkah=city==="makkah";
+  const center=isMakkah?[21.4225,39.8262]:[24.4672,39.6111];
+  hotelPickerMap=L.map(box).setView(center,14);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(hotelPickerMap);
+  let pin=null;
+  hotelPickerMap.on("click",function(e){
+    if(pin)hotelPickerMap.removeLayer(pin);
+    pin=L.marker(e.latlng).addTo(hotelPickerMap);
+    const coords={lat:e.latlng.lat,lng:e.latlng.lng};
+    if(isMakkah)makkahHotelCoords=coords;else madinahHotelCoords=coords;
+    showSelectedHotelDistance(city,coords);
+  });
+  setTimeout(function(){hotelPickerMap.invalidateSize();},100);
+}
+function showSelectedHotelDistance(city,coords){
+  const isMakkah=city==="makkah";
+  const target=isMakkah?{lat:21.4225,lng:39.8262,name:"مسجد الحرام"}:{lat:24.4672,lng:39.6111,name:"مسجد نبوی ﷺ"};
+  const km=distanceKm(coords.lat,coords.lng,target.lat,target.lng);
+  const meters=Math.round(km*1000);
+  const distanceText=meters<1000?meters.toLocaleString()+" میٹر":km.toFixed(2)+" کلومیٹر";
+  const resultBox=document.getElementById(isMakkah?"makkahDistance":"madinahDistance");
+  resultBox.innerHTML="📌 منتخب ہوٹل کی جگہ<br>"+target.name+" سے سیدھا فاصلہ تقریباً <b>"+distanceText+"</b> ہے۔"+
+  "<br><span class='muted'>اصل walking/road distance مختلف ہو سکتا ہے۔</span>"+
+  "<button class='outline-btn' onclick=\"openHotelRoute('"+city+"')\">🚶 Google Maps میں walking route</button>";
+}
+
 function openHotelSearch(city){
   const isMakkah=city==="makkah";
   const input=document.getElementById(isMakkah?"pkgMakkah":"pkgMadinah");
@@ -823,47 +859,18 @@ const ziyaratHTML=`
   const nearMeHTML=`
 <div class="info">
   <h2>📍 میرے قریب</h2>
-  <p>اپنے آس پاس ضروری جگہیں آسانی سے تلاش کریں۔</p>
+  <p>فوری ضرورت کی جگہیں تلاش کریں۔ کھانے، خریداری اور ٹرانسپورٹ کے لیے Home پر الگ مکمل سہولیات موجود ہیں۔</p>
 </div>
-
 <div class="service-grid">
-
-  <div class="service" onclick="openNearMe('restaurants')">
-    <div class="icon">🍽️</div>
-    <h3>کھانا</h3>
-    <p>قریب کے ریسٹورنٹس اور کھانے کی جگہیں</p>
-  </div>
-
   <div class="service" onclick="openNearMe('pharmacy')">
-    <div class="icon">💊</div>
-    <h3>فارمیسی</h3>
-    <p>قریب کی میڈیکل اور فارمیسی</p>
+    <div class="icon">💊</div><h3>فارمیسی</h3><p>قریب کی فارمیسی تلاش کریں</p>
   </div>
-
   <div class="service" onclick="openNearMe('hospital')">
-    <div class="icon">🏥</div>
-    <h3>ہسپتال</h3>
-    <p>قریب کے ہسپتال اور طبی سہولیات</p>
+    <div class="icon">🏥</div><h3>ہسپتال</h3><p>قریب کے ہسپتال تلاش کریں</p>
   </div>
-
-  <div class="service" onclick="openNearMe('shopping')">
-    <div class="icon">🛍️</div>
-    <h3>خریداری</h3>
-    <p>قریب کی مارکیٹس اور شاپنگ</p>
-  </div>
-
   <div class="service" onclick="openNearMe('ATM')">
-    <div class="icon">🏧</div>
-    <h3>ATM / بینک</h3>
-    <p>قریب کے ATM اور بینک</p>
+    <div class="icon">🏧</div><h3>ATM / بینک</h3><p>قریب کے ATM اور بینک</p>
   </div>
-
- <div class="service" onclick="showPage('transport')">
-    <div class="icon">🚕</div>
-    <h3>ٹرانسپورٹ</h3>
-    <p>ٹیکسی اور سفر کی سہولیات</p>
-  </div>
-
 </div>
 `;
   function openNearMe(type){
@@ -1229,13 +1236,32 @@ function openCityEssentials(type){
 }
 
 function familyHTML(){
+  const f=load("familyLocation",{name:"",link:""});
   return `
   <div class="info">
     <h3>👨‍👩‍👧 فیملی لوکیشن</h3>
-    <p>اپنی موجودہ جگہ صرف اپنی مرضی اور رضامندی سے family member کے ساتھ share کریں۔</p>
-    <button class="main-btn" onclick="shareMyLocation()">📍 میری لوکیشن شیئر کریں</button>
-    <div class="notice" style="margin-top:12px">Live continuous family tracking کے لیے بعد میں secure online account/backend درکار ہوگا۔ موجودہ feature صرف آپ کے منتخب share app کے ذریعے ایک location link بھیجتا ہے۔</div>
+    <p>والدہ یا کسی family member کی رضامندی سے Google Maps کی Live Location Sharing یہاں محفوظ کریں۔</p>
+    <div class="notice">پہلے ان کے موبائل میں Google Maps → Profile → Location sharing سے آپ کے ساتھ live location share کریں۔ GPS اور Internet آن ہونا ضروری ہے۔</div>
+    <div class="field"><label>Family member کا نام</label><input id="familyName" value="${esc(f.name)}" placeholder="مثلاً والدہ"></div>
+    <div class="field"><label>Google Maps Live Location link</label><input id="familyLink" value="${esc(f.link)}" placeholder="ان کے فون سے share کیا گیا link یہاں paste کریں"></div>
+    <button class="main-btn" onclick="saveFamilyLocation()">محفوظ کریں</button>
+    <button class="outline-btn" onclick="openFamilyLocation()">📍 Live Location دیکھیں</button>
+    <button class="outline-btn" onclick="shareMyLocation()">📤 میری موجودہ لوکیشن شیئر کریں</button>
+    <div class="notice" style="margin-top:12px">یہ feature صرف رضامندی سے استعمال کریں۔ Live location وہی وقت تک نظر آئے گی جتنی دیر دوسرے فون سے sharing فعال ہے۔ App کسی شخص کو خفیہ طور پر track نہیں کرتی۔</div>
   </div>`;
+}
+function saveFamilyLocation(){
+  const name=document.getElementById("familyName").value.trim();
+  const link=document.getElementById("familyLink").value.trim();
+  if(!name||!link){alert("نام اور Google Maps Live Location link درج کریں۔");return;}
+  if(!(link.startsWith("https://")||link.startsWith("http://"))){alert("درست location link paste کریں۔");return;}
+  save("familyLocation",{name,link});
+  alert("فیملی لوکیشن محفوظ ہو گئی");
+}
+function openFamilyLocation(){
+  const f=load("familyLocation",{});
+  if(!f.link){alert("پہلے Live Location link محفوظ کریں۔");return;}
+  window.location.href=f.link;
 }
 function shareMyLocation(){
   if(!navigator.geolocation){alert("لوکیشن دستیاب نہیں۔");return}
@@ -1280,7 +1306,7 @@ function showPage(key){
   else if(key==="profile"){title="میری پروفائل";html=profileHTML()}
   else if(key==="feedback"){title="فیڈ بیک";html=feedbackHTML()}
   else if(key==="ziyarat"){title="زیارات";html=ziyaratHTML}
-    else if(key==="offlineMap"){title="آف لائن نقشہ";html=offlineMapHTML}
+    else if(key==="offlineMap"){title="آف لائن گائیڈ";html=offlineMapHTML}
   else if(key==="transport"){title="ٹرانسپورٹ / رائیڈ";html=transportHTML}
 else if(key==="nearMe"){title="میرے قریب";html=nearMeHTML}
 else if(key==="foodGuide"){title="فوڈ گائیڈ";html=foodGuideHTML()}
