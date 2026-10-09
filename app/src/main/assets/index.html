@@ -1332,25 +1332,62 @@ function returnToHotel(){
 function remindersHTML(){
   const arr=load("reminders",[]);
   const list=arr.map((x,i)=>`
-    <div class="expense-item"><div><b>${esc(x.title)}</b><br><span class="muted">${esc(x.when)}</span></div>
+    <div class="expense-item"><div><b>${esc(x.title)}</b><br><span class="muted">${esc(formatReminderWhen(x.when))}</span></div>
     <button class="delete-btn" onclick="deleteReminder(${i})">×</button></div>`).join("");
   return `
   <div class="info">
     <h3>⏰ ریمائنڈرز</h3>
     <div class="field"><label>یاد دہانی</label><input id="reminderTitle" placeholder="مثلاً پاسپورٹ ساتھ رکھنا"></div>
     <div class="field"><label>تاریخ / وقت</label><input id="reminderWhen" type="datetime-local"></div>
-    <button class="main-btn" onclick="saveReminder()">محفوظ کریں</button>
-    <div class="notice" style="margin-top:12px">فی الحال reminder App میں محفوظ ہوگا؛ background notification بعد میں native Android notification کے ساتھ جوڑی جائے گی۔</div>
+    <button class="main-btn" onclick="saveReminder()">🔔 ریمائنڈر محفوظ کریں</button>
+    <div class="notice" style="margin-top:12px">ریمائنڈر مقررہ وقت پر Android notification، sound اور vibration کے ساتھ آئے گا۔ پہلی بار Notification permission مانگی جائے تو Allow کریں۔</div>
   </div>
   <div class="info"><h3>میری یاد دہانیاں</h3>${list||"<p>ابھی کوئی reminder نہیں۔</p>"}</div>`;
 }
+
+function formatReminderWhen(when){
+  if(!when)return "وقت درج نہیں";
+  const d=new Date(when);
+  if(Number.isNaN(d.getTime()))return when;
+  return d.toLocaleString();
+}
+
 function saveReminder(){
   const title=document.getElementById("reminderTitle").value.trim();
-  if(!title){alert("یاد دہانی لکھیں۔");return}
-  const arr=load("reminders",[]);arr.push({title,when:document.getElementById("reminderWhen").value});
-  save("reminders",arr);showPage("reminders");
+  const when=document.getElementById("reminderWhen").value;
+  if(!title){alert("یاد دہانی لکھیں۔");return;}
+  if(!when){alert("ریمائنڈر کی تاریخ اور وقت منتخب کریں۔");return;}
+
+  const triggerAt=new Date(when).getTime();
+  if(!Number.isFinite(triggerAt)||triggerAt<=Date.now()){
+    alert("ریمائنڈر کے لیے آنے والا وقت منتخب کریں۔");
+    return;
+  }
+
+  const id=Date.now();
+  const arr=load("reminders",[]);
+  arr.push({id,title,when});
+  save("reminders",arr);
+
+  if(window.Android && typeof Android.scheduleReminder==="function"){
+    Android.scheduleReminder(String(id),title,String(triggerAt));
+    alert("ریمائنڈر محفوظ ہوگیا۔ مقررہ وقت پر notification اور sound آئے گی۔");
+  }else{
+    alert("ریمائنڈر App میں محفوظ ہوگیا، لیکن Android alarm service دستیاب نہیں۔ نئی APK build/install کے بعد notification کام کرے گی۔");
+  }
+  showPage("reminders");
 }
-function deleteReminder(i){const arr=load("reminders",[]);arr.splice(i,1);save("reminders",arr);showPage("reminders");}
+
+function deleteReminder(i){
+  const arr=load("reminders",[]);
+  const item=arr[i];
+  if(item && item.id && window.Android && typeof Android.cancelReminder==="function"){
+    Android.cancelReminder(String(item.id));
+  }
+  arr.splice(i,1);
+  save("reminders",arr);
+  showPage("reminders");
+}
 
 function cityModeHTML(){
   const mode=load("cityMode","Makkah");
