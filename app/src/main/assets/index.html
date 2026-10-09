@@ -576,39 +576,175 @@ async function checkHotelDistance(city){
   const input=document.getElementById(isMakkah?"pkgMakkah":"pkgMadinah");
   const resultBox=document.getElementById(isMakkah?"makkahDistance":"madinahDistance");
   const hotel=input.value.trim();
-  if(!hotel){alert(isMakkah?"پہلے مکہ ہوٹل کا نام درج کریں۔":"پہلے مدینہ ہوٹل کا نام درج کریں۔");return;}
+
+  if(!hotel){
+    alert(isMakkah?"پہلے مکہ ہوٹل کا نام درج کریں۔":"پہلے مدینہ ہوٹل کا نام درج کریں۔");
+    return;
+  }
+
   resultBox.style.display="block";
   resultBox.innerText="🔎 ہوٹل تلاش کیا جا رہا ہے...";
-  const names=isMakkah?["Makkah","Mecca"]:["Madinah","Medina"];
-  const queries=[hotel+", "+names[0]+", Saudi Arabia",hotel+" hotel, "+names[0]+", Saudi Arabia",hotel+", "+names[1]+", Saudi Arabia"];
-  try{
-    let data=[];
-    for(const q of queries){
-      const response=await fetch("https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q="+encodeURIComponent(q),{headers:{"Accept":"application/json"}});
-      if(response.ok){data=await response.json();if(data.length)break;}
+
+  const target=isMakkah
+    ? {lat:21.4225,lng:39.8262,name:"مسجد الحرام"}
+    : {lat:24.4672,lng:39.6111,name:"مسجد نبوی ﷺ"};
+
+  const cityNames=isMakkah
+    ? ["Makkah","Mecca","مكة","مکہ"]
+    : ["Madinah","Medina","Al Madinah Al Munawwarah","المدينة المنورة","مدینہ"];
+
+  // Known fallback for a hotel that is difficult to locate by name in OSM/Nominatim.
+  // Address supplied/tested for Darul Salam, Madinah.
+  const normalized=hotel.toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]/g,"");
+  const knownHotels=[
+    {
+      aliases:["darulsalam","darussalam","daralsalam","دارالسلام","دارالاسلام"],
+      city:"madinah",
+      lat:24.462890,
+      lng:39.601444,
+      label:"Darul Salam"
     }
-    if(!data.length){
-      resultBox.innerHTML="اس نام سے ہوٹل خودکار سرچ میں نہیں ملا۔"+
-      "<br><span class='muted'>Google Maps میں نام دیکھ سکتے ہیں، یا نیچے نقشے پر ہوٹل کی جگہ منتخب کرکے فاصلہ فوراً معلوم کریں۔</span>"+
-      "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں ہوٹل دیکھیں</button>"+
-      "<button class='main-btn' onclick=\"showHotelPicker('"+city+"')\">📌 نقشے پر ہوٹل منتخب کریں</button>"+
-      "<div id='"+city+"HotelPicker' style='height:280px;margin-top:12px;border-radius:14px;overflow:hidden;display:none'></div>";
+  ];
+
+  const known=knownHotels.find(function(h){
+    return h.city===city && h.aliases.some(function(a){
+      return normalized.includes(a.toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]/g,""));
+    });
+  });
+
+  if(known){
+    showHotelSearchResult(city,resultBox,known.lat,known.lng,known.label,target,"محفوظ شدہ درست مقام");
+    return;
+  }
+
+  // Try several useful name/city combinations instead of stopping at the first weak match.
+  const queries=[];
+  cityNames.forEach(function(cityName){
+    queries.push(hotel+", "+cityName+", Saudi Arabia");
+    queries.push(hotel+" Hotel, "+cityName+", Saudi Arabia");
+    queries.push("Hotel "+hotel+", "+cityName+", Saudi Arabia");
+  });
+  queries.push(hotel+", Saudi Arabia");
+
+  try{
+    let allResults=[];
+
+    for(const q of queries){
+      const response=await fetch(
+        "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&namedetails=1&limit=10&countrycodes=sa&q="+encodeURIComponent(q),
+        {headers:{"Accept":"application/json"}}
+      );
+
+      if(response.ok){
+        const batch=await response.json();
+        if(Array.isArray(batch)) allResults=allResults.concat(batch);
+      }
+    }
+
+    // Remove duplicate coordinates.
+    const seen={};
+    allResults=allResults.filter(function(x){
+      const key=Number(x.lat).toFixed(5)+","+Number(x.lon).toFixed(5);
+      if(seen[key]) return false;
+      seen[key]=true;
+      return true;
+    });
+
+    // Reject results implausibly far from the selected holy city.
+    const nearby=allResults.filter(function(x){
+      const d=distanceKm(Number(x.lat),Number(x.lon),target.lat,target.lng);
+      return Number.isFinite(d) && d<=35;
+    });
+
+    if(!nearby.length){
+      showHotelSearchFallback(city,resultBox,hotel);
       return;
     }
-    const target=isMakkah?{lat:21.4225,lng:39.8262,name:"مسجد الحرام"}:{lat:24.4672,lng:39.6111,name:"مسجد نبوی ﷺ"};
-    data.sort((a,b)=>distanceKm(Number(a.lat),Number(a.lon),target.lat,target.lng)-distanceKm(Number(b.lat),Number(b.lon),target.lat,target.lng));
-    const hotelLat=Number(data[0].lat),hotelLng=Number(data[0].lon);
-    const km=distanceKm(hotelLat,hotelLng,target.lat,target.lng);
-    const meters=Math.round(km*1000);
-    const distanceText=meters<1000?meters.toLocaleString()+" میٹر":km.toFixed(2)+" کلومیٹر";
-    window[isMakkah?"makkahHotelCoords":"madinahHotelCoords"]={lat:hotelLat,lng:hotelLng};
-    resultBox.innerHTML="📍 <b>"+esc(hotel)+"</b><br>"+target.name+" سے سیدھا فاصلہ تقریباً <b>"+distanceText+"</b> ہے۔"+
-    "<br><span class='muted'>اصل walking/road distance مختلف ہو سکتا ہے۔</span>"+
-    "<button class='outline-btn' onclick=\"openHotelRoute('"+city+"')\">🚶 Google Maps میں walking route</button>";
+
+    // Rank by how well the returned name resembles what the user typed,
+    // while also preferring sensible proximity to the selected city.
+    const words=hotel.toLowerCase().split(/\s+/).filter(function(w){return w.length>1;});
+
+    nearby.forEach(function(x){
+      const display=(x.display_name||"").toLowerCase();
+      const named=JSON.stringify(x.namedetails||{}).toLowerCase();
+      let score=0;
+
+      words.forEach(function(w){
+        if(display.includes(w)) score+=12;
+        if(named.includes(w)) score+=8;
+      });
+
+      const type=((x.type||"")+" "+(x.class||"")).toLowerCase();
+      if(type.includes("hotel")||type.includes("tourism")) score+=8;
+
+      const d=distanceKm(Number(x.lat),Number(x.lon),target.lat,target.lng);
+      score-=Math.min(d,20)*0.15;
+      x._score=score;
+      x._distance=d;
+    });
+
+    nearby.sort(function(a,b){return b._score-a._score;});
+    const best=nearby[0];
+
+    // If the result does not resemble the entered hotel name enough,
+    // don't silently choose a wrong nearby place.
+    if(!best || best._score<7){
+      showHotelSearchFallback(city,resultBox,hotel);
+      return;
+    }
+
+    const label=(best.namedetails && (best.namedetails.name || best.namedetails["name:en"]))
+      || (best.display_name ? best.display_name.split(",")[0] : hotel);
+
+    showHotelSearchResult(
+      city,
+      resultBox,
+      Number(best.lat),
+      Number(best.lon),
+      label,
+      target,
+      "OpenStreetMap search"
+    );
+
   }catch(e){
-    resultBox.innerHTML="ہوٹل سرچ سروس سے رابطہ نہیں ہو سکا۔"+
-    "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں تلاش کریں</button>";
+    showHotelSearchFallback(city,resultBox,hotel,true);
   }
+}
+
+function showHotelSearchResult(city,resultBox,hotelLat,hotelLng,label,target,source){
+  const isMakkah=city==="makkah";
+  const km=distanceKm(hotelLat,hotelLng,target.lat,target.lng);
+  const meters=Math.round(km*1000);
+  const distanceText=meters<1000
+    ? meters.toLocaleString()+" میٹر"
+    : km.toFixed(2)+" کلومیٹر";
+
+  window[isMakkah?"makkahHotelCoords":"madinahHotelCoords"]={
+    lat:hotelLat,
+    lng:hotelLng
+  };
+
+  resultBox.innerHTML=
+    "📍 <b>"+esc(label)+"</b><br>"+
+    target.name+" سے سیدھا فاصلہ تقریباً <b>"+distanceText+"</b> ہے۔"+
+    "<br><span class='muted'>اصل walking/road distance مختلف ہو سکتا ہے۔</span>"+
+    "<br><span class='muted'>مقام: "+esc(source)+"</span>"+
+    "<button class='outline-btn' onclick=\"openHotelRoute('"+city+"')\">🚶 Google Maps میں walking route</button>"+
+    "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🔎 Google Maps میں نام verify کریں</button>";
+}
+
+function showHotelSearchFallback(city,resultBox,hotel,networkError){
+  const heading=networkError
+    ?"ہوٹل سرچ سروس سے رابطہ نہیں ہو سکا۔"
+    :"اس نام سے قابلِ اعتماد ہوٹل خودکار طور پر نہیں ملا۔";
+
+  resultBox.innerHTML=
+    heading+
+    "<br><span class='muted'>غلط ہوٹل منتخب کرنے کے بجائے Google Maps میں نام verify کریں، یا نیچے نقشے پر صحیح جگہ منتخب کریں۔</span>"+
+    "<button class='outline-btn' onclick=\"openHotelSearch('"+city+"')\">🗺️ Google Maps میں ہوٹل تلاش کریں</button>"+
+    "<button class='main-btn' onclick=\"showHotelPicker('"+city+"')\">📌 نقشے پر ہوٹل منتخب کریں</button>"+
+    "<div id='"+city+"HotelPicker' style='height:280px;margin-top:12px;border-radius:14px;overflow:hidden;display:none'></div>";
 }
 
 let hotelPickerMap=null;
