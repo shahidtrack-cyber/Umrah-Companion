@@ -1,0 +1,33 @@
+name: Prepare Makkah and Madinah offline map data
+on:
+  workflow_dispatch:
+    inputs:
+      source_url:
+        description: 'Current Protomaps planet .pmtiles URL from maps.protomaps.com/builds'
+        required: true
+        type: string
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PMTiles CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo protomaps/go-pmtiles --pattern '*Linux_x86_64.tar.gz' --dir /tmp
+          tar -xzf /tmp/*Linux_x86_64.tar.gz -C /tmp
+          sudo install /tmp/pmtiles /usr/local/bin/pmtiles
+      - name: Extract regional map data
+        env:
+          SOURCE_URL: ${{ inputs.source_url }}
+        run: |
+          mkdir -p offline-map
+          pmtiles extract "$SOURCE_URL" offline-map/makkah.pmtiles --bbox=39.68,21.30,39.99,21.56 --maxzoom=15
+          pmtiles extract "$SOURCE_URL" offline-map/madinah.pmtiles --bbox=39.45,24.35,39.78,24.61 --maxzoom=15
+          pmtiles verify offline-map/makkah.pmtiles
+          pmtiles verify offline-map/madinah.pmtiles
+      - name: Downloadable map files
+        uses: actions/upload-artifact@v4
+        with:
+          name: makkah-madinah-offline-map-data
+          path: offline-map/*.pmtiles
