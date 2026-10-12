@@ -210,6 +210,15 @@ h2{margin:0;font-size:23px}
 .hub-tile .hub-ico{display:block;font-size:30px;margin-bottom:8px}.hub-tile strong{font-size:19px;display:block}.hub-tile small{font-size:13px;color:#64756c}
 .hub-info{background:#fffaf0;border:1px solid #e6d5aa;border-radius:17px;padding:15px;margin:0 0 15px;line-height:1.9}
 @media(max-width:360px){.bottom-nav .nav{font-size:10px}.bottom-nav .nav span{font-size:21px}}
+
+/* Qibla card and compass */
+.prayer-city{justify-content:flex-start;padding-right:0;padding-left:115px;min-height:102px;position:relative;flex-wrap:wrap}
+.qibla-card{position:absolute;left:0;top:0;width:102px;height:104px;border:1px solid #d8b970!important;border-radius:23px!important;background:linear-gradient(145deg,#ffffff29,#ffffff0d)!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#fff!important;box-shadow:0 4px 16px #002d221f;cursor:pointer}
+.qibla-card .qibla-dial{width:49px;height:49px;display:grid;place-items:center;border:3px solid #d7b66c;border-radius:50%;color:#f5d48c;font:32px Arial;transform:rotate(-45deg)}
+.qibla-card strong{font:700 16px Arial}.qibla-card small{font:10px Arial;color:#f4dfad}
+.qibla-panel{text-align:center}.qibla-compass{position:relative;width:min(72vw,270px);height:min(72vw,270px);border:10px solid #c6a45d;border-radius:50%;margin:22px auto;background:radial-gradient(circle,#0d6650,#07382e);box-shadow:0 8px 25px #063f3529;display:grid;place-items:center}
+.qibla-needle{font:96px Arial;color:#e6c679;transition:transform .2s ease;transform:rotate(-90deg);text-shadow:0 2px 9px #0005}.qibla-north{position:absolute;top:8px;color:white;font:700 16px Arial}.qibla-result{font-size:19px;color:#0b604a;min-height:35px}
+@media(max-width:360px){.prayer-city{padding-left:100px}.qibla-card{width:92px;height:98px}}
 </style>
 </head>
 
@@ -272,7 +281,7 @@ h2{margin:0;font-size:23px}
 <div class="premium-hero">
  <div class="premium-top"><div><div class="premium-name" id="premiumGreeting">السلام علیکم</div><div class="premium-title">Umrah Companion</div></div><div class="premium-avatar" role="img" aria-label="Kaaba">🕋</div></div>
  <div class="prayer-hero"><div class="eyebrow" id="nextPrayerLabel">اگلی نماز</div><div class="next-name" id="nextPrayerName">نماز کے اوقات</div><div class="next-clock" id="nextPrayerClock">--:--</div><div class="countdown" id="nextPrayerCountdown">مقام منتخب کریں</div></div>
- <div class="prayer-city"><span id="prayerLocationText">📍 Makkah</span><button onclick="choosePrayerCity()" aria-label="شہر تبدیل کریں">✎ شہر</button><button class="qibla-button" onclick="openQibla()">🧭 قبلہ</button></div>
+ <div class="prayer-city"><span id="prayerLocationText">📍 Makkah</span><button onclick="choosePrayerCity()" aria-label="شہر تبدیل کریں">✎ شہر</button><button class="qibla-card" onclick="openQibla()" aria-label="Open Qibla compass"><span class="qibla-dial">➤</span><strong>Qibla</strong><small>Find direction</small></button></div>
  <div class="prayer-strip" id="prayerStrip"><div class="prayer-chip">نماز کے اوقات لوڈ ہو رہے ہیں…</div></div>
  </div>
  <div class="premium-body">
@@ -1500,7 +1509,8 @@ function goToServices(){goHome();setActiveNav('discover');setTimeout(()=>documen
 function showPage(key){
   if(document.getElementById("home").style.display!=="none") homeScrollPosition=window.scrollY||0;
   let title="",html="";
-  if(key==="discoverHub"){title="Discover · دریافت کریں";html=discoverHubHTML()}
+  if(key==="qiblaCompass"){title="Qibla · قبلہ";html=qiblaHTML()}
+  else if(key==="discoverHub"){title="Discover · دریافت کریں";html=discoverHubHTML()}
   else if(key==="journeyHub"){title="My Journey · میرا سفر";html=journeyHubHTML()}
   else if(key==="planHub"){title="Plan · سفر کی تیاری";html=planHubHTML()}
   else if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
@@ -1660,10 +1670,32 @@ function bearingToKaaba(lat,lng){
  const y=Math.sin(dLon)*Math.cos(lat2),x=Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
  return (Math.atan2(y,x)*180/Math.PI+360)%360;
 }
-async function openQibla(){
- try{const p=await requestCoordinates(),bearing=bearingToKaaba(p.lat,p.lng);
-  alert('قبلہ کی سمت شمال سے تقریباً '+bearing.toFixed(1)+'° ہے۔ یہ GPS پر مبنی زاویہ ہے، لائیو سینسر Compass نہیں۔ شمال معلوم کرنے کے لیے موبائل کا Compass استعمال کریں۔');
- }catch(e){alert('GPS دستیاب نہیں۔ براہِ کرم Location کی اجازت دیں، یا شہر منتخب کریں۔');}
+let qiblaHeadingHandler=null;
+function qiblaHTML(){return `<div class="info qibla-panel"><h3>🧭 Qibla Direction</h3><p>اپنی موجودہ جگہ سے قبلہ کی سمت معلوم کریں۔</p><div class="qibla-compass"><div class="qibla-needle" id="qiblaNeedle">➤</div><span class="qibla-north">N</span></div><div id="qiblaResult" class="qibla-result">Location کی اجازت دے کر سمت معلوم کریں۔</div><button class="main-btn" onclick="startQiblaCompass()">📍 Find Qibla</button><button class="outline-btn" onclick="stopQiblaCompass();goHome()">واپس Dashboard</button><p class="muted" style="font-size:14px;margin-top:12px">Compass sensor دستیاب ہو تو تیر حرکت کرے گا۔ ورنہ شمال سے زاویہ دکھایا جائے گا۔ GPS اور sensor کی accuracy مختلف ہو سکتی ہے۔</p></div>`}
+function stopQiblaCompass(){if(qiblaHeadingHandler){window.removeEventListener('deviceorientationabsolute',qiblaHeadingHandler);window.removeEventListener('deviceorientation',qiblaHeadingHandler);qiblaHeadingHandler=null;}}
+function openQibla(){stopQiblaCompass();showPage('qiblaCompass');}
+async function startQiblaCompass(){
+ const box=document.getElementById('qiblaResult'),needle=document.getElementById('qiblaNeedle');if(!box||!needle)return;
+ box.textContent='GPS سے مقام حاصل کیا جا رہا ہے…';
+ try{
+  const p=await requestCoordinates(),bearing=bearingToKaaba(p.lat,p.lng);
+  box.textContent='شمال سے قبلہ کا زاویہ: '+bearing.toFixed(1)+'°';
+  needle.style.transform='rotate('+(bearing-90)+'deg)';
+  stopQiblaCompass();
+  if(typeof DeviceOrientationEvent!=='undefined'){
+   if(typeof DeviceOrientationEvent.requestPermission==='function'){
+    const permission=await DeviceOrientationEvent.requestPermission();if(permission!=='granted')return;
+   }
+   qiblaHeadingHandler=function(e){
+    let heading=typeof e.webkitCompassHeading==='number'?e.webkitCompassHeading:(e.absolute&&typeof e.alpha==='number'?(360-e.alpha)%360:null);
+    if(heading===null)return;
+    needle.style.transform='rotate('+(bearing-heading-90)+'deg)';
+    box.textContent='قبلہ: '+bearing.toFixed(1)+'° شمال سے • Live compass';
+   };
+   window.addEventListener('deviceorientationabsolute',qiblaHeadingHandler);
+   window.addEventListener('deviceorientation',qiblaHeadingHandler);
+  }
+ }catch(e){box.textContent='GPS دستیاب نہیں۔ موبائل کی Location آن کریں اور App کو اجازت دیں۔';}
 }
 function prayerSettingsHTML(){const p=load('umrahPreferences',{}),c=prayerCity();return `<div class="info"><h3>⚙️ نماز اور زبان کی سیٹنگز</h3>
  <div class="field"><label>زبان (Dashboard کی منتخب معلومات)</label><select id="prefLanguage"><option value="ur" ${p.language!=='en'?'selected':''}>اردو</option><option value="en" ${p.language==='en'?'selected':''}>English</option></select></div>
