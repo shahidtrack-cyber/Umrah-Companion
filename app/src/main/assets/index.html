@@ -217,7 +217,7 @@ h2{margin:0;font-size:23px}
 .qibla-card .qibla-dial{width:49px;height:49px;display:grid;place-items:center;border:3px solid #d7b66c;border-radius:50%;color:#f5d48c;font:32px Arial;transform:rotate(-45deg)}
 .qibla-card strong{font:700 16px Arial}.qibla-card small{font:10px Arial;color:#f4dfad}
 .qibla-panel{text-align:center}.qibla-compass{position:relative;width:min(72vw,270px);height:min(72vw,270px);border:10px solid #c6a45d;border-radius:50%;margin:22px auto;background:radial-gradient(circle,#0d6650,#07382e);box-shadow:0 8px 25px #063f3529;display:grid;place-items:center}
-.qibla-needle{font:96px Arial;color:#e6c679;transition:transform .2s ease;transform:rotate(-90deg);text-shadow:0 2px 9px #0005}.qibla-north{position:absolute;top:8px;color:white;font:700 16px Arial}.qibla-result{font-size:19px;color:#0b604a;min-height:35px}
+.qibla-needle{font:96px Arial;color:#e6c679;transition:transform .2s ease;transform:rotate(-90deg);text-shadow:0 2px 9px #0005}.qibla-north{position:absolute;top:8px;color:white;font:700 16px Arial}.qibla-needle{position:relative;display:inline-block;line-height:1}.qibla-kaaba{position:absolute;top:-18px;right:-17px;font-size:30px;line-height:1;filter:drop-shadow(0 2px 3px #0008)}.qibla-result{font-size:19px;color:#0b604a;min-height:35px}
 @media(max-width:360px){.prayer-city{padding-left:100px}.qibla-card{width:92px;height:98px}}
 </style>
 </head>
@@ -281,7 +281,7 @@ h2{margin:0;font-size:23px}
 <div class="premium-hero">
  <div class="premium-top"><div><div class="premium-name" id="premiumGreeting">السلام علیکم</div><div class="premium-title">Umrah Companion</div></div><div class="premium-avatar" role="img" aria-label="Kaaba">🕋</div></div>
  <div class="prayer-hero"><div class="eyebrow" id="nextPrayerLabel">اگلی نماز</div><div class="next-name" id="nextPrayerName">نماز کے اوقات</div><div class="next-clock" id="nextPrayerClock">--:--</div><div class="countdown" id="nextPrayerCountdown">مقام منتخب کریں</div></div>
- <div class="prayer-city"><span id="prayerLocationText">📍 Makkah</span><button onclick="choosePrayerCity()" aria-label="شہر تبدیل کریں">✎ شہر</button><button class="qibla-card" onclick="openQibla()" aria-label="Open Qibla compass"><span class="qibla-dial">➤</span><strong>Qibla</strong><small>Find direction</small></button></div>
+ <div class="prayer-city"><span id="prayerLocationText">📍 Makkah</span><button onclick="enableAutoPrayerLocation()" aria-label="موجودہ مقام خودکار حاصل کریں">📍 Auto GPS</button><button class="qibla-card" onclick="openQibla()" aria-label="Open Qibla compass"><span class="qibla-dial">➤</span><strong>Qibla</strong><small>Find direction</small></button></div>
  <div class="prayer-strip" id="prayerStrip"><div class="prayer-chip">نماز کے اوقات لوڈ ہو رہے ہیں…</div></div>
  </div>
  <div class="premium-body">
@@ -1594,6 +1594,12 @@ function choosePrayerCity(){
  const prefs=load('umrahPreferences',{});prefs.prayerMode='manual';save('umrahPreferences',prefs);
  save('prayerCity',{city:city.trim(),country:country.trim()});prayerCoordinates=null;loadPrayerTimes();
 }
+async function enableAutoPrayerLocation(){
+ const prefs=load('umrahPreferences',{});prefs.prayerMode='automatic';save('umrahPreferences',prefs);
+ const loc=document.getElementById('prayerLocationText');if(loc)loc.textContent='📍 GPS تلاش جاری ہے…';
+ await loadPrayerTimes();
+ if(!prayerCoordinates)alert('موبائل کی Location آن کریں اور Umrah Companion کو Location permission دیں۔ اگر اجازت کے باوجود GPS نہ چلے تو Android App میں Location Bridge/Permissions چیک کرنا ہوں گی۔');
+}
 function cityParts(zone){
  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:zone||'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
  const x={};parts.forEach(p=>{x[p.type]=p.value});return x;
@@ -1631,7 +1637,7 @@ function requestCoordinates(){return new Promise((resolve,reject)=>{
 async function loadPrayerTimes(){
  const request=++prayerRequestId,prefs=load('umrahPreferences',{}),c=prayerCity();prayerSchedule=null;renderPrayer();
  let url='',location=c.city;
- if(prefs.prayerMode==='automatic'){
+ if(prefs.prayerMode!=='manual'){
   try{prayerCoordinates=await requestCoordinates();location='GPS';url='https://api.aladhan.com/v1/timings?latitude='+encodeURIComponent(prayerCoordinates.lat)+'&longitude='+encodeURIComponent(prayerCoordinates.lng)+'&method='+prayerMethod();}
   catch(e){prayerCoordinates=null;location=c.city+' (GPS دستیاب نہیں)';}
  }
@@ -1671,7 +1677,7 @@ function bearingToKaaba(lat,lng){
  return (Math.atan2(y,x)*180/Math.PI+360)%360;
 }
 let qiblaHeadingHandler=null;
-function qiblaHTML(){return `<div class="info qibla-panel"><h3>🧭 Qibla Direction</h3><p>اپنی موجودہ جگہ سے قبلہ کی سمت معلوم کریں۔</p><div class="qibla-compass"><div class="qibla-needle" id="qiblaNeedle">➤</div><span class="qibla-north">N</span></div><div id="qiblaResult" class="qibla-result">Location کی اجازت دے کر سمت معلوم کریں۔</div><button class="main-btn" onclick="startQiblaCompass()">📍 Find Qibla</button><button class="outline-btn" onclick="stopQiblaCompass();goHome()">واپس Dashboard</button><p class="muted" style="font-size:14px;margin-top:12px">Compass sensor دستیاب ہو تو تیر حرکت کرے گا۔ ورنہ شمال سے زاویہ دکھایا جائے گا۔ GPS اور sensor کی accuracy مختلف ہو سکتی ہے۔</p></div>`}
+function qiblaHTML(){return `<div class="info qibla-panel"><h3>🧭 Qibla Direction</h3><p>اپنی موجودہ جگہ سے قبلہ کی سمت معلوم کریں۔</p><div class="qibla-compass"><div class="qibla-needle" id="qiblaNeedle">➤<span class="qibla-kaaba">🕋</span></div><span class="qibla-north">N</span></div><div id="qiblaResult" class="qibla-result">Location کی اجازت دے کر سمت معلوم کریں۔</div><button class="main-btn" onclick="startQiblaCompass()">📍 Find Qibla</button><button class="outline-btn" onclick="stopQiblaCompass();goHome()">واپس Dashboard</button><p class="muted" style="font-size:14px;margin-top:12px">Compass sensor دستیاب ہو تو تیر حرکت کرے گا۔ ورنہ شمال سے زاویہ دکھایا جائے گا۔ GPS اور sensor کی accuracy مختلف ہو سکتی ہے۔</p></div>`}
 function stopQiblaCompass(){if(qiblaHeadingHandler){window.removeEventListener('deviceorientationabsolute',qiblaHeadingHandler);window.removeEventListener('deviceorientation',qiblaHeadingHandler);qiblaHeadingHandler=null;}}
 function openQibla(){stopQiblaCompass();showPage('qiblaCompass');}
 async function startQiblaCompass(){
@@ -1699,7 +1705,7 @@ async function startQiblaCompass(){
 }
 function prayerSettingsHTML(){const p=load('umrahPreferences',{}),c=prayerCity();return `<div class="info"><h3>⚙️ نماز اور زبان کی سیٹنگز</h3>
  <div class="field"><label>زبان (Dashboard کی منتخب معلومات)</label><select id="prefLanguage"><option value="ur" ${p.language!=='en'?'selected':''}>اردو</option><option value="en" ${p.language==='en'?'selected':''}>English</option></select></div>
- <div class="field"><label>نماز کے اوقات</label><select id="prefPrayerMode"><option value="manual" ${p.prayerMode!=='automatic'?'selected':''}>شہر دستی طور پر</option><option value="automatic" ${p.prayerMode==='automatic'?'selected':''}>GPS سے خودکار</option></select></div>
+ <div class="field"><label>نماز کے اوقات</label><select id="prefPrayerMode"><option value="manual" ${p.prayerMode==='manual'?'selected':''}>شہر دستی طور پر</option><option value="automatic" ${p.prayerMode!=='manual'?'selected':''}>GPS سے خودکار</option></select></div>
  <div class="field"><label>Calculation Method</label><select id="prefMethod"><option value="UmmAlQura" ${p.method==='UmmAlQura'?'selected':''}>Umm Al-Qura</option><option value="Karachi" ${p.method==='Karachi'?'selected':''}>Karachi</option><option value="MWL" ${p.method==='MWL'?'selected':''}>Muslim World League</option></select></div>
  <label class="check-item"><input id="prefNotifications" type="checkbox" ${p.notifications?'checked':''}> نماز کے وقت Android Notification</label>
  <label class="check-item"><input id="prefAdvance" type="checkbox" ${p.prayers&&p.prayers.advance?'checked':''}> نماز سے 15 منٹ پہلے</label>
@@ -1714,7 +1720,7 @@ function initPremiumHome(){
 /* Onboarding is separate from the existing profile/travel data. */
 const OB_KEY="umrah_onboarding_v1";
 let obStep=0;
-let obPrefs={arabic:true,language:"ur",prayerMode:"manual",notifications:false,method:"UmmAlQura",prayers:{fajr:true,dhuhr:true,asr:true,maghrib:true,isha:true,advance:false}};
+let obPrefs={arabic:true,language:"ur",prayerMode:"automatic",notifications:false,method:"UmmAlQura",prayers:{fajr:true,dhuhr:true,asr:true,maghrib:true,isha:true,advance:false}};
 function obButton(label,fn,secondary=false){return `<button class="${secondary?'ob-secondary':'ob-primary'}" onclick="${fn}">${label}</button>`}
 function obWrap(body,privacy=false){return `<div class="ob-screen ${privacy?'ob-privacy':'ob-pattern'}">${body}</div>`}
 function obChoice(name,value,label){return `<button class="ob-choice ${obPrefs[name]===value?'selected':''}" onclick="obSet('${name}',${JSON.stringify(value).replace(/"/g,'&quot;')})">${label}</button>`}
