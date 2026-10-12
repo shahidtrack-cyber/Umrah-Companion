@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>Umrah Companion</title>
+<title>Umrah Companion · Updated 2026.10</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -182,6 +182,34 @@ h2{margin:0;font-size:23px}
 .premium-body{padding:4px 0 16px}.premium-section{margin:20px 16px}.premium-section h2{font-size:23px;color:#173b31;margin-bottom:10px}.verse-card{background:#fffdf5;border:1px solid #e7d9b6;border-radius:21px;padding:20px 17px;text-align:center;box-shadow:0 5px 20px #00000008}.verse-card .verse-heading{font:700 11px Arial,sans-serif;letter-spacing:2px;color:#967737}.verse-ar{font-family:MuhammadiQuran,serif;font-size:27px;line-height:2.3;color:#205747;margin:8px 0}.verse-translation{font-size:18px;color:#5c665c}.verse-ref{font-size:14px;color:#9b7d45;margin-top:8px}.verse-dots{display:flex;justify-content:center;gap:7px;margin-top:12px}.verse-dots button{width:8px;height:8px;padding:0;border:0;border-radius:20px;background:#d8d2c2}.verse-dots button.active{width:20px;background:#a68a4b}
 .premium-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.quick-item{border:1px solid #e5e9e2;background:#fff;border-radius:17px;padding:12px 2px;font-size:15px;text-align:center;color:#174d3d}.quick-item span{display:block;font-size:25px;margin-bottom:4px}.home-legacy-title{padding:0 16px;margin-top:22px}.home-legacy-title h2{color:#184e3d}
 @media(max-width:360px){.prayer-hero .next-clock{font-size:39px}.prayer-chip .prayer-time{font-size:10px}.premium-quick{gap:5px}.quick-item{font-size:13px}}
+/* Reference-inspired home refinements; original emerald/gold identity retained */
+:root{--bg:#f8f5ed;--gold:#d5b16a}
+.premium-hero{padding:23px 18px 30px;background:radial-gradient(circle at 95% 0%,#21735c 0%,transparent 45%),linear-gradient(150deg,#073a30,#075640 72%,#0c7155);box-shadow:0 9px 26px #0b463020}
+.premium-avatar{background:#ffffff15;width:49px;height:49px;box-shadow:0 2px 10px #0002}
+.premium-top .premium-title{font-family:Arial,sans-serif;font-size:23px;letter-spacing:.2px;margin-top:5px}
+.prayer-hero{margin:25px 0 18px}.prayer-hero .next-clock{font-size:49px;letter-spacing:1px}.prayer-hero .countdown{color:#e8e6d7}
+.prayer-strip{gap:5px}.prayer-chip{padding:12px 1px;border-radius:15px;background:#ffffff15}.prayer-chip.current{background:linear-gradient(140deg,#f2d992,#cda65a)}
+.premium-body{padding-top:6px}.premium-section{margin:21px 16px}.premium-section h2{font-size:22px}
+.verse-card{border-color:#e5d7b6;box-shadow:0 7px 20px #5b4c2b10}
+.quick-item{min-height:84px;box-shadow:0 3px 11px #2045320b;border-color:#e7e2d7;transition:transform .15s}.quick-item:active{transform:scale(.96)}
+.quick-item span{font-size:28px}.discover-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.discover-head button{border:0;background:none;color:#08735a;font-size:16px}
+.journey-highlight{margin:8px 16px 18px;padding:17px;background:#fff;border:1px solid #e9e1d2;border-radius:20px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 4px 16px #1647320a}
+.journey-highlight strong{font-size:20px;color:#164a39}.journey-highlight small{display:block;font-size:15px;color:#6e786d}.journey-highlight button{background:#0c604a;color:#fff;border:0;border-radius:12px;padding:9px 15px;font-size:16px}
+.bottom-nav{height:76px;border-top:1px solid #e6e1d8;box-shadow:0 -6px 22px #102f2410;grid-template-columns:repeat(5,minmax(0,1fr));padding-bottom:env(safe-area-inset-bottom)}
+.nav{font-size:12px;line-height:1.2}.nav span{font-size:22px;margin-bottom:5px}.nav.active{color:#087057;font-weight:bold}.nav:focus-visible,.quick-item:focus-visible{outline:2px solid #b88b37;outline-offset:-2px}
+@media(max-width:360px){.nav{font-size:11px}.premium-top .premium-title{font-size:20px}}
+
+/* Dashboard v3 — distinct reference-inspired tab screens, existing modules untouched */
+.bottom-nav{height:76px;grid-template-columns:repeat(5,minmax(0,1fr));box-shadow:0 -6px 25px #102e2512;padding:6px 4px max(5px,env(safe-area-inset-bottom));border-radius:18px 18px 0 0}
+.bottom-nav .nav{font:600 11px Arial,sans-serif;border-radius:14px;background:transparent;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;min-width:0;white-space:nowrap}
+.bottom-nav .nav span{font-size:23px;line-height:1.1}.bottom-nav .nav.active{background:#e8f3ed;color:#075b43}
+.hub-head{background:linear-gradient(135deg,#073b30,#0d7054);color:#fff;border-radius:22px;padding:23px 18px;margin-bottom:16px;box-shadow:0 9px 22px #0b51301c}
+.hub-head h2{color:#f0d38c;font-size:28px}.hub-head p{margin:7px 0 0;line-height:1.8;font-size:17px}
+.hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.hub-tile{background:#fff;border:1px solid #e7e8df;border-radius:18px;padding:17px 12px;min-height:112px;text-align:right;box-shadow:0 3px 12px #00000008;color:#184637;cursor:pointer}
+.hub-tile .hub-ico{display:block;font-size:30px;margin-bottom:8px}.hub-tile strong{font-size:19px;display:block}.hub-tile small{font-size:13px;color:#64756c}
+.hub-info{background:#fffaf0;border:1px solid #e6d5aa;border-radius:17px;padding:15px;margin:0 0 15px;line-height:1.9}
+@media(max-width:360px){.bottom-nav .nav{font-size:10px}.bottom-nav .nav span{font-size:21px}}
 </style>
 </head>
 
@@ -242,15 +270,16 @@ h2{margin:0;font-size:23px}
 </div>
 <div id="home" class="app">
 <div class="premium-hero">
- <div class="premium-top"><div><div class="premium-name" id="premiumGreeting">السلام علیکم</div><div class="premium-title">Umrah Companion</div></div><div class="premium-avatar">🕋</div></div>
+ <div class="premium-top"><div><div class="premium-name" id="premiumGreeting">السلام علیکم</div><div class="premium-title">Umrah Companion</div></div><div class="premium-avatar" role="img" aria-label="Kaaba">🕋</div></div>
  <div class="prayer-hero"><div class="eyebrow" id="nextPrayerLabel">اگلی نماز</div><div class="next-name" id="nextPrayerName">نماز کے اوقات</div><div class="next-clock" id="nextPrayerClock">--:--</div><div class="countdown" id="nextPrayerCountdown">مقام منتخب کریں</div></div>
  <div class="prayer-city"><span id="prayerLocationText">📍 Makkah</span><button onclick="choosePrayerCity()" aria-label="شہر تبدیل کریں">✎ شہر</button><button class="qibla-button" onclick="openQibla()">🧭 قبلہ</button></div>
  <div class="prayer-strip" id="prayerStrip"><div class="prayer-chip">نماز کے اوقات لوڈ ہو رہے ہیں…</div></div>
  </div>
  <div class="premium-body">
  <section class="premium-section"><h2 id="verseSectionTitle">آج کی آیت</h2><div class="verse-card"><div class="verse-heading">VERSE OF THE DAY</div><div class="verse-ar" id="verseArabic"></div><div class="verse-translation" id="verseTranslation"></div><div class="verse-ref" id="verseReference"></div><div class="verse-dots" id="verseDots"></div></div></section>
- <section class="premium-section"><h2>Discover · فوری سہولیات</h2><div class="premium-quick"><button class="quick-item" onclick="showPage('guide')"><span>🕋</span>عمرہ</button><button class="quick-item" onclick="showPage('duas')"><span>🤲</span>دعائیں</button><button class="quick-item" onclick="showPage('ziyarat')"><span>📍</span>زیارات</button><button class="quick-item" onclick="showPage('trip')"><span>✈️</span>سفر</button></div></section>
+ <section class="premium-section" id="discoverSection"><div class="discover-head"><h2>Discover · فوری سہولیات</h2><button onclick="showPage('discoverHub')">سب دیکھیں ←</button></div><div class="premium-quick"><button class="quick-item" onclick="showPage('guide')"><span>🕋</span>عمرہ</button><button class="quick-item" onclick="showPage('duas')"><span>🤲</span>دعائیں</button><button class="quick-item" onclick="openQibla()"><span>🧭</span>قبلہ</button><button class="quick-item" onclick="showPage('tawaf')"><span>🔄</span>طواف</button><button class="quick-item" onclick="showPage('ziyarat')"><span>📍</span>زیارات</button><button class="quick-item" onclick="showPage('checklist')"><span>✅</span>تیاری</button><button class="quick-item" onclick="showPage('myHotel')"><span>🏨</span>ہوٹل</button><button class="quick-item" onclick="showPage('nearMe')"><span>🗺️</span>قریب</button></div></section>
  </div>
+<div class="journey-highlight"><div><strong>✈️ My Journey</strong><small>اپنے عمرہ سفر کی تفصیلات اور تیاری</small></div><button onclick="showPage('trip')">کھولیں ←</button></div>
 <section class="card trip-card">
   <div class="row">
     <h2>میرا عمرہ</h2>
@@ -272,7 +301,7 @@ h2{margin:0;font-size:23px}
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="allServicesSection">
   <div class="section-title">
     <h2>تمام عمرہ خدمات</h2><span class="muted">ضروری سہولیات</span>
   </div>
@@ -297,6 +326,7 @@ h2{margin:0;font-size:23px}
     <div class="service" onclick="showPage('wallet')"><div class="icon">💰</div><h3>عمرہ والٹ</h3><p>ریال اور PKR کا حساب</p></div>
     <div class="service" onclick="showPage('emergency')"><div class="icon">🚨</div><h3>ایمرجنسی</h3><p>فوری مدد اور ضروری مقامات</p></div>
     <div class="service" onclick="showPage('myHotel')"><div class="icon">🏨</div><h3>میرا ہوٹل</h3><p>ہوٹل محفوظ کریں اور واپس جائیں</p></div>
+    <div class="service" onclick="showPage('settings')"><div class="icon">⚙️</div><h3>ایپ سیٹنگز</h3><p>زبان، شہر، نماز اور اطلاعات</p></div>
     <div class="service" onclick="showPage('reminders')"><div class="icon">⏰</div><h3>ریمائنڈرز</h3><p>اہم کام اور یاد دہانی</p></div>
     <div class="service" onclick="showPage('cityMode')"><div class="icon">🕋</div><h3>مکہ / مدینہ موڈ</h3><p>شہر کے مطابق فوری سہولیات</p></div>
     <div class="service" onclick="showPage('family')"><div class="icon">👨‍👩‍👧</div><h3>فیملی لوکیشن</h3><p>رضامندی کے ساتھ لوکیشن شیئرنگ</p></div>
@@ -313,11 +343,12 @@ h2{margin:0;font-size:23px}
   <div id="pageContent" class="page-content"></div>
 </div>
 
-<nav class="bottom-nav">
-  <button class="nav active" onclick="goHome()"><span>⌂</span>ہوم</button>
-  <button class="nav" onclick="showPage('trip')"><span>✈</span>میرا سفر</button>
-  <button class="nav" onclick="showPage('expenses')"><span>₨</span>اخراجات</button>
-  <button class="nav" onclick="showPage('profile')"><span>☰</span>مزید</button>
+<nav class="bottom-nav" aria-label="Main navigation">
+  <button class="nav active" data-nav="home" onclick="goHome()"><span>⌂</span>Home</button>
+  <button class="nav" data-nav="discover" onclick="showPage('discoverHub')"><span>◈</span>Discover</button>
+  <button class="nav" data-nav="journey" onclick="showPage('journeyHub')"><span>✈</span>Journey</button>
+  <button class="nav" data-nav="plan" onclick="showPage('planHub')"><span>☑</span>Plan</button>
+  <button class="nav" data-nav="profile" onclick="showPage('profile')"><span>♙</span>Profile</button>
 </nav>
 
 <script>
@@ -1108,51 +1139,14 @@ function initTransportMap(){
 let currentLng = null;
 let destination = "";
 
-function getCurrentLocation(){
-  if(!navigator.geolocation){
-    alert("آپ کے موبائل میں لوکیشن کی سہولت دستیاب نہیں ہے۔");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    function(position){
-      currentLat = position.coords.latitude;
-      currentLng = position.coords.longitude;
-
-      const text = document.getElementById("currentLocationText");
-      if(text){
-        text.innerText = "موجودہ مقام حاصل ہوگیا ✓";
-      }
-if(transportMap){
-  transportMap.setView([currentLat, currentLng], 16);
-
-  if(currentLocationMarker){
-    transportMap.removeLayer(currentLocationMarker);
-  }
-
-  currentLocationMarker = L.circleMarker(
-    [currentLat, currentLng],
-    {
-      radius:10,
-      color:"#075541",
-      fillColor:"#0b6b53",
-      fillOpacity:1
-    }
-  ).addTo(transportMap);
-}
-    const status = document.getElementById("mapStatus");
-if(status){
-  status.innerText = "📍 موجودہ مقام حاصل ہوگیا — اب اپنی منزل درج کریں";
-}
-    },
-    function(){
-      alert("لوکیشن حاصل نہیں ہوسکی۔ براہ کرم Location/GPS کی اجازت دیں۔");
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 10000
-    }
-  );
+async function getCurrentLocation(){
+ try{
+  const p=await requestCoordinates();currentLat=p.lat;currentLng=p.lng;
+  const text=document.getElementById('currentLocationText');if(text)text.innerText='موجودہ مقام حاصل ہوگیا ✓';
+  if(transportMap){transportMap.setView([currentLat,currentLng],16);if(currentLocationMarker)transportMap.removeLayer(currentLocationMarker);
+   currentLocationMarker=L.circleMarker([currentLat,currentLng],{radius:10,color:'#075541',fillColor:'#0b6b53',fillOpacity:1}).addTo(transportMap);}
+  const status=document.getElementById('mapStatus');if(status)status.innerText='📍 موجودہ مقام حاصل ہوگیا — اب اپنی منزل درج کریں';
+ }catch(e){alert('لوکیشن حاصل نہیں ہوسکی۔ براہ کرم Location/GPS کی اجازت دیں۔');}
 }
 function setDestinationFromInput(){
   const input = document.getElementById("destinationInput");
@@ -1396,8 +1390,8 @@ function saveReminder(){
   arr.push({id,title,when});
   save("reminders",arr);
 
-  if(window.Android && typeof Android.scheduleReminder==="function"){
-    Android.scheduleReminder(String(id),title,String(triggerAt));
+  if(window.AndroidReminder && typeof AndroidReminder.scheduleReminder==="function"){
+    AndroidReminder.scheduleReminder(title,triggerAt,id % 2147483647);
     alert("ریمائنڈر محفوظ ہوگیا اور Android کو شیڈول کرنے کی درخواست بھیج دی گئی۔ اطلاع آنے کے لیے اجازت اور فعال Android service ضروری ہیں۔");
   }else{
     alert("ریمائنڈر App میں محفوظ ہوگیا، لیکن Android alarm service دستیاب نہیں۔ نئی APK build/install کے بعد notification کام کرے گی۔");
@@ -1408,8 +1402,8 @@ function saveReminder(){
 function deleteReminder(i){
   const arr=load("reminders",[]);
   const item=arr[i];
-  if(item && item.id && window.Android && typeof Android.cancelReminder==="function"){
-    Android.cancelReminder(String(item.id));
+  if(item && item.id && window.AndroidReminder && typeof AndroidReminder.cancelReminder==="function"){
+    AndroidReminder.cancelReminder(item.id % 2147483647);
   }
   arr.splice(i,1);
   save("reminders",arr);
@@ -1463,14 +1457,11 @@ function openFamilyLocation(){
   if(!f.link){alert("پہلے Live Location link محفوظ کریں۔");return;}
   window.location.href=f.link;
 }
-function shareMyLocation(){
-  if(!navigator.geolocation){alert("لوکیشن دستیاب نہیں۔");return}
-  navigator.geolocation.getCurrentPosition(async function(p){
-    const url="https://www.google.com/maps?q="+p.coords.latitude+","+p.coords.longitude;
-    const msg="میری موجودہ لوکیشن: "+url;
-    if(navigator.share){try{await navigator.share({title:"Umrah Companion Location",text:msg,url:url});return}catch(e){}}
-    window.location.href="https://wa.me/?text="+encodeURIComponent(msg);
-  },function(){alert("Location/GPS کی اجازت دیں۔")},{enableHighAccuracy:true,timeout:10000});
+async function shareMyLocation(){
+ try{const p=await requestCoordinates(),url='https://www.google.com/maps?q='+p.lat+','+p.lng,msg='میری موجودہ لوکیشن: '+url;
+  if(navigator.share){try{await navigator.share({title:'Umrah Companion Location',text:msg,url:url});return;}catch(e){}}
+  window.location.href='https://wa.me/?text='+encodeURIComponent(msg);
+ }catch(e){alert('Location/GPS کی اجازت دیں۔');}
 }
 
 function wishIKnewHTML(){
@@ -1493,10 +1484,26 @@ function saveWishTip(){
 
 let homeScrollPosition=0;
 
+/* Each main tab opens its own functional hub, with links to original screens. */
+function hubTile(icon,title,desc,target){return `<button type="button" class="hub-tile" onclick="showPage('${target}')"><span class="hub-ico">${icon}</span><strong>${title}</strong><small>${desc}</small></button>`}
+function discoverHubHTML(){return `<div class="hub-head"><h2>✨ دریافت کریں</h2><p>عمرہ، عبادات، رہنمائی اور سفر کی تمام ضروری سہولیات ایک جگہ۔</p></div><div class="hub-grid">`+
+ hubTile('🕋','عمرہ گائیڈ','مکمل طریقہ','guide')+hubTile('🤲','دعائیں','مسنون دعائیں','duas')+hubTile('🔄','طواف و سعی','سات چکر کا کاؤنٹر','tawaf')+hubTile('📍','زیارات','مکہ اور مدینہ','ziyarat')+hubTile('🧭','آف لائن گائیڈ','بنیادی معلومات','offlineMap')+hubTile('🍽️','فوڈ گائیڈ','کھانا اور قیمتیں','foodGuide')+hubTile('🛍️','شاپنگ','خریداری کی رہنمائی','shopping')+hubTile('🚕','ٹرانسپورٹ','راستہ اور رائیڈ','transport')+hubTile('📍','میرے قریب','ضروری مقامات','nearMe')+hubTile('🚨','ایمرجنسی','فوری مدد','emergency')+`</div>`}
+function journeyHubHTML(){const t=load('trip',{}),p=load('profile',{});return `<div class="hub-head"><h2>✈️ میرا سفر</h2><p>${esc(p.name||'عمرہ مسافر')}، آپ کے مقدس سفر کی تمام معلومات یہاں محفوظ رہیں گی۔</p></div><div class="hub-info">📅 روانگی: <b>${esc(t.departure||'ابھی درج نہیں')}</b><br>🛬 واپسی: <b>${esc(t.returnDate||'ابھی درج نہیں')}</b><br>✈️ فلائٹ: <b>${esc(t.flight||'ابھی درج نہیں')}</b></div><div class="hub-grid">`+
+ hubTile('✈️','سفر کی تفصیل','تاریخ اور فلائٹ','trip')+hubTile('🏨','میرا ہوٹل','ہوٹل کا مقام','myHotel')+hubTile('🧳','عمرہ پیکیج','ٹکٹ اور رہائش','package')+hubTile('💰','اخراجات','بجٹ اور خرچ','expenses')+hubTile('📍','زیارات','اہم مقامات','ziyarat')+hubTile('👨‍👩‍👧','فیملی','لوکیشن شیئرنگ','family')+`</div>`}
+function planHubHTML(){return `<div class="hub-head"><h2>📋 سفر کی تیاری</h2><p>عمرہ سے پہلے اپنے تمام ضروری کام ایک ایک کر کے مکمل کریں۔</p></div><div class="hub-grid">`+
+ hubTile('☑️','چیک لسٹ','سامان اور دستاویزات','checklist')+hubTile('🕋','عمرہ گائیڈ','مناسک کی تیاری','guide')+hubTile('⏰','ریمائنڈرز','اہم کام یاد رکھیں','reminders')+hubTile('🧳','میرا پیکیج','ویزہ، ٹکٹ، ہوٹل','package')+hubTile('💳','عمرہ والٹ','کرنسی کا حساب','wallet')+hubTile('💡','سفری مشورے','تجربات سے سیکھیں','wishIKnew')+`</div>`}
+
+function setActiveNav(key){document.querySelectorAll('.bottom-nav .nav').forEach(b=>b.classList.toggle('active',b.dataset.nav===key));}
+function goToServices(){goHome();setActiveNav('discover');setTimeout(()=>document.getElementById('allServicesSection')?.scrollIntoView({behavior:'smooth',block:'start'}),50);}
+
+
 function showPage(key){
   if(document.getElementById("home").style.display!=="none") homeScrollPosition=window.scrollY||0;
   let title="",html="";
-  if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
+  if(key==="discoverHub"){title="Discover · دریافت کریں";html=discoverHubHTML()}
+  else if(key==="journeyHub"){title="My Journey · میرا سفر";html=journeyHubHTML()}
+  else if(key==="planHub"){title="Plan · سفر کی تیاری";html=planHubHTML()}
+  else if(key==="guide"){title="عمرہ گائیڈ";html=guideHTML}
   else if(key==="duas"){title="دعائیں";html=duasHTML}
   else if(key==="tawaf"){title="طواف و سعی";html=tawafHTML()}
   else if(key==="checklist"){title="میری تیاری";html=checklistHTML()}
@@ -1516,12 +1523,14 @@ else if(key==="wallet"){title="عمرہ والٹ";html=walletHTML()}
 else if(key==="emergency"){title="ایمرجنسی";html=emergencyHTML()}
 else if(key==="myHotel"){title="میرا ہوٹل";html=myHotelHTML()}
 else if(key==="reminders"){title="ریمائنڈرز";html=remindersHTML()}
+else if(key==="settings"){title="ایپ سیٹنگز";html=prayerSettingsHTML()}
 else if(key==="cityMode"){title="مکہ / مدینہ موڈ";html=cityModeHTML()}
 else if(key==="family"){title="فیملی لوکیشن";html=familyHTML()}
 else if(key==="wishIKnew"){title="کاش مجھے پہلے معلوم ہوتا";html=wishIKnewHTML()}
 else return;
  
 
+  setActiveNav(({journeyHub:"journey",planHub:"plan",discoverHub:"discover",trip:"journey",checklist:"plan",profile:"profile"})[key]||"discover");
   document.getElementById("home").style.display="none";
   document.getElementById("page").classList.add("active");
   document.getElementById("pageTitle").innerText=title;
@@ -1535,6 +1544,7 @@ else return;
 }
 
 function goHome(){
+  setActiveNav("home");
   document.getElementById("page").classList.remove("active");
   document.getElementById("home").style.display="block";
   updateHome();
@@ -1565,22 +1575,28 @@ function renderVerse(){
 function parsePrayerTime(t){const m=String(t||'').match(/^(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
 function prayerMethod(){const m=load('umrahPreferences',{}).method;return m==='Karachi'?1:m==='MWL'?3:4}
 function prayerCity(){return load('prayerCity',{city:'Makkah',country:'Saudi Arabia',zone:'Asia/Riyadh'})}
+let prayerCoordinates=null,prayerRequestId=0,prayerDateKey='',prayerLastLocation='';
 function choosePrayerCity(){
- const old=prayerCity();const city=prompt('شہر کا نام لکھیں (مثلاً Makkah, Madinah, Karachi)',old.city);
+ const old=prayerCity(),city=prompt('شہر کا نام لکھیں (مثلاً Makkah, Madinah, Karachi)',old.city);
  if(!city||!city.trim())return;
  const country=prompt('ملک کا نام لکھیں (مثلاً Saudi Arabia, Pakistan)',old.country);
  if(!country||!country.trim())return;
- save('prayerCity',{city:city.trim(),country:country.trim()});loadPrayerTimes();
+ const prefs=load('umrahPreferences',{});prefs.prayerMode='manual';save('umrahPreferences',prefs);
+ save('prayerCity',{city:city.trim(),country:country.trim()});prayerCoordinates=null;loadPrayerTimes();
 }
-function cityNow(zone){return new Date(new Date().toLocaleString('en-US',{timeZone:zone||'Asia/Riyadh'}))}
+function cityParts(zone){
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:zone||'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+ const x={};parts.forEach(p=>{x[p.type]=p.value});return x;
+}
+function cityNow(zone){const x=cityParts(zone);return {hours:Number(x.hour),minutes:Number(x.minute),seconds:Number(x.second),date:x.year+'-'+x.month+'-'+x.day}}
 function timeText(v){const m=parsePrayerTime(v);if(m===null)return '--:--';return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function renderPrayer(){
  const en=premiumLanguage()==='en';const location=prayerCity();
- document.getElementById('prayerLocationText').textContent='📍 '+location.city;
+ document.getElementById('prayerLocationText').textContent='📍 '+(prayerLastLocation||location.city);
  document.getElementById('nextPrayerLabel').textContent=en?'NEXT PRAYER':'اگلی نماز';
- if(!prayerSchedule){document.getElementById('nextPrayerName').textContent=en?'Prayer times unavailable':'نماز کے اوقات دستیاب نہیں';document.getElementById('nextPrayerClock').textContent='--:--';document.getElementById('nextPrayerCountdown').textContent=en?'Connect to internet and choose a city':'انٹرنیٹ چیک کریں یا شہر منتخب کریں';document.getElementById('prayerStrip').innerHTML='';return;}
- const {timings,zone}=prayerSchedule;const now=cityNow(zone),minutes=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
- const keys=['Fajr','Dhuhr','Asr','Maghrib','Isha'];let next=keys.find(k=>parsePrayerTime(timings[k])!==null&&parsePrayerTime(timings[k])>minutes);let tomorrow=false;
+ if(!prayerSchedule){document.getElementById('nextPrayerName').textContent=en?'Prayer times unavailable':'نماز کے اوقات دستیاب نہیں';document.getElementById('nextPrayerClock').textContent='--:--';document.getElementById('nextPrayerCountdown').textContent=en?'Check internet and location permission':'انٹرنیٹ یا لوکیشن کی اجازت چیک کریں';document.getElementById('prayerStrip').innerHTML='';return;}
+ const {timings,zone}=prayerSchedule,now=cityNow(zone),minutes=now.hours*60+now.minutes+now.seconds/60;
+ const keys=['Fajr','Dhuhr','Asr','Maghrib','Isha'];let next=keys.find(k=>parsePrayerTime(timings[k])!==null&&parsePrayerTime(timings[k])>minutes),tomorrow=false;
  if(!next){next='Fajr';tomorrow=true;}
  const target=parsePrayerTime(timings[next]);if(target===null)return;
  const remaining=Math.max(0,Math.ceil((tomorrow?1440:0)+target-minutes));
@@ -1589,20 +1605,78 @@ function renderPrayer(){
  document.getElementById('nextPrayerCountdown').textContent=(en?'Starts in ':'باقی وقت: ')+Math.floor(remaining/60)+'h '+String(remaining%60).padStart(2,'0')+'m';
  document.getElementById('prayerStrip').innerHTML=keys.map(k=>`<div class="prayer-chip ${k===next?'current':''}"><div class="prayer-label">${(en?PRAYER_EN:PRAYER_NAMES)[k]}</div><div class="prayer-time">${timeText(timings[k])}</div></div>`).join('');
 }
+let nativeLocationRequest=null;
+window.onNativeLocation=function(lat,lng){if(nativeLocationRequest){nativeLocationRequest.resolve({lat:Number(lat),lng:Number(lng)});nativeLocationRequest=null;}};
+window.onNativeLocationError=function(message){if(nativeLocationRequest){nativeLocationRequest.reject(Error(message));nativeLocationRequest=null;}};
+function requestCoordinates(){return new Promise((resolve,reject)=>{
+ if(window.AndroidLocation&&typeof AndroidLocation.requestLocation==='function'){
+  if(nativeLocationRequest){nativeLocationRequest.reject(Error('New location request'));}
+  nativeLocationRequest={resolve,reject};AndroidLocation.requestLocation();
+  setTimeout(()=>{if(nativeLocationRequest&&nativeLocationRequest.resolve===resolve){nativeLocationRequest=null;reject(Error('GPS timeout'));}},16000);
+  return;
+ }
+ if(!navigator.geolocation){reject(Error('GPS unavailable'));return;}
+ navigator.geolocation.getCurrentPosition(p=>resolve({lat:p.coords.latitude,lng:p.coords.longitude}),reject,{enableHighAccuracy:true,timeout:14000,maximumAge:120000});
+})}
 async function loadPrayerTimes(){
- const c=prayerCity();prayerSchedule=null;renderPrayer();
- const url='https://api.aladhan.com/v1/timingsByCity?city='+encodeURIComponent(c.city)+'&country='+encodeURIComponent(c.country)+'&method='+prayerMethod();
- try{const r=await fetch(url);if(!r.ok)throw Error('network');const d=await r.json();if(d.code!==200||!d.data||!d.data.timings)throw Error('data');
- prayerSchedule={timings:d.data.timings,zone:d.data.meta.timezone};renderPrayer();
- }catch(e){renderPrayer();}
+ const request=++prayerRequestId,prefs=load('umrahPreferences',{}),c=prayerCity();prayerSchedule=null;renderPrayer();
+ let url='',location=c.city;
+ if(prefs.prayerMode==='automatic'){
+  try{prayerCoordinates=await requestCoordinates();location='GPS';url='https://api.aladhan.com/v1/timings?latitude='+encodeURIComponent(prayerCoordinates.lat)+'&longitude='+encodeURIComponent(prayerCoordinates.lng)+'&method='+prayerMethod();}
+  catch(e){prayerCoordinates=null;location=c.city+' (GPS دستیاب نہیں)';}
+ }
+ if(!url)url='https://api.aladhan.com/v1/timingsByCity?city='+encodeURIComponent(c.city)+'&country='+encodeURIComponent(c.country)+'&method='+prayerMethod();
+ try{const r=await fetch(url);if(!r.ok)throw Error('network');const d=await r.json();if(d.code!==200||!d.data||!d.data.timings||!d.data.meta)throw Error('data');
+  if(request!==prayerRequestId)return;
+  prayerLastLocation=location;prayerSchedule={timings:d.data.timings,zone:d.data.meta.timezone};prayerDateKey=cityNow(prayerSchedule.zone).date;renderPrayer();schedulePrayerAlerts();
+ }catch(e){if(request===prayerRequestId){prayerLastLocation=location;renderPrayer();}}
 }
-function openQibla(){
- const c=prayerCity();const url='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('Qibla direction from '+c.city+', '+c.country);
- alert('قبلہ کی سمت دیکھنے کے لیے نقشہ کھلے گا۔ حقیقی Compass ابھی شامل نہیں ہے۔');window.location.href=url;
+function nativeReminderAvailable(){return !!(window.AndroidReminder&&typeof AndroidReminder.scheduleReminder==='function')}
+function schedulePrayerAlerts(){
+ if(!prayerSchedule||!nativeReminderAvailable())return;
+ const prefs=load('umrahPreferences',{}),prayers=prefs.prayers||{},keys=['Fajr','Dhuhr','Asr','Maghrib','Isha'];
+ keys.forEach((key,i)=>{
+  const id=91001+i;AndroidReminder.cancelReminder(id);
+  if(!prefs.notifications||prayers[key.toLowerCase()]===false)return;
+  const raw=prayerSchedule.timings[key],minutes=parsePrayerTime(raw);if(minutes===null)return;
+  const date=cityNow(prayerSchedule.zone).date;
+  // The API's timezone can differ from the device timezone. Convert city wall time to epoch using Intl.
+  const when=epochForCityTime(date,minutes,prayerSchedule.zone)-(prayers.advance?15*60000:0);
+  if(Number.isFinite(when)&&when>Date.now())AndroidReminder.scheduleReminder((premiumLanguage()==='en'?PRAYER_EN:PRAYER_NAMES)[key]+' — '+(prayers.advance?'15 min before':'Prayer time'),when,id);
+ });
 }
+function epochForCityTime(date,minutes,zone){
+ const [y,m,d]=date.split('-').map(Number),utc=Date.UTC(y,m-1,d,Math.floor(minutes/60),minutes%60);
+ let guess=utc;
+ for(let i=0;i<3;i++){
+  const p=cityPartsAt(guess,zone),actual=Date.UTC(Number(p.year),Number(p.month)-1,Number(p.day),Number(p.hour),Number(p.minute));
+  guess+=utc-actual;
+ }
+ return guess;
+}
+function cityPartsAt(ms,zone){const x={};new Intl.DateTimeFormat('en-GB',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(ms)).forEach(p=>{x[p.type]=p.value});return x;}
+function bearingToKaaba(lat,lng){
+ const toRad=Math.PI/180,lat1=lat*toRad,lat2=21.4225*toRad,dLon=(39.8262-lng)*toRad;
+ const y=Math.sin(dLon)*Math.cos(lat2),x=Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+ return (Math.atan2(y,x)*180/Math.PI+360)%360;
+}
+async function openQibla(){
+ try{const p=await requestCoordinates(),bearing=bearingToKaaba(p.lat,p.lng);
+  alert('قبلہ کی سمت شمال سے تقریباً '+bearing.toFixed(1)+'° ہے۔ یہ GPS پر مبنی زاویہ ہے، لائیو سینسر Compass نہیں۔ شمال معلوم کرنے کے لیے موبائل کا Compass استعمال کریں۔');
+ }catch(e){alert('GPS دستیاب نہیں۔ براہِ کرم Location کی اجازت دیں، یا شہر منتخب کریں۔');}
+}
+function prayerSettingsHTML(){const p=load('umrahPreferences',{}),c=prayerCity();return `<div class="info"><h3>⚙️ نماز اور زبان کی سیٹنگز</h3>
+ <div class="field"><label>زبان (Dashboard کی منتخب معلومات)</label><select id="prefLanguage"><option value="ur" ${p.language!=='en'?'selected':''}>اردو</option><option value="en" ${p.language==='en'?'selected':''}>English</option></select></div>
+ <div class="field"><label>نماز کے اوقات</label><select id="prefPrayerMode"><option value="manual" ${p.prayerMode!=='automatic'?'selected':''}>شہر دستی طور پر</option><option value="automatic" ${p.prayerMode==='automatic'?'selected':''}>GPS سے خودکار</option></select></div>
+ <div class="field"><label>Calculation Method</label><select id="prefMethod"><option value="UmmAlQura" ${p.method==='UmmAlQura'?'selected':''}>Umm Al-Qura</option><option value="Karachi" ${p.method==='Karachi'?'selected':''}>Karachi</option><option value="MWL" ${p.method==='MWL'?'selected':''}>Muslim World League</option></select></div>
+ <label class="check-item"><input id="prefNotifications" type="checkbox" ${p.notifications?'checked':''}> نماز کے وقت Android Notification</label>
+ <label class="check-item"><input id="prefAdvance" type="checkbox" ${p.prayers&&p.prayers.advance?'checked':''}> نماز سے 15 منٹ پہلے</label>
+ <p class="muted">دستی شہر: ${esc(c.city)}, ${esc(c.country)}۔ نماز کے اوقات کی تصدیق مقامی مسجد سے کریں۔ Notification کے لیے Android اجازت ضروری ہے۔</p>
+ <button class="main-btn" onclick="savePrayerSettings()">سیٹنگز محفوظ کریں</button><button class="outline-btn" onclick="choosePrayerCity();showPage('settings')">شہر تبدیل کریں</button></div>`}
+function savePrayerSettings(){const p=load('umrahPreferences',{});p.language=document.getElementById('prefLanguage').value;p.prayerMode=document.getElementById('prefPrayerMode').value;p.method=document.getElementById('prefMethod').value;p.notifications=document.getElementById('prefNotifications').checked;p.prayers=p.prayers||{};p.prayers.advance=document.getElementById('prefAdvance').checked;save('umrahPreferences',p);renderVerse();loadPrayerTimes();alert('سیٹنگز محفوظ ہوگئیں');goHome();}
 function initPremiumHome(){
  renderVerse();if(!verseTimer)verseTimer=setInterval(()=>{premiumVerseIndex=(premiumVerseIndex+1)%PREMIUM_VERSES.length;renderVerse()},6500);
- loadPrayerTimes();if(!prayerTimer)prayerTimer=setInterval(()=>{if(prayerSchedule){const now=cityNow(prayerSchedule.zone);if(now.getHours()===0&&now.getMinutes()===1)loadPrayerTimes();else renderPrayer()}},30000);
+ loadPrayerTimes();if(!prayerTimer)prayerTimer=setInterval(()=>{if(prayerSchedule){const today=cityNow(prayerSchedule.zone).date;if(today!==prayerDateKey)loadPrayerTimes();else renderPrayer()}},30000);
 }
 
 /* Onboarding is separate from the existing profile/travel data. */
