@@ -172,6 +172,16 @@ h2{margin:0;font-size:23px}
 .splash-art{position:relative;width:100%;min-height:100dvh;background:#063a2e url('umrah-splash.png') center center / contain no-repeat}
 .splash-tap{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;cursor:pointer;touch-action:manipulation}
 .ob-verse{font-family:MuhammadiQuran,serif;color:#f2d38a;font-size:27px;line-height:2.3;text-align:center;margin:16px 0 5px}.ob-verse-ref{text-align:center;color:#d6e3db;font-size:15px}.ob-screen:has(.splash-art){height:100dvh;overflow:hidden}
+
+/* Premium home — independent of existing modules and saved data */
+.premium-hero{background:linear-gradient(155deg,#053d33,#08634d 68%,#0c7557);color:#fff;padding:24px 19px 34px;border-radius:0 0 34px 34px;position:relative;overflow:hidden}
+.premium-hero:before{content:'۞';position:absolute;left:-20px;top:22px;font-size:210px;color:#ffffff0a;pointer-events:none}
+.premium-top{display:flex;justify-content:space-between;align-items:center;position:relative}.premium-name{font-size:15px;color:#e2d6a9}.premium-title{font-size:28px;font-weight:bold;line-height:1.5}.premium-avatar{border:1px solid #bfa368;border-radius:50%;width:44px;height:44px;display:grid;place-items:center;font-size:23px}
+.prayer-hero{text-align:center;margin:20px 0 14px;position:relative}.prayer-hero .eyebrow{color:#e5c985;font-size:17px}.prayer-hero .next-name{font-size:26px}.prayer-hero .next-clock{font:700 46px Arial,sans-serif;direction:ltr;margin:8px 0}.prayer-hero .countdown{font-size:16px;color:#dbece5}.prayer-city{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;font-size:17px}.prayer-city button,.qibla-button{background:#ffffff19;border:1px solid #d7c58b66;color:#fff;border-radius:20px;padding:6px 13px;font-size:15px}
+.prayer-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:18px}.prayer-chip{background:#ffffff12;border:1px solid #ffffff1c;border-radius:13px;text-align:center;padding:10px 1px;min-width:0}.prayer-chip.current{background:#d1b36b;color:#173f32}.prayer-chip .prayer-label{font-size:14px}.prayer-chip .prayer-time{font:12px Arial,sans-serif;direction:ltr;margin-top:6px;white-space:nowrap}
+.premium-body{padding:4px 0 16px}.premium-section{margin:20px 16px}.premium-section h2{font-size:23px;color:#173b31;margin-bottom:10px}.verse-card{background:#fffdf5;border:1px solid #e7d9b6;border-radius:21px;padding:20px 17px;text-align:center;box-shadow:0 5px 20px #00000008}.verse-card .verse-heading{font:700 11px Arial,sans-serif;letter-spacing:2px;color:#967737}.verse-ar{font-family:MuhammadiQuran,serif;font-size:27px;line-height:2.3;color:#205747;margin:8px 0}.verse-translation{font-size:18px;color:#5c665c}.verse-ref{font-size:14px;color:#9b7d45;margin-top:8px}.verse-dots{display:flex;justify-content:center;gap:7px;margin-top:12px}.verse-dots button{width:8px;height:8px;padding:0;border:0;border-radius:20px;background:#d8d2c2}.verse-dots button.active{width:20px;background:#a68a4b}
+.premium-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.quick-item{border:1px solid #e5e9e2;background:#fff;border-radius:17px;padding:12px 2px;font-size:15px;text-align:center;color:#174d3d}.quick-item span{display:block;font-size:25px;margin-bottom:4px}.home-legacy-title{padding:0 16px;margin-top:22px}.home-legacy-title h2{color:#184e3d}
+@media(max-width:360px){.prayer-hero .next-clock{font-size:39px}.prayer-chip .prayer-time{font-size:10px}.premium-quick{gap:5px}.quick-item{font-size:13px}}
 </style>
 </head>
 
@@ -231,17 +241,16 @@ h2{margin:0;font-size:23px}
   </div>
 </div>
 <div id="home" class="app">
-<header class="header">
-  <div class="brand">
-    <div class="logo">🕋</div>
-    <div>
-      <h1>عمرہ کمپینین</h1>
-      <small>UMRAH COMPANION</small>
-    </div>
-  </div>
-  <p class="header-message">آپ کے سفرِ عمرہ کا مکمل ساتھی</p>
-<p id="welcomeUserName" style="margin:8px 0 0;font-size:18px;font-weight:bold;"></p></header>
-
+<div class="premium-hero">
+ <div class="premium-top"><div><div class="premium-name" id="premiumGreeting">السلام علیکم</div><div class="premium-title">Umrah Companion</div></div><div class="premium-avatar">🕋</div></div>
+ <div class="prayer-hero"><div class="eyebrow" id="nextPrayerLabel">اگلی نماز</div><div class="next-name" id="nextPrayerName">نماز کے اوقات</div><div class="next-clock" id="nextPrayerClock">--:--</div><div class="countdown" id="nextPrayerCountdown">مقام منتخب کریں</div></div>
+ <div class="prayer-city"><span id="prayerLocationText">📍 Makkah</span><button onclick="choosePrayerCity()" aria-label="شہر تبدیل کریں">✎ شہر</button><button class="qibla-button" onclick="openQibla()">🧭 قبلہ</button></div>
+ <div class="prayer-strip" id="prayerStrip"><div class="prayer-chip">نماز کے اوقات لوڈ ہو رہے ہیں…</div></div>
+ </div>
+ <div class="premium-body">
+ <section class="premium-section"><h2 id="verseSectionTitle">آج کی آیت</h2><div class="verse-card"><div class="verse-heading">VERSE OF THE DAY</div><div class="verse-ar" id="verseArabic"></div><div class="verse-translation" id="verseTranslation"></div><div class="verse-ref" id="verseReference"></div><div class="verse-dots" id="verseDots"></div></div></section>
+ <section class="premium-section"><h2>Discover · فوری سہولیات</h2><div class="premium-quick"><button class="quick-item" onclick="showPage('guide')"><span>🕋</span>عمرہ</button><button class="quick-item" onclick="showPage('duas')"><span>🤲</span>دعائیں</button><button class="quick-item" onclick="showPage('ziyarat')"><span>📍</span>زیارات</button><button class="quick-item" onclick="showPage('trip')"><span>✈️</span>سفر</button></div></section>
+ </div>
 <section class="card trip-card">
   <div class="row">
     <h2>میرا عمرہ</h2>
@@ -265,7 +274,7 @@ h2{margin:0;font-size:23px}
 
 <section class="section">
   <div class="section-title">
-    <h2>عمرہ خدمات</h2><span class="muted">ضروری سہولیات</span>
+    <h2>تمام عمرہ خدمات</h2><span class="muted">ضروری سہولیات</span>
   </div>
 
   <div class="service-grid">
@@ -359,19 +368,20 @@ function saveSetupTravel(){
   save("setupComplete",true);
   document.getElementById("setupTravelScreen").style.display="none";
   document.getElementById("home").style.display="block";
-  updateHome();
+  updateHome();initPremiumHome();
 }
 function skipSetupTravel(){
   save("setupComplete",true);
   document.getElementById("setupTravelScreen").style.display="none";
   document.getElementById("home").style.display="block";
-  updateHome();
+  updateHome();initPremiumHome();
 }
 function updateHome(){const profile = load("profile",{});
 const nameBox = document.getElementById("welcomeUserName");
 if(nameBox){
   nameBox.innerText = profile.name ? "السلام علیکم، " + profile.name + " 👋" : "";
 }
+ const greet=document.getElementById("premiumGreeting");if(greet)greet.textContent=(premiumLanguage()==="en"?"Assalamu Alaikum":"السلام علیکم")+(profile.name?", "+profile.name:"");
   const d=load("tripDate","");
   document.getElementById("tripDateText").innerText=d?"روانگی: "+d:"روانگی کی تاریخ ابھی درج نہیں کی گئی";
 
@@ -1532,6 +1542,69 @@ function goHome(){
 }
 
 
+
+/* Prayer data is fetched online; never present placeholders as real times. */
+const PREMIUM_VERSES=[
+ {ar:'وَقُل رَّبِّ زِدْنِي عِلْمًا',ur:'اے میرے رب! میرے علم میں اضافہ فرما۔',en:'My Lord, increase me in knowledge.',ref:'20:114'},
+ {ar:'فَاذْكُرُونِي أَذْكُرْكُمْ',ur:'تم مجھے یاد کرو، میں تمہیں یاد کروں گا۔',en:'Remember Me; I will remember you.',ref:'2:152'},
+ {ar:'وَأَتِمُّوا الْحَجَّ وَالْعُمْرَةَ لِلَّهِ',ur:'حج اور عمرہ اللہ کے لیے پورے کرو۔',en:'Complete the Hajj and Umrah for Allah.',ref:'2:196'},
+ {ar:'إِنَّ مَعَ الْعُسْرِ يُسْرًا',ur:'بے شک مشکل کے ساتھ آسانی ہے۔',en:'Indeed, with hardship comes ease.',ref:'94:6'}
+];
+let premiumVerseIndex=0,prayerSchedule=null,prayerTimer=null,verseTimer=null;
+const PRAYER_NAMES={Fajr:'فجر',Dhuhr:'ظہر',Asr:'عصر',Maghrib:'مغرب',Isha:'عشاء'};
+const PRAYER_EN={Fajr:'Fajr',Dhuhr:'Dhuhr',Asr:'Asr',Maghrib:'Maghrib',Isha:'Isha'};
+function premiumLanguage(){return load('umrahPreferences',{}).language==='en'?'en':'ur'}
+function renderVerse(){
+ const v=PREMIUM_VERSES[premiumVerseIndex],en=premiumLanguage()==='en';
+ document.getElementById('verseArabic').textContent=v.ar;
+ document.getElementById('verseTranslation').textContent=en?v.en:v.ur;
+ document.getElementById('verseReference').textContent='Quran '+v.ref;
+ document.getElementById('verseSectionTitle').textContent=en?'Verse of the day':'آج کی آیت';
+ document.getElementById('verseDots').innerHTML=PREMIUM_VERSES.map((_,i)=>`<button aria-label="آیت ${i+1}" class="${i===premiumVerseIndex?'active':''}" onclick="premiumVerseIndex=${i};renderVerse()"></button>`).join('');
+}
+function parsePrayerTime(t){const m=String(t||'').match(/^(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
+function prayerMethod(){const m=load('umrahPreferences',{}).method;return m==='Karachi'?1:m==='MWL'?3:4}
+function prayerCity(){return load('prayerCity',{city:'Makkah',country:'Saudi Arabia',zone:'Asia/Riyadh'})}
+function choosePrayerCity(){
+ const old=prayerCity();const city=prompt('شہر کا نام لکھیں (مثلاً Makkah, Madinah, Karachi)',old.city);
+ if(!city||!city.trim())return;
+ const country=prompt('ملک کا نام لکھیں (مثلاً Saudi Arabia, Pakistan)',old.country);
+ if(!country||!country.trim())return;
+ save('prayerCity',{city:city.trim(),country:country.trim()});loadPrayerTimes();
+}
+function cityNow(zone){return new Date(new Date().toLocaleString('en-US',{timeZone:zone||'Asia/Riyadh'}))}
+function timeText(v){const m=parsePrayerTime(v);if(m===null)return '--:--';return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function renderPrayer(){
+ const en=premiumLanguage()==='en';const location=prayerCity();
+ document.getElementById('prayerLocationText').textContent='📍 '+location.city;
+ document.getElementById('nextPrayerLabel').textContent=en?'NEXT PRAYER':'اگلی نماز';
+ if(!prayerSchedule){document.getElementById('nextPrayerName').textContent=en?'Prayer times unavailable':'نماز کے اوقات دستیاب نہیں';document.getElementById('nextPrayerClock').textContent='--:--';document.getElementById('nextPrayerCountdown').textContent=en?'Connect to internet and choose a city':'انٹرنیٹ چیک کریں یا شہر منتخب کریں';document.getElementById('prayerStrip').innerHTML='';return;}
+ const {timings,zone}=prayerSchedule;const now=cityNow(zone),minutes=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+ const keys=['Fajr','Dhuhr','Asr','Maghrib','Isha'];let next=keys.find(k=>parsePrayerTime(timings[k])!==null&&parsePrayerTime(timings[k])>minutes);let tomorrow=false;
+ if(!next){next='Fajr';tomorrow=true;}
+ const target=parsePrayerTime(timings[next]);if(target===null)return;
+ const remaining=Math.max(0,Math.ceil((tomorrow?1440:0)+target-minutes));
+ document.getElementById('nextPrayerName').textContent=(en?PRAYER_EN:PRAYER_NAMES)[next];
+ document.getElementById('nextPrayerClock').textContent=timeText(timings[next]);
+ document.getElementById('nextPrayerCountdown').textContent=(en?'Starts in ':'باقی وقت: ')+Math.floor(remaining/60)+'h '+String(remaining%60).padStart(2,'0')+'m';
+ document.getElementById('prayerStrip').innerHTML=keys.map(k=>`<div class="prayer-chip ${k===next?'current':''}"><div class="prayer-label">${(en?PRAYER_EN:PRAYER_NAMES)[k]}</div><div class="prayer-time">${timeText(timings[k])}</div></div>`).join('');
+}
+async function loadPrayerTimes(){
+ const c=prayerCity();prayerSchedule=null;renderPrayer();
+ const url='https://api.aladhan.com/v1/timingsByCity?city='+encodeURIComponent(c.city)+'&country='+encodeURIComponent(c.country)+'&method='+prayerMethod();
+ try{const r=await fetch(url);if(!r.ok)throw Error('network');const d=await r.json();if(d.code!==200||!d.data||!d.data.timings)throw Error('data');
+ prayerSchedule={timings:d.data.timings,zone:d.data.meta.timezone};renderPrayer();
+ }catch(e){renderPrayer();}
+}
+function openQibla(){
+ const c=prayerCity();const url='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('Qibla direction from '+c.city+', '+c.country);
+ alert('قبلہ کی سمت دیکھنے کے لیے نقشہ کھلے گا۔ حقیقی Compass ابھی شامل نہیں ہے۔');window.location.href=url;
+}
+function initPremiumHome(){
+ renderVerse();if(!verseTimer)verseTimer=setInterval(()=>{premiumVerseIndex=(premiumVerseIndex+1)%PREMIUM_VERSES.length;renderVerse()},6500);
+ loadPrayerTimes();if(!prayerTimer)prayerTimer=setInterval(()=>{if(prayerSchedule){const now=cityNow(prayerSchedule.zone);if(now.getHours()===0&&now.getMinutes()===1)loadPrayerTimes();else renderPrayer()}},30000);
+}
+
 /* Onboarding is separate from the existing profile/travel data. */
 const OB_KEY="umrah_onboarding_v1";
 let obStep=0;
@@ -1564,7 +1637,7 @@ function obRender(){
   const v=verses[obStep-2];
   body=obWrap(`<div class="ob-kicker">${a[0]}</div><h1 class="ob-title">${a[1]}</h1><div class="ob-verse" lang="ar">${v[0]}</div><div class="ob-verse-ref">${v[1]}</div><p class="ob-sub">${a[2]}</p><div class="ob-card ob-gold">${a[3]}</div><div class="ob-actions"><div class="ob-dots">${[2,3,4,5].map(n=>n===obStep?'●':'·').join(' ')}</div>${obButton('آگے بڑھیں ←','obNext()')}${obButton('پیچھے','obBack()',true)}</div>`)
  }
- if(obStep===6){body=obWrap(`<div class="ob-kicker">اپنی ترجیحات</div><h1 class="ob-title">اپنے سفر کو ذاتی بنائیں</h1><div class="ob-card"><h3>1۔ کیا آپ عربی پڑھ سکتے ہیں؟</h3><div class="ob-grid">${obChoice('arabic',true,'جی ہاں')}${obChoice('arabic',false,'نہیں')}</div></div><div class="ob-card"><h3>2۔ معلومات کی زبان</h3><select class="ob-select" onchange="obPrefs.language=this.value"><option value="ur" ${obPrefs.language==='ur'?'selected':''}>اردو</option><option value="ar" ${obPrefs.language==='ar'?'selected':''}>العربية</option></select><p class="ob-small">موجودہ Dashboard اردو میں ہے؛ مکمل عربی ترجمہ بعد کے مرحلے میں شامل ہوگا۔</p></div><div class="ob-card"><h3>3۔ نماز کے اوقات</h3><div class="ob-grid">${obChoice('prayerMode','automatic','خودکار')}${obChoice('prayerMode','manual','دستی')}</div><p class="ob-small">خودکار طریقے کے لیے لوکیشن کی اجازت اور نماز اوقات کی سروس درکار ہوگی۔</p><label class="ob-check"><input type="checkbox" ${obPrefs.notifications?'checked':''} onchange="obPrefs.notifications=this.checked">اطلاعات کی ترجیح محفوظ کریں</label><h3>حساب کا طریقہ</h3><select class="ob-select" onchange="obPrefs.method=this.value"><option value="UmmAlQura">ام القریٰ (مکہ)</option><option value="Karachi" ${obPrefs.method==='Karachi'?'selected':''}>جامعہ علوم اسلامیہ کراچی</option><option value="MWL" ${obPrefs.method==='MWL'?'selected':''}>مسلم ورلڈ لیگ</option></select><p class="ob-small">یہ فی الحال صرف ترجیح ہے، نماز کے اصل اوقات کا حساب اس ورژن میں شامل نہیں۔</p>${obPrayer('fajr','فجر')}${obPrayer('dhuhr','ظہر')}${obPrayer('asr','عصر')}${obPrayer('maghrib','مغرب')}${obPrayer('isha','عشاء')}${obPrayer('advance','15 منٹ پہلے یاد دہانی')}</div><div class="ob-actions">${obButton('سفر شروع کریں ←','obFinish()')}${obButton('پیچھے','obBack()',true)}</div>`)}
+ if(obStep===6){body=obWrap(`<div class="ob-kicker">اپنی ترجیحات</div><h1 class="ob-title">اپنے سفر کو ذاتی بنائیں</h1><div class="ob-card"><h3>1۔ کیا آپ عربی پڑھ سکتے ہیں؟</h3><div class="ob-grid">${obChoice('arabic',true,'جی ہاں')}${obChoice('arabic',false,'نہیں')}</div></div><div class="ob-card"><h3>2۔ معلومات کی زبان</h3><select class="ob-select" onchange="obPrefs.language=this.value"><option value="ur" ${obPrefs.language==='ur'?'selected':''}>اردو</option><option value="en" ${obPrefs.language==='en'?'selected':''}>English</option></select><p class="ob-small">Dashboard کی منتخب معلومات English میں بھی ہوں گی؛ تمام صفحات کا مکمل ترجمہ ابھی باقی ہے۔</p></div><div class="ob-card"><h3>3۔ نماز کے اوقات</h3><div class="ob-grid">${obChoice('prayerMode','automatic','خودکار')}${obChoice('prayerMode','manual','دستی')}</div><p class="ob-small">خودکار طریقے کے لیے لوکیشن کی اجازت اور نماز اوقات کی سروس درکار ہوگی۔</p><label class="ob-check"><input type="checkbox" ${obPrefs.notifications?'checked':''} onchange="obPrefs.notifications=this.checked">اطلاعات کی ترجیح محفوظ کریں</label><h3>حساب کا طریقہ</h3><select class="ob-select" onchange="obPrefs.method=this.value"><option value="UmmAlQura">ام القریٰ (مکہ)</option><option value="Karachi" ${obPrefs.method==='Karachi'?'selected':''}>جامعہ علوم اسلامیہ کراچی</option><option value="MWL" ${obPrefs.method==='MWL'?'selected':''}>مسلم ورلڈ لیگ</option></select><p class="ob-small">نماز کے اوقات انٹرنیٹ سے حاصل کیے جاتے ہیں؛ درستگی مقامی مسجد سے چیک کریں۔</p>${obPrayer('fajr','فجر')}${obPrayer('dhuhr','ظہر')}${obPrayer('asr','عصر')}${obPrayer('maghrib','مغرب')}${obPrayer('isha','عشاء')}${obPrayer('advance','15 منٹ پہلے یاد دہانی')}</div><div class="ob-actions">${obButton('سفر شروع کریں ←','obFinish()')}${obButton('پیچھے','obBack()',true)}</div>`)}
  root.innerHTML=body;root.scrollTop=0;
 }
 function obNext(){obStep=Math.min(obStep+1,6);obRender()}
@@ -1574,7 +1647,7 @@ function obFinish(){save('umrahPreferences',obPrefs);localStorage.setItem(OB_KEY
 function startExistingApp(){
  const firstProfile=load('profile',{}),setupComplete=load('setupComplete',false);
  if(firstProfile.name&&firstProfile.email&&firstProfile.contact&&firstProfile.country&&setupComplete){
-  document.getElementById('welcomeScreen').style.display='none';document.getElementById('setupTravelScreen').style.display='none';document.getElementById('home').style.display='block';updateHome();
+  document.getElementById('welcomeScreen').style.display='none';document.getElementById('setupTravelScreen').style.display='none';document.getElementById('home').style.display='block';updateHome();initPremiumHome();
  }else if(firstProfile.name&&firstProfile.email&&firstProfile.contact&&firstProfile.country){
   document.getElementById('welcomeScreen').style.display='none';document.getElementById('home').style.display='none';document.getElementById('setupTravelScreen').style.display='block';
  }else{document.getElementById('home').style.display='none';document.getElementById('setupTravelScreen').style.display='none';document.getElementById('welcomeScreen').style.display='block'}
