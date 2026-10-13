@@ -1,2 +1,2 @@
-# Umrah-Companion
-Complete Umrah Guide, Planner, Expense Tracker, Duas, Ziyarat and Travel Companion
+# Umrah-Guide-App
+Simple Offline Umrah Guide App
